@@ -4,9 +4,9 @@ import edu.pdx.cs410J.AbstractAppointment;
 
 public class Appointment extends AbstractAppointment {
 
-  String desc;
-  String beginTime;
-  String endTime;
+  private String desc;
+  private String beginTime;
+  private String endTime;
 
   Appointment(){}
 
@@ -18,7 +18,6 @@ public class Appointment extends AbstractAppointment {
 
   @Override
   public String getBeginTimeString() {
-
     return this.beginTime;
     //throw new UnsupportedOperationException("This method is not implemented yet");
   }
@@ -31,7 +30,6 @@ public class Appointment extends AbstractAppointment {
 
   @Override
   public String getDescription() {
-
     return this.desc;
     //return "This method is not implemented yet";
   }
