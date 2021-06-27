@@ -3,18 +3,17 @@ package edu.pdx.cs410J.mberz2;
 import edu.pdx.cs410J.AbstractAppointment;
 import edu.pdx.cs410J.AbstractAppointmentBook;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class AppointmentBook extends AbstractAppointmentBook {
 
     private String owner;
-    private Appointment appList[];
-    int tail;
+    private ArrayList<Appointment> appList;
 
     AppointmentBook(String o){
         this.owner = o;
-        this.tail = 0;
+        this.appList = new ArrayList<Appointment>();
     }
 
     @Override
@@ -24,11 +23,11 @@ public class AppointmentBook extends AbstractAppointmentBook {
 
     @Override
     public Collection getAppointments() {
-        return Arrays.asList(appList);
+        return appList;
     }
 
     @Override
     public void addAppointment(AbstractAppointment app) {
-        this.appList[tail] = (Appointment) app;
+        appList.add((Appointment) app);
     }
 }
