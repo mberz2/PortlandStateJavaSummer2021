@@ -6,12 +6,23 @@ package edu.pdx.cs410J.mberz2;
 public class Project1 {
 
   public static void main(String[] args) {
-    Appointment appointment = new Appointment();  // Refer to one of Dave's classes so that we can be sure it is on the classpath
-    System.err.println("Missing command line arguments");
-    for (String arg : args) {
-      System.out.println(arg);
+
+    if (args.length == 0) {
+      System.err.println("Error: Missing command line arguments");
+    } else if (args.length == 5) {
+      System.err.println("Error: Too many command line arguments");
+    } else {
+      for (String arg : args) {
+        System.out.println("You entered:");
+        System.out.println(arg);
+
+        System.out.println("Adding info to new appointment.");
+        Appointment appointment = new Appointment();
+
+      }
+
+      System.exit(1);
     }
-    System.exit(1);
   }
 
 }
