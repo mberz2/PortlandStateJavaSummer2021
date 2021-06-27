@@ -1,11 +1,13 @@
 package edu.pdx.cs410J.mberz2;
 
+import java.util.Arrays;
+
 /**
  * The main class for the CS410J appointment book Project
  */
 public class Project1 {
 
-  public static void printReadme(){
+  public static void printReadme() {
     System.out.println("README for Project 1");
     System.out.println("Author: Matthew Berzinskas (mberz2)");
     System.out.println("Course: CS410P, Advanced Programming with Java");
@@ -25,41 +27,52 @@ public class Project1 {
     System.exit(0);
   }
 
-  public static void printAppt(){
+  public static void printAppt() {
 
   }
 
-  public static void checkInput(String [] args){
+  public static void checkInput(String[] args) {
 
-    for (String arg : args) {
-
-      if(arg.startsWith("-")){
-        if(arg.equals("-README"))
-          printReadme();
-        else if(arg.equals("-print"))
-          printAppt();
-      }
-
-      //System.out.println(arg);
-
+    if (args.length == 0) {
+      System.err.println("Error: Missing command line arguments");
+      System.err.println("Run as:\nJava -jar /apptbook/target/apptbook-2021.0.0.jar -README");
+      System.err.println("\nFor more detailed information.");
+    } else if (args.length > 7) {
+      System.err.println("Error: Too many command line arguments");
+      System.err.println("Run as:\nJava -jar /apptbook/target/apptbook-2021.0.0.jar -README");
+      System.err.println("\nFor more detailed information.");
     }
+
+  }
+
+  public static void parseInput(String[] args){
+
+    String[] newArgs = new String[0];
+    if (args.length == 7)
+      //Two options flags, take from index 1-7
+      newArgs = Arrays.copyOfRange(args, 1, 7);
+
+    else if (args.length == 6)
+      //One option flag, take from index 0-6
+      newArgs = Arrays.copyOfRange(args, 0, 6);
+
+    AppointmentBook appBook = new AppointmentBook(newArgs[0]);
+    Appointment app = new Appointment(newArgs[1], newArgs[2]+" "+newArgs[3], newArgs[4]+" "+newArgs[5]);
+
+    //Temp print
+    System.out.println("Appointment Book of: "+appBook.getOwnerName());
+    System.out.println("Desc: "+app.getDescription());
+    System.out.println("Start: "+app.getBeginTimeString());
+    System.out.println("End: "+app.getEndTimeString());
 
   }
 
   public static void main(String[] args) {
 
-    if (args.length == 0) {
-      System.err.println("Error: Missing command line arguments");
-    } else if (args.length == 5) {
-      System.err.println("Error: Too many command line arguments");
-    } else {
-      checkInput(args);
-      //Appointment appointment = new Appointment();
+    checkInput(args);
+    parseInput(args);
 
 
-
-      System.exit(0);
-    }
+    System.exit(0);
   }
-
 }
