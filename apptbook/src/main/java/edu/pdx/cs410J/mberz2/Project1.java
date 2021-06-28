@@ -2,22 +2,37 @@ package edu.pdx.cs410J.mberz2;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 
 /**
  * The main class for the CS410J appointment book Project
  */
 public class Project1 {
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws ParseException {
 
     checkArgs(args);
     String[] newArgs = parseInput(args);
 
-    AppointmentBook appBook = new AppointmentBook(newArgs[0]);
+    ArrayList<AppointmentBook> appBooks = new ArrayList<AppointmentBook>();
+
+    //Lookup owner name
+
+    appBooks.add(new AppointmentBook(newArgs[0]));
+
     Appointment app = new Appointment(newArgs[1], newArgs[2]+" "+newArgs[3], newArgs[4]+" "+newArgs[5]);
-    appBook.addAppointment(app);
+
+    appBooks.get(0).addAppointment(app);
+
+    ArrayList<Appointment> tempBook = appBooks.get(0).getAppointments();
+
+    System.out.println(appBooks.get(0).getOwnerName());
+    for (Appointment i : tempBook){
+      System.out.println(i.getDescription());
+      System.out.println(i.getBeginTimeString());
+      System.out.println(i.getEndTimeString());
+    }
 
     System.exit(0);
   }
@@ -38,7 +53,7 @@ public class Project1 {
   public static String[] parseInput(String[] args){
 
     boolean err = false;
-    SimpleDateFormat format = new SimpleDateFormat("MM-DD-YYYY");
+    SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy");
 
 
     String[] newArgs = new String[0];
@@ -114,8 +129,6 @@ public class Project1 {
     System.err.println("Usage: java -jar /apptbook/target/apptbook-2021.0.0.jar [options] <args>\n");
     System.exit(1);
   }
-
-
 
 
 }
