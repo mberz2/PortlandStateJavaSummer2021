@@ -18,19 +18,22 @@ public class Appointment extends AbstractAppointment {
 
   @Override
   public String getBeginTimeString() {
+    if(this.desc == null)
+      throw new UnsupportedOperationException("This method is not implemented yet");
     return this.beginTime;
-    //throw new UnsupportedOperationException("This method is not implemented yet");
   }
 
   @Override
   public String getEndTimeString() {
-    return this.endTime;
-    //throw new UnsupportedOperationException("This method is not implemented yet");
+      if(this.desc == null)
+        throw new UnsupportedOperationException("This method is not implemented yet");
+      return this.endTime;
   }
 
   @Override
   public String getDescription() {
+    if (this.desc == null)
+      return "This method is not implemented yet";
     return this.desc;
-    //return "This method is not implemented yet";
   }
 }
