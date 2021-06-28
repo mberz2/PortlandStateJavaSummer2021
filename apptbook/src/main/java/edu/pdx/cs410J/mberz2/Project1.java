@@ -1,5 +1,7 @@
 package edu.pdx.cs410J.mberz2;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -10,7 +12,7 @@ public class Project1 {
 
   public static void main(String[] args) {
 
-    checkInput(args);
+    checkArgs(args);
     String[] newArgs = parseInput(args);
 
     AppointmentBook appBook = new AppointmentBook(newArgs[0]);
@@ -21,21 +23,24 @@ public class Project1 {
     System.exit(0);
   }
 
-  public static void checkInput(String[] args) {
+  public static void checkArgs(String[] args) {
 
     if (args.length == 0) {
       System.err.println("Error: Missing command line arguments");
-      System.err.println("Run as:\nJava -jar /apptbook/target/apptbook-2021.0.0.jar -README");
-      System.err.println("\nFor more detailed information.");
+      printUsage();
+      System.exit(1);
     } else if (args.length > 7) {
       System.err.println("Error: Too many command line arguments");
-      System.err.println("Run as:\nJava -jar /apptbook/target/apptbook-2021.0.0.jar -README");
-      System.err.println("\nFor more detailed information.");
-    }
 
+      System.exit(1);
+    }
   }
 
   public static String[] parseInput(String[] args){
+
+    boolean err = false;
+    SimpleDateFormat format = new SimpleDateFormat("MM-DD-YYYY");
+
 
     String[] newArgs = new String[0];
     if (args.length == 7)
@@ -45,6 +50,29 @@ public class Project1 {
     else if (args.length == 6)
       //One option flag, take from index 0-6
       newArgs = Arrays.copyOfRange(args, 0, 6);
+
+    if(!(newArgs[0].matches("^[a-zA-Z\"\\s]*$"))){
+      printError("owner", newArgs[0]);
+      err = true;
+    } else if (!(newArgs[1].matches("^[a-zA-Z\"\\s]*$"))){
+      printError("description", newArgs[1]);
+      err = true;
+    } else if(!(newArgs[2].matches("^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$"))){
+      printError("begin time (date)", newArgs[2]);
+      err = true;
+    } else if(!(newArgs[3].matches("^[0-9:]*$"))){
+      printError("begin time (time)", newArgs[3]);
+      err = true;
+    } else if(!(newArgs[4].matches("^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$"))){
+      printError("end time (date)", newArgs[4]);
+      err = true;
+    } else if(!(newArgs[5].matches("^[0-9:]*$"))){
+      printError("end time (time)", newArgs[5]);
+      err = true;
+    }
+
+    if (err)
+      printUsage();
 
     return newArgs;
   }
@@ -71,6 +99,16 @@ public class Project1 {
 
   public static void printAppt() {
 
+  }
+
+  public static void printError(String s, String x){
+    System.err.println("Error in <" + s + "> argument.");
+    System.err.println("<" + x + "> contains improper characters.");
+  }
+
+  public static void printUsage(){
+    System.err.println("Usage: java -jar /apptbook/target/apptbook-2021.0.0.jar [options] <args>\n");
+    System.exit(1);
   }
 
 
