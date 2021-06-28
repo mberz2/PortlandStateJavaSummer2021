@@ -8,8 +8,8 @@ import java.util.Collection;
 
 public class AppointmentBook extends AbstractAppointmentBook {
 
-    private String owner;
-    private ArrayList<Appointment> appList;
+    private final String owner;
+    private final ArrayList<Appointment> appList;
 
     AppointmentBook(String o){
         this.owner = o;
@@ -22,7 +22,7 @@ public class AppointmentBook extends AbstractAppointmentBook {
     }
 
     @Override
-    public Collection getAppointments() {
+    public ArrayList getAppointments() {
         return appList;
     }
 
