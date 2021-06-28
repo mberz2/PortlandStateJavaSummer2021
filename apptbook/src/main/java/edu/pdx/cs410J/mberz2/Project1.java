@@ -17,7 +17,6 @@ public class Project1 {
 
     AppointmentBook appBook = new AppointmentBook(newArgs[0]);
     Appointment app = new Appointment(newArgs[1], newArgs[2]+" "+newArgs[3], newArgs[4]+" "+newArgs[5]);
-
     appBook.addAppointment(app);
 
     System.exit(0);
@@ -54,19 +53,24 @@ public class Project1 {
     if(!(newArgs[0].matches("^[a-zA-Z\"\\s]*$"))){
       printError("owner", newArgs[0]);
       err = true;
-    } else if (!(newArgs[1].matches("^[a-zA-Z\"\\s]*$"))){
-      printError("description", newArgs[1]);
-      err = true;
-    } else if(!(newArgs[2].matches("^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$"))){
+    }
+
+    if(!(newArgs[2].matches("^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$"))){
       printError("begin time (date)", newArgs[2]);
       err = true;
-    } else if(!(newArgs[3].matches("^[0-9:]*$"))){
+    }
+
+    if(!(newArgs[3].matches("^([01]?\\d|2[0-3]):?([0-5]\\d)$"))){
       printError("begin time (time)", newArgs[3]);
       err = true;
-    } else if(!(newArgs[4].matches("^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$"))){
+    }
+
+    if(!(newArgs[4].matches("^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$"))){
       printError("end time (date)", newArgs[4]);
       err = true;
-    } else if(!(newArgs[5].matches("^[0-9:]*$"))){
+    }
+
+    if(!(newArgs[5].matches("^([01]?\\d|2[0-3]):?([0-5]\\d)$"))){
       printError("end time (time)", newArgs[5]);
       err = true;
     }
