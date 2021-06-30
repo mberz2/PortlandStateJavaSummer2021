@@ -15,17 +15,17 @@ public class Project1 {
     checkArgs(args);
     String[] newArgs = parseInput(args);
 
-    ArrayList<AppointmentBook> appBooks = new ArrayList<AppointmentBook>();
+    AppointmentBook appBook = new AppointmentBook;
 
     //Lookup owner name
 
-    appBooks.add(new AppointmentBook(newArgs[0]));
+    appBook.add(new newArgs[0]);
 
     Appointment app = new Appointment(newArgs[1], newArgs[2]+" "+newArgs[3], newArgs[4]+" "+newArgs[5]);
 
     appBooks.get(0).addAppointment(app);
 
-    ArrayList<Appointment> tempBook = appBooks.get(0).getAppointments();
+    ArrayList<Appointment> tempBook = (ArrayList<Appointment>) appBooks.get(0).getAppointments();
 
     System.out.println(appBooks.get(0).getOwnerName());
     for (Appointment i : tempBook){

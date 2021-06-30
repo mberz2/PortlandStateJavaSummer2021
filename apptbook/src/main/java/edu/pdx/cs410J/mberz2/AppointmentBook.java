@@ -9,11 +9,11 @@ import java.util.Collection;
 public class AppointmentBook extends AbstractAppointmentBook {
 
     private final String owner;
-    private final ArrayList<Appointment> appList;
+    private Collection<AbstractAppointment> appList;
 
     AppointmentBook(String o){
         this.owner = o;
-        this.appList = new ArrayList<Appointment>();
+        this.appList = new ArrayList<>();
     }
 
     @Override
@@ -22,12 +22,12 @@ public class AppointmentBook extends AbstractAppointmentBook {
     }
 
     @Override
-    public ArrayList getAppointments() {
+    public Collection getAppointments() {
         return appList;
     }
 
     @Override
     public void addAppointment(AbstractAppointment app) {
-        appList.add((Appointment) app);
+        appList.add(app);
     }
 }
