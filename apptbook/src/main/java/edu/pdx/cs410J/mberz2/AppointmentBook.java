@@ -6,14 +6,15 @@ import edu.pdx.cs410J.AbstractAppointmentBook;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class AppointmentBook extends AbstractAppointmentBook {
+public class AppointmentBook<T extends AbstractAppointment> extends AbstractAppointmentBook<T> {
 
     private final String owner;
-    private Collection<AbstractAppointment> appList;
+    private final Collection<T> appList;
 
-    AppointmentBook(String o){
+    AppointmentBook(String o, T app){
         this.owner = o;
         this.appList = new ArrayList<>();
+        appList.add(app);
     }
 
     @Override
@@ -22,12 +23,10 @@ public class AppointmentBook extends AbstractAppointmentBook {
     }
 
     @Override
-    public Collection getAppointments() {
+    public Collection<T> getAppointments() {
         return appList;
     }
 
     @Override
-    public void addAppointment(AbstractAppointment app) {
-        appList.add(app);
-    }
+    public void addAppointment(T app) { appList.add((T) app); }
 }

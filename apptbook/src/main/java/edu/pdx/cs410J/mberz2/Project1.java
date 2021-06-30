@@ -1,8 +1,9 @@
 package edu.pdx.cs410J.mberz2;
 
+import edu.pdx.cs410J.AbstractAppointment;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -15,24 +16,15 @@ public class Project1 {
     checkArgs(args);
     String[] newArgs = parseInput(args);
 
-    AppointmentBook appBook = new AppointmentBook;
-
-    //Lookup owner name
-
-    appBook.add(new newArgs[0]);
-
     Appointment app = new Appointment(newArgs[1], newArgs[2]+" "+newArgs[3], newArgs[4]+" "+newArgs[5]);
 
-    appBooks.get(0).addAppointment(app);
+    AppointmentBook<AbstractAppointment> appBook = new AppointmentBook<>(newArgs[0], app);
 
-    ArrayList<Appointment> tempBook = (ArrayList<Appointment>) appBooks.get(0).getAppointments();
+    System.out.println(appBook.getOwnerName());
 
-    System.out.println(appBooks.get(0).getOwnerName());
-    for (Appointment i : tempBook){
-      System.out.println(i.getDescription());
-      System.out.println(i.getBeginTimeString());
-      System.out.println(i.getEndTimeString());
-    }
+    System.out.println(app.getDescription());
+    System.out.println(app.getBeginTimeString());
+    System.out.println(app.getEndTimeString());
 
     System.exit(0);
   }
