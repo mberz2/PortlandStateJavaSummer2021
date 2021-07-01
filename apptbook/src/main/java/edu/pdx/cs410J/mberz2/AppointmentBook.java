@@ -36,7 +36,7 @@ public class AppointmentBook<T extends AbstractAppointment>
 	AppointmentBook(String o, T app){
 		this.owner = o;
 		this.appList = new ArrayList<>();
-		appList.add(app);
+		addAppointment(app);
 	}
 
 	/**
@@ -55,14 +55,9 @@ public class AppointmentBook<T extends AbstractAppointment>
 	/**
 	 * Returns the collection containing all appointments.
 	 * @return String containing owner.
-	 * @throws NullPointerException if appList is not initialized.
 	 */
 	@Override
-	public Collection<T> getAppointments() {
-		if (appList == null)
-			throw new NullPointerException("Book not implemented.");
-		return appList;
-	}
+	public Collection<T> getAppointments() { return appList; }
 
 	/**
 	 * Adds an appointment to the give appointment book.
@@ -72,6 +67,8 @@ public class AppointmentBook<T extends AbstractAppointment>
 	 */
 	@Override
 	public void addAppointment(T app) {
-		appList.add((T) app);
+		if(app == null)
+			throw new NullPointerException("Appointment is empty/null.");
+		appList.add(app);
 	}
 }
