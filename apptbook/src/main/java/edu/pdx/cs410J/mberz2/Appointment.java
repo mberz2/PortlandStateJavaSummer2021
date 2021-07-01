@@ -2,14 +2,15 @@ package edu.pdx.cs410J.mberz2;
 import edu.pdx.cs410J.AbstractAppointment;
 
 /**
- * This class, an extension of @see:edu.pdx.cs410J.AbstractAppointment,
- * implements methods for an "appointment" object.
+ * This class, an extension of AbstractAppointment, implements methods for an
+ * "appointment" object.
  *
  * <p> An object is created via a parameterized constructor and private data
  * members are accessed/retrieved via getter methods. </p>
  *
  * @author Matthew Berzinskas
  * @since 2020-6-23
+ * @see AbstractAppointment
  */
 public class Appointment extends AbstractAppointment {
 
