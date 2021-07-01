@@ -5,9 +5,7 @@ import java.util.Collection;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
-* Unit tests for the {@code Appointment} and {@code AppointmentBook} classes.
- * @see Appointment
- * @see AppointmentBook
+* Unit tests for the {@link Appointment} and {@link AppointmentBook} classes.
 */
 public class AppointmentTest {
 
