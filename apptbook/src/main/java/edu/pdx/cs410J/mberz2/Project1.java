@@ -64,16 +64,13 @@ public class Project1 {
 	 * @param args Array of command line arguments.
 	 */
 	public static void checkInput(String [] args){
-
 		//Check for correct number of arguments.
 		if (args.length == 0) {
 			System.err.println("Error: Missing command line arguments");
 			printUsage();
-			System.exit(1);
 		} else if (args.length > 8) {
 			System.err.println("Error: Too many command line arguments");
 			printUsage();
-			System.exit(1);
 		}
 	}
 
