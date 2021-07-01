@@ -31,18 +31,18 @@ public class Project1 {
 	}
 
 	/**
-	 * Method to print the contents of the README.txt file as a loaded resource
-	 * from the relative-path of the resource directory. Retrieves the file
+	 * Method to print the contents of a file, loaded as a resource, from
+	 * the relative-path of the resource directory. Retrieves the file
 	 * and prints it via a buffered reader. Exits normally after the print.
 	 *
+	 * @param s String of resource to be read.
 	 * @throws IOException if unable to find the requested file.
 	 * @throws NullPointerException if the requested file is null.
 	 */
-	public static void printReadme() throws IOException {
-	  InputStream readme =
-			  Project1.class.getResourceAsStream("README.txt");
-	  if (readme != null) {
-		  BufferedReader br = new BufferedReader(new InputStreamReader(readme));
+	public static void printRes(String s) throws IOException {
+	  InputStream file = Project1.class.getResourceAsStream(s);
+	  if (file != null) {
+		  BufferedReader br = new BufferedReader(new InputStreamReader(file));
 		  String line;
 		  while ((line = br.readLine()) != null)
 			  System.out.println(line);
@@ -101,7 +101,7 @@ public class Project1 {
 	        System.out.println("1");
 		    if (arg.startsWith("-")) {
 			    if (arg.equalsIgnoreCase(("-README")))
-				    printReadme();
+				    printRes("README.txt");
 			    if (arg.equalsIgnoreCase(("-PRINT")))
 				    print = true;
 			    else
