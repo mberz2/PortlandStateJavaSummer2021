@@ -1,8 +1,11 @@
 package edu.pdx.cs410J.mberz2;
 import java.io.*;
+import java.net.URL;
+import java.nio.file.Files;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 /**
  * The main class for the CS410J appointment book Project
@@ -14,8 +17,7 @@ public class Project1 {
 	public static final String RESOURCE =
 			"src/main/resources/edu/pdx/cs410J/mberz2/";
 
-	public static void main(String[] args) throws ParseException, IOException {
-
+	public static void main(String[] args) throws IOException {
 
 		boolean readmeFlag = false;
 
@@ -35,36 +37,34 @@ public class Project1 {
 		for (String arg : args) {
 			if (arg.equalsIgnoreCase(("-README"))){
 
-				File readme = new File("classpath:/README.txt");
-
-				try (BufferedReader br = new BufferedReader(new FileReader(readme))) {
-					String line;
-					while ((line = br.readLine()) != null) {
-						System.out.println(line);
-					}
-				}
+				printReadme();
 
 			}
 
 		}
+	}
 
+	/**
+	 * Method to print the contents of the README.txt file as a loaded resource
+	 * from the relative-path of the resource directory. Retrieves the file
+	 * and prints it via a buffered reader.
+	 *
+	 * @throws IOException if unable to find the requested file.
+	 * @throws NullPointerException if the requested file is null.
+	 */
+	public static void printReadme() throws IOException {
+	  InputStream readme = Project1.class.getResourceAsStream("README.txt");
+	  if (readme != null) {
+		  BufferedReader br = new BufferedReader(new InputStreamReader(readme));
+		  String line;
+		  while ((line = br.readLine()) != null)
+			  System.out.println(line);
+		  System.exit(0);
+	  }
 
-
-		//String[] newArgs = parseInput(args);
-    /*
-    Appointment app = new Appointment(newArgs[1], newArgs[2]+" "+newArgs[3], newArgs[4]+" "+newArgs[5]);
-
-    AppointmentBook<AbstractAppointment> appBook = new AppointmentBook<>(newArgs[0], app);
-
-    System.out.println(appBook.getOwnerName());
-
-    System.out.println(app.getDescription());
-    System.out.println(app.getBeginTimeString());
-    System.out.println(app.getEndTimeString());
-
-    System.exit(0);
-    */
-  }
+	  throw new NullPointerException
+			  ("No README.txt file found.");
+	}
 
   public static String[] parseInput(String[] args){
 
