@@ -7,9 +7,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Unit tests for the {@link Appointment} class.
- *
- * You'll need to update these unit tests as you build out your program.
+ * Unit tests for the @see:edu.pdx.cs410J.mberz2.Appointment class.
  */
 public class AppointmentTest {
 
