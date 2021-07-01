@@ -15,8 +15,19 @@ public class Project1 {
 
 	public static void main(String[] args) throws IOException {
 
+		// Check arguments for correct number.
 		checkInput(args);
+
+		// Check arguments for valid inputs.
 		String [] newArgs = parseInput(args);
+
+		// Create a new appointment from parsed input.
+		Appointment app = new Appointment(newArgs[1],
+				newArgs[2]+newArgs[3], newArgs[4]+newArgs[5]);
+
+		// Create a new appointment book from the owner argument and appt.
+		AppointmentBook<Appointment> appBook =
+				new AppointmentBook<>(newArgs[0], app);
 	}
 
 	/**
