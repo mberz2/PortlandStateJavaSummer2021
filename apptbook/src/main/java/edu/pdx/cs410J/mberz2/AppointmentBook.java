@@ -62,13 +62,13 @@ public class AppointmentBook<T extends AbstractAppointment>
 	/**
 	 * Adds an appointment to the give appointment book.
 	 * @param app Appointment object to be added to the boo.
-	 * @throws NullPointerException if app to add is of Null type.
+	 * @throws UnsupportedOperationException if appointment is null.
 	 * @see Appointment
 	 */
 	@Override
 	public void addAppointment(T app) {
-		if(app == null)
-			throw new NullPointerException("Appointment is empty/null.");
+		if (app == null)
+			throw new UnsupportedOperationException("Appointment is empty.");
 		appList.add(app);
 	}
 }
