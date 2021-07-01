@@ -4,36 +4,26 @@ import edu.pdx.cs410J.AbstractAppointment;
 
 public class Appointment extends AbstractAppointment {
 
+  private String owner;
   private String desc;
   private String beginTime;
   private String endTime;
 
   Appointment(){}
 
-  Appointment (String d, String bt, String et){
+  Appointment (String o, String d, String bt, String et){
+    this.owner = o;
     this.desc = d;
     this.beginTime = bt;
     this.endTime = et;
   }
 
   @Override
-  public String getBeginTimeString() {
-    if(this.desc == null)
-      throw new UnsupportedOperationException("This method is not implemented yet");
-    return this.beginTime;
-  }
+  public String getBeginTimeString() { return this.beginTime; }
 
   @Override
-  public String getEndTimeString() {
-      if(this.desc == null)
-        throw new UnsupportedOperationException("This method is not implemented yet");
-      return this.endTime;
-  }
+  public String getEndTimeString() { return this.endTime; }
 
   @Override
-  public String getDescription() {
-    if (this.desc == null)
-      return "This method is not implemented yet";
-    return this.desc;
-  }
+  public String getDescription() { return this.desc; }
 }
