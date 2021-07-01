@@ -39,22 +39,37 @@ public class Appointment extends AbstractAppointment {
 
   /**
    * Returns the appointment's begin time.
-   * @return String containing begin time. {@code MM/DD/YYYY HH:MM}
+   * @return String containing begin time.{@code MM/DD/YYYY HH:MM}
+   * @throws UnsupportedOperationException if beginTime is null.
    */
   @Override
-  public String getBeginTimeString() { return this.beginTime; }
+  public String getBeginTimeString() {
+    if (beginTime == null)
+      throw new UnsupportedOperationException("Appointment not implemented.");
+    return this.beginTime;
+    }
 
   /**
    * Returns the appointment's begin time.
    * @return String containing end time. {@code MM/DD/YYYY HH:MM}
+   * @throws UnsupportedOperationException if endTime is null.
    */
   @Override
-  public String getEndTimeString() { return this.endTime; }
+  public String getEndTimeString() {
+    if (endTime == null)
+      throw new UnsupportedOperationException("Appointment not implemented.");
+    return this.endTime;
+  }
 
   /**
    * Returns the appointment's description.
    * @return String containing the description.
+   * @throws UnsupportedOperationException if desc is null.
    */
   @Override
-  public String getDescription() { return this.desc; }
+  public String getDescription() {
+    if (desc == null)
+      throw new UnsupportedOperationException("Appointment not implemented.");
+    return this.desc;
+  }
 }
