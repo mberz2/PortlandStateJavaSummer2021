@@ -17,7 +17,6 @@ public class Appointment extends AbstractAppointment {
     // Suppresses default constructor, ensuring non-instatiability.
 	private Appointment(){}
 
-	private String owner;
 	private String desc;
 	private String beginTime;
 	private String endTime;
@@ -26,13 +25,11 @@ public class Appointment extends AbstractAppointment {
 	 * Parameterized constructor for an appointment object. Sets the private
 	 * data members to the values of the passed in parameters.
 	 *
-	 * @param o String for the appointment owner.
 	 * @param d String for the appointment description.
 	 * @param bt String for the appt. begin time. {@code MM/DD/YYYY HH:MM}
 	 * @param et String for the appt. end time. {@code MM/DD/YYYY HH:MM}
 	 */
-	Appointment (String o, String d, String bt, String et){
-	this.owner = o;
+	Appointment (String d, String bt, String et){
 	this.desc = d;
 	this.beginTime = bt;
 	this.endTime = et;
