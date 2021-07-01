@@ -14,8 +14,10 @@ public class Project1 {
   public static void main(String[] args) throws ParseException {
 
     checkArgs(args);
+    checkPrint(args);
+    checkReadme(args);
     String[] newArgs = parseInput(args);
-
+    /*
     Appointment app = new Appointment(newArgs[1], newArgs[2]+" "+newArgs[3], newArgs[4]+" "+newArgs[5]);
 
     AppointmentBook<AbstractAppointment> appBook = new AppointmentBook<>(newArgs[0], app);
@@ -27,6 +29,7 @@ public class Project1 {
     System.out.println(app.getEndTimeString());
 
     System.exit(0);
+    */
   }
 
   public static void checkArgs(String[] args) {
@@ -40,6 +43,14 @@ public class Project1 {
 
       System.exit(1);
     }
+  }
+
+  public static void checkPrint(String [] args){
+
+  }
+
+  public static void checkReadme(String [] args){
+
   }
 
   public static String[] parseInput(String[] args){
