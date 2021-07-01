@@ -50,7 +50,7 @@ public class Project1 {
 	  }
 
 	  throw new NullPointerException
-			  ("No README.txt file found.");
+			  ("File "+s+" not found.");
 	}
 
 	/**
@@ -66,7 +66,6 @@ public class Project1 {
 	public static void checkInput(String [] args){
 
 		//Check for correct number of arguments.
-		System.out.println(args.length);
 		if (args.length == 0) {
 			System.err.println("Error: Missing command line arguments");
 			printUsage();
