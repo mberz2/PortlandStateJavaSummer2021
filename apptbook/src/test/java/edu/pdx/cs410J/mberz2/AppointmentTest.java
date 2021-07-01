@@ -1,8 +1,5 @@
 package edu.pdx.cs410J.mberz2;
 import org.junit.jupiter.api.Test;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Modifier;
 import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,17 +10,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AppointmentTest {
 
 	//Appointment Tests
-	@Test
-	public void testPrivateApptConstructor() throws Exception {
-		Constructor<Appointment> constructor =
-				Appointment.class.getDeclaredConstructor();
-		assertTrue(Modifier.isPrivate(constructor.getModifiers()),
-				"Constructor is not private");
-
-		constructor.setAccessible(true);
-		constructor.newInstance();
-	}
-
 	@Test
 	void getBeginTimeStringNeedsToBeImplemented() {
 		Appointment appt = new Appointment(null, null, null);
@@ -72,17 +58,6 @@ public class AppointmentTest {
 
 	//AppointmentBook Tests
 	@Test
-	public void testPrivateApptBookConstructor() throws Exception {
-		Constructor<AppointmentBook> constructor =
-				AppointmentBook.class.getDeclaredConstructor();
-		assertTrue(Modifier.isPrivate(constructor.getModifiers()),
-				"Constructor is not private");
-
-		constructor.setAccessible(true);
-		constructor.newInstance();
-	}
-
-	@Test
 	void getApptBookOwnerNeedsToBeImplemented() {
 		Appointment appt = new Appointment(null, null, null);
 		AppointmentBook<Appointment> appBook =
@@ -104,6 +79,7 @@ public class AppointmentTest {
 		assertThrows(UnsupportedOperationException.class, () -> {
 					AppointmentBook<Appointment> appBook =
 							new AppointmentBook<>("test", null);
+					appBook.getAppointments();
 		});
 	}
 
@@ -112,6 +88,7 @@ public class AppointmentTest {
 		Appointment appt = new Appointment(null, null, null);
 		AppointmentBook<Appointment> appBook =
 				new AppointmentBook<>("test", appt);
+		appBook.getAppointments();
 	}
 
 	@Test

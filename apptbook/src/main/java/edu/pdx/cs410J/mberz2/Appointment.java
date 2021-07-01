@@ -15,7 +15,7 @@ import edu.pdx.cs410J.AbstractAppointment;
 public class Appointment extends AbstractAppointment {
 
     // Suppresses default constructor, ensuring non-instatiability.
-	private Appointment(){}
+	//private Appointment(){}
 
 	private String desc;
 	private String beginTime;

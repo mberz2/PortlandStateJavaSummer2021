@@ -19,7 +19,7 @@ public class AppointmentBook<T extends AbstractAppointment>
 		extends AbstractAppointmentBook<T> {
 
 	// Suppresses default constructor, ensuring non-instatiability.
-	private AppointmentBook(){}
+	//private AppointmentBook(){}
 
 	private String owner;
 	private Collection<T> appList;
