@@ -51,13 +51,15 @@ public class AppointmentBook<T extends AbstractAppointment>
 		return this.owner;
 	}
 
-
 	/**
 	 * Returns the collection containing all appointments.
 	 * @return String containing owner.
 	 */
 	@Override
-	public Collection<T> getAppointments() { return appList; }
+	public Collection<T> getAppointments() {
+		if (this.appList == null || this.appList.isEmpty())
+			throw new UnsupportedOperationException("Appointment is empty.");
+		return appList; }
 
 	/**
 	 * Adds an appointment to the give appointment book.
