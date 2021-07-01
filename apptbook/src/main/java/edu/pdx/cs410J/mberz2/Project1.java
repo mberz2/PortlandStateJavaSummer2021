@@ -1,7 +1,5 @@
 package edu.pdx.cs410J.mberz2;
-
-import edu.pdx.cs410J.AbstractAppointment;
-
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -11,12 +9,48 @@ import java.util.Arrays;
  */
 public class Project1 {
 
-  public static void main(String[] args) throws ParseException {
+	public static final String USAGE =
+			"ava -jar /apptbook/target/apptbook-2021.0.0.jar [options] <args>";
+	public static final String RESOURCE =
+			"src/main/resources/edu/pdx/cs410J/mberz2/";
 
-    checkArgs(args);
-    checkPrint(args);
-    checkReadme(args);
-    String[] newArgs = parseInput(args);
+	public static void main(String[] args) throws ParseException, IOException {
+
+
+		boolean readmeFlag = false;
+
+		//Check number of arguments.
+		System.out.println(args.length);
+		if (args.length == 0) {
+			System.err.println("Error: Missing command line arguments");
+			printUsage();
+			System.exit(1);
+		} else if (args.length > 7) {
+			System.err.println("Error: Too many command line arguments");
+			printUsage();
+			System.exit(1);
+		}
+
+		//Check for readme flag.
+		for (String arg : args) {
+			if (arg.equalsIgnoreCase(("-README"))){
+
+				File readme = new File("classpath:/README.txt");
+
+				try (BufferedReader br = new BufferedReader(new FileReader(readme))) {
+					String line;
+					while ((line = br.readLine()) != null) {
+						System.out.println(line);
+					}
+				}
+
+			}
+
+		}
+
+
+
+		//String[] newArgs = parseInput(args);
     /*
     Appointment app = new Appointment(newArgs[1], newArgs[2]+" "+newArgs[3], newArgs[4]+" "+newArgs[5]);
 
@@ -30,27 +64,6 @@ public class Project1 {
 
     System.exit(0);
     */
-  }
-
-  public static void checkArgs(String[] args) {
-
-    if (args.length == 0) {
-      System.err.println("Error: Missing command line arguments");
-      printUsage();
-      System.exit(1);
-    } else if (args.length > 7) {
-      System.err.println("Error: Too many command line arguments");
-
-      System.exit(1);
-    }
-  }
-
-  public static void checkPrint(String [] args){
-
-  }
-
-  public static void checkReadme(String [] args){
-
   }
 
   public static String[] parseInput(String[] args){
@@ -99,39 +112,14 @@ public class Project1 {
     return newArgs;
   }
 
-  public static void printReadme() {
-    System.out.println("README for Project 1");
-    System.out.println("Author: Matthew Berzinskas (mberz2)");
-    System.out.println("Course: CS410P, Advanced Programming with Java");
-    System.out.println("Portland State University, Summer 2021");
-    System.out.println("\nThis program implements a simple command-line appointment book.");
-    System.out.println("Usage: java -jar /apptbook/target/apptbook-2021.0.0.jar [options] <args>\n");
-    System.out.println("Options are (options may appear in any order");
-    System.out.println("\t-print            - Prints a description of the new appointment");
-    System.out.println("\t-README           - Prints a README for this project and exits");
-    System.out.println("\nargs are (in this order):");
-    System.out.println("\towner             - The person whose owns the appt book");
-    System.out.println("\tdescription       - A description of the appointment");
-    System.out.println("\tbeginTime         - When the appt begins (24-hour time)");
-    System.out.println("\tendTime           - When the appt ends (24-hour time)");
-    System.out.println("Owner and description should be enclosed in double-quotes");
-    System.out.println("Date and time should be in the format: mm/dd/yyyy hh:mm \n");
-    System.exit(0);
-  }
-
-  public static void printAppt() {
-
-  }
-
   public static void printError(String s, String x){
     System.err.println("Error in <" + s + "> argument.");
     System.err.println("<" + x + "> contains improper characters.");
   }
 
   public static void printUsage(){
-    System.err.println("Usage: java -jar /apptbook/target/apptbook-2021.0.0.jar [options] <args>\n");
+    System.err.println(USAGE);
     System.exit(1);
   }
-
 
 }
