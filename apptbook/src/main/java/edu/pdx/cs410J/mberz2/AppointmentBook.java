@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * This class, an extension of AbstractAppointmentBook class, implements
+ * This class, an extension of {@link AbstractAppointmentBook} class, implements
  * methods for an "appointment book" object.
  *
  * <p> An object is created via a parameterized constructor and private data
