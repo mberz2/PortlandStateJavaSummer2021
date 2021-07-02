@@ -48,6 +48,7 @@ public class Appointment extends AbstractAppointment {
 		return this.beginTime;
 	}
 
+
 	/**
 	 * Returns the appointment's begin time.
 	 * @return String containing end time. {@code MM/DD/YYYY HH:MM}
