@@ -1,4 +1,6 @@
 package edu.pdx.cs410J.mberz2;
+import edu.pdx.cs410J.AbstractAppointment;
+
 import java.io.*;
 import java.util.Arrays;
 import java.util.Collection;
@@ -7,12 +9,17 @@ import java.util.Collection;
  * This is the main class method for the CS410J Appointment Book Project.
  * <p>The program simulates the receiving an appointment via command line
  * arguments and proceeds through operations to validate the input, process
- * a limited number of options, and then create Appointment and Appointment
- * book objects. </p>
+ * a limited number of options, and then creates an {@code Appointment} and
+ * {@code AppointmentBook} object. </p>
  * <p>If the print flag is enabled, it will print back the
  * details of the appointment.</p>
  * <p>If the readme flag is enabled, it will print the README.txt file that
  * is located in the resources.</p>
+ *
+ * @author Matthew Berzinskas
+ * @since 2020-6-23
+ * @see Appointment
+ * @see AbstractAppointment
  */
 public class Project1 {
 
@@ -56,10 +63,12 @@ public class Project1 {
 	 * Method to check the correct number of arguments. The program handles the
 	 * following situations.
 	 * <ul>
-	 *     <li>0 arguments: No command line arguments, print usage.</li>
+	 *     <li>0 arguments: No command line arguments.</li>
 	 *     <li>Greater than 8: The maximum number of arguments would be
-	 *     six inputs and two flags, more than 8, prints usage and exits.</li>
+	 *     six inputs and two flags, so no more than 8 arguments.</li>
 	 * </ul>
+	 * If either situation is encountered, the program will call to the method
+	 * that prints the proper program usage {@code printUsage} which also exits.
 	 * @param args Array of command line arguments.
 	 */
 	public static void checkInput(String [] args){
@@ -193,8 +202,9 @@ public class Project1 {
 	}
 
 	/**
-	 * Method to print the contents of an appointment book. Creates a collection
-	 * item and loops through all the appointments in the collection, printing.
+	 * Method prints the contents of an appointment book.
+	 * <p>Creates a {@code Collection} object and uses a loop to iterate through
+	 * all the appointments in the collection, printing them.</p>
 	 *
 	 * @param appBook Appointment book object to be printed.
 	 */
@@ -228,5 +238,4 @@ public class Project1 {
 		System.err.println(USAGE);
 		System.exit(1);
 	}
-
 }
