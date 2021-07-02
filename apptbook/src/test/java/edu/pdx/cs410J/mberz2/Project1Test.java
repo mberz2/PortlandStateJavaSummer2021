@@ -32,16 +32,13 @@ class Project1Test {
 
 	@Test
 	void fileCanBePrintedAsResource() {
-		assertDoesNotThrow(()-> {
-			Project1.printRes("README.txt");
-		});
+		assertDoesNotThrow(()-> Project1.printRes("README.txt"));
 	}
 
 	@Test
 	void invalidResourcesCannotBeRead() {
-		assertThrows(NullPointerException.class, () -> {
-			Project1.printRes("test.txt");
-		});
+		assertThrows(NullPointerException.class, () ->
+				Project1.printRes("test.txt"));
 	}
 
 }
