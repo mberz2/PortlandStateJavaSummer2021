@@ -3,8 +3,13 @@ package edu.pdx.cs410J.mberz2;
 import edu.pdx.cs410J.InvokeMainTestCase;
 import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.equalTo;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
@@ -37,6 +42,81 @@ class Project1IT extends InvokeMainTestCase {
 		assertThat(result.getExitCode(), equalTo(1));
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("Too many"));
+	}
+
+	@Test
+	void printOptionEnabled(){
+		MainMethodResult result =
+				invokeMain("-print", "Matthew Berzinskas",
+						"test description", "1/1/1999", "10:00",
+						"2/2/2000", "20:00");
+		assertThat(result.getExitCode(), equalTo(0));
+		assertThat(result.getTextWrittenToStandardOut(),
+				containsString("Appointment Book for"));
+		assertThat(result.getTextWrittenToStandardOut(),
+				containsString("Description"));
+		assertThat(result.getTextWrittenToStandardOut(),
+				containsString("Begin"));
+		assertThat(result.getTextWrittenToStandardOut(),
+				containsString("End"));
+	}
+	@Test
+	void readmeOptionEnabled() throws IOException {
+		MainMethodResult result =
+				invokeMain("-readme");
+		assertThat(result.getExitCode(), equalTo(0));
+		assertThat(result.getTextWrittenToStandardOut(),
+				containsString("README"));
+	}
+
+	@Test
+	void incorrectOwnerRegEx(){
+		MainMethodResult result =
+				invokeMain("Matthew3Berzinskas", "test description",
+						"1/1/1999", "10:00", "2/2/2000", "20:00");
+		assertThat(result.getExitCode(), equalTo(1));
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("improper"));
+	}
+
+	@Test
+	void incorrectBeginDateRegEx(){
+		MainMethodResult result =
+				invokeMain("Matthew Berzinskas", "test description",
+						"aa1/1/1999", "10:00", "2/2/2000", "20:00");
+		assertThat(result.getExitCode(), equalTo(1));
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("improper"));
+	}
+
+	@Test
+	void incorrectBeginTimeRegEx(){
+		MainMethodResult result =
+				invokeMain("Matthew Berzinskas", "test description",
+						"1/1/1999", "aa10:00", "2/2/2000", "20:00");
+		assertThat(result.getExitCode(), equalTo(1));
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("improper"));
+	}
+
+	@Test
+	void incorrectEndDateRegEx(){
+		MainMethodResult result =
+				invokeMain("Matthew Berzinskas", "test description",
+						"aa1/1/1999", "10:00", "aa2/2/2000", "20:00");
+		assertThat(result.getExitCode(), equalTo(1));
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("improper"));
+	}
+
+	@Test
+	void incorrectEndTimeRegEx(){
+		MainMethodResult result =
+				invokeMain("Matthew Berzinskas", "test description",
+						"1/1/1999", "10:00", "2/2/2000", "aa20:00");
+		assertThat(result.getExitCode(), equalTo(1));
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("improper"));
 	}
 
 }
