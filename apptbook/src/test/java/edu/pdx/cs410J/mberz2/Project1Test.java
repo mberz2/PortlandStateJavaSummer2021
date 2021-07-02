@@ -6,10 +6,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * A unit test for code in the {@link Project1} class.  This is different from
@@ -21,10 +21,12 @@ class Project1Test {
 	@Test
 	void readmeCanBeReadAsResource() throws IOException {
 		try (
-				InputStream readme = Project1.class.getResourceAsStream("README.txt")
+				InputStream readme =
+						Project1.class.getResourceAsStream("README.txt")
 		) {
 			assertThat(readme, not(nullValue()));
-			BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
+			BufferedReader reader =
+					new BufferedReader(new InputStreamReader(readme));
 			String line = reader.readLine();
 			assertThat(line, containsString("README"));
 		}
@@ -43,4 +45,5 @@ class Project1Test {
 			Project1.printRes("test.txt");
 		});
 	}
+
 }
