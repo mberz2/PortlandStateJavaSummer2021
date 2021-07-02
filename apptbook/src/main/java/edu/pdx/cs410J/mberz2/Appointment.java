@@ -36,7 +36,7 @@ public class Appointment extends AbstractAppointment {
 	}
 
 	/**
-	 * Returns the appointment's begin time.
+	 * Method to return the appointment's begin time.
 	 * @return String containing begin time. {@code MM/DD/YYYY HH:MM}
 	 * @throws UnsupportedOperationException if beginTime is null.
 	 */
@@ -50,7 +50,7 @@ public class Appointment extends AbstractAppointment {
 
 
 	/**
-	 * Returns the appointment's begin time.
+	 * Method to return the appointment's begin time.
 	 * @return String containing end time. {@code MM/DD/YYYY HH:MM}
 	 * @throws UnsupportedOperationException if endTime is null.
 	 */
@@ -63,7 +63,7 @@ public class Appointment extends AbstractAppointment {
 	}
 
 	/**
-	 * Returns the appointment's description.
+	 * Method to return the appointment's description.
 	 * @return String containing the description.
 	 * @throws UnsupportedOperationException if desc is null.
 	 */
