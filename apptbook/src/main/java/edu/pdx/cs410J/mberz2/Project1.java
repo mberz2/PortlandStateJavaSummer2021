@@ -75,7 +75,7 @@ public class Project1 {
 		int print = 0;
 
 		//Debug
-		System.out.println(args.length);
+		//System.out.println(args.length);
 
 		for (String arg : args) {
 			if (arg.startsWith("-")) {
@@ -194,6 +194,7 @@ public class Project1 {
 			System.out.println("End Time:\t\t"+a.getEndTimeString());
 		}
 
+		System.exit(0);
 	}
 
 	/**
