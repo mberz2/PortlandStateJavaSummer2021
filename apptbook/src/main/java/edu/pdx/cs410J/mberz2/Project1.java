@@ -130,8 +130,11 @@ public class Project1 {
 	 */
 	public static String[] parseInput(String[] args) {
 
+		// New array for holding parsed arguments.
 		String[] newArgs;
 
+		// If the array list contains 7 items, one is a flag, trim it off.
+		// Otherwise all six are
 		if (args.length == 7)
 			newArgs = Arrays.copyOfRange(args, 1, 7);
 		else
@@ -188,7 +191,11 @@ public class Project1 {
 	 * @throws NullPointerException if the requested file is null.
 	 */
 	public static void printRes(String s) throws IOException {
+
+		// Create an input stream from the file indicated at resource class.
 		InputStream file = Project1.class.getResourceAsStream(s);
+
+		// If it is not null, start printing until there are no more lines.
 		if (file != null) {
 			BufferedReader br = new BufferedReader(new InputStreamReader(file));
 			String line;
@@ -197,8 +204,8 @@ public class Project1 {
 			System.exit(0);
 		}
 
-		throw new NullPointerException
-				("File "+s+" not found.");
+		// Otherwise, throw an exception.
+		throw new NullPointerException ("File "+s+" not found.");
 	}
 
 	/**
