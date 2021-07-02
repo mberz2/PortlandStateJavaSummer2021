@@ -60,6 +60,7 @@ class Project1IT extends InvokeMainTestCase {
 		assertThat(result.getTextWrittenToStandardOut(),
 				containsString("End"));
 	}
+
 	@Test
 	void readmeOptionEnabled() throws IOException {
 		MainMethodResult result =
@@ -68,6 +69,16 @@ class Project1IT extends InvokeMainTestCase {
 		assertThat(result.getTextWrittenToStandardOut(),
 				containsString("README"));
 	}
+
+	@Test
+	void onlyPrintAndReadmeOptionsAllowed() {
+		MainMethodResult result =
+				invokeMain("-readmeeeeeee");
+		assertThat(result.getExitCode(), equalTo(1));
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("not a correct"));
+	}
+
 
 	@Test
 	void incorrectOwnerRegEx(){

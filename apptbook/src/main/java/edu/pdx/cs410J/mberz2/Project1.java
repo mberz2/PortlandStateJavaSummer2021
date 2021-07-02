@@ -96,21 +96,18 @@ public class Project1 {
 	public static int checkOptions(String [] args) throws IOException {
 		int print = 0;
 
-		//Debug
-		//System.out.println(args.length);
-
 		for (String arg : args) {
 			if (arg.startsWith("-")) {
 				if (arg.equalsIgnoreCase(("-README")))
 					printRes("README.txt");
 				if (arg.equalsIgnoreCase(("-PRINT")))
 					print = 1;
-				else
-					System.err.println(
-							"Error: " + arg + " is not a correct option");
+				else {
+					System.err.println(arg + " is not a correct option");
+					printUsage();
+				}
 			}
 		}
-
 		return print;
 	}
 
@@ -172,8 +169,7 @@ public class Project1 {
 		}
 
 		if (err) {
-			System.err.println(
-					"Run with -README to see proper formatting.");
+			System.err.println("Run with -README to see proper formatting.");
 			System.err.println(README);
 			System.exit(1);
 		}
