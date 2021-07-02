@@ -1,7 +1,6 @@
 package edu.pdx.cs410J.mberz2;
 import edu.pdx.cs410J.InvokeMainTestCase;
 import org.junit.jupiter.api.Test;
-import java.io.IOException;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
