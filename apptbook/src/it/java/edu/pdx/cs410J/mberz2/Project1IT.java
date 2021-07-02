@@ -55,7 +55,7 @@ class Project1IT extends InvokeMainTestCase {
 	}
 
 	@Test
-	void readmeOptionEnabled() throws IOException {
+	void readmeOptionEnabled() {
 		MainMethodResult result =
 				invokeMain("-readme");
 		assertThat(result.getExitCode(), equalTo(0));
