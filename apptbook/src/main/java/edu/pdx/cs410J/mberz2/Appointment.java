@@ -30,9 +30,9 @@ public class Appointment extends AbstractAppointment {
 	 * @param et String for the appt. end time. {@code MM/DD/YYYY HH:MM}
 	 */
 	Appointment (String d, String bt, String et){
-	this.desc = d;
-	this.beginTime = bt;
-	this.endTime = et;
+		this.desc = d;
+		this.beginTime = bt;
+		this.endTime = et;
 	}
 
 	/**
