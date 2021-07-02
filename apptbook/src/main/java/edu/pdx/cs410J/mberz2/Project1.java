@@ -4,16 +4,30 @@ import java.util.Arrays;
 import java.util.Collection;
 
 /**
- * The main class for the CS410J appointment book Project
+ * This is the main class method for the CS410J Appointment Book Project.
+ * <p>The program simulates the receiving an appointment via command line
+ * arguments and proceeds through operations to validate the input, process
+ * a limited number of options, and then create Appointment and Appointment
+ * book objects. </p>
+ * <p>If the print flag is enabled, it will print back the
+ * details of the appointment.</p>
+ * <p>If the readme flag is enabled, it will print the README.txt file that
+ * is located in the resources.</p>
  */
 public class Project1 {
 
+	// Strings for commonly used messages.
 	public static final String USAGE =
 			"Usage: java -jar /apptbook/target/apptbook-2021.0.0.jar " +
 					"[options] <args>";
 	public static final String README =
 			"java -jar /apptbook/target/apptbook-2021.0.0jar -README";
 
+	/**
+	 * This is the main method/entrypoint for the program.
+	 * @param args Command line arguments passed in as strings.
+	 * @throws IOException Throws an IOException in the readme printing method.
+	 */
 	public static void main(String[] args) throws IOException {
 
 		// Check arguments for correct number.
@@ -33,11 +47,10 @@ public class Project1 {
 		AppointmentBook<Appointment> appBook =
 				new AppointmentBook<>(newArgs[0], app);
 
+		// If a print option was detected earlier, it is printed.
 		if(print == 1)
 			print(appBook);
 	}
-
-
 
 	/**
 	 * Method to check the correct number of arguments. The program handles the
