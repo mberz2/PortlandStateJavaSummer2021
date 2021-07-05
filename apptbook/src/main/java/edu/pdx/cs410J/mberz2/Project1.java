@@ -122,7 +122,6 @@ public class Project1 {
 	 *
 	 * @param args Array of command line arguments.
 	 * @return Command line arguments stripped of any usage flags.
-
 	 */
 	public static String[] parseInput(String[] args) {
 
