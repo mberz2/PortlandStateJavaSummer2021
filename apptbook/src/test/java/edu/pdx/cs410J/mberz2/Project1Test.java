@@ -6,8 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * A unit test for code in the {@link Project1} class.  This is different from
@@ -37,8 +36,10 @@ class Project1Test {
 
 	@Test
 	void invalidResourcesCannotBeRead() {
-		assertThrows(NullPointerException.class, () ->
-				Project1.printRes("test.txt"));
+		NullPointerException e = assertThrows(
+				NullPointerException.class, () -> Project1.printRes("test.txt")
+		);
+		assertEquals(e.getMessage(), "File test.txt not found.");
 	}
 
 }
