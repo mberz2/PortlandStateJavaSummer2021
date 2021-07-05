@@ -2,8 +2,8 @@ package edu.pdx.cs410J.mberz2;
 import edu.pdx.cs410J.AbstractAppointment;
 
 /**
- * This class, an extension of {@link AbstractAppointment}, implements methods
- * for an "appointment" object.
+ * This class extends the read-only {@link AbstractAppointment} class.
+ * The class implements methods for an "appointment" object.
  *
  * <p> An object is created via a parameterized constructor and private data
  * members are accessed/retrieved via getter methods. </p>
