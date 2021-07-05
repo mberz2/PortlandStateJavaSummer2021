@@ -71,17 +71,6 @@ class Project1IT extends InvokeMainTestCase {
 				containsString("not a correct"));
 	}
 
-
-	@Test
-	void incorrectOwnerRegEx(){
-		MainMethodResult result =
-				invokeMain("Matthew3Berzinskas", "test description",
-						"1/1/1999", "10:00", "2/2/2000", "20:00");
-		assertThat(result.getExitCode(), equalTo(1));
-		assertThat(result.getTextWrittenToStandardError(),
-				containsString("improper"));
-	}
-
 	@Test
 	void incorrectBeginDateRegEx(){
 		MainMethodResult result =

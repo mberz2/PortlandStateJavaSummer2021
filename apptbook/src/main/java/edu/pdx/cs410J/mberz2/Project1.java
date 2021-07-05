@@ -138,14 +138,8 @@ public class Project1 {
 
 		boolean err = false;
 
-		String alphaPat = "^[a-zA-Z\"\\s]*$";
 		String datePat = "^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$";
 		String timePat = "^([01]?\\d|2[0-3]):?([0-5]\\d)$";
-
-		if (!(newArgs[0].matches(alphaPat))) {
-			printError("owner", newArgs[0]);
-			err = true;
-		}
 
 		if (!(newArgs[2].matches(datePat))) {
 			printError("begin time (date)", newArgs[2]);
