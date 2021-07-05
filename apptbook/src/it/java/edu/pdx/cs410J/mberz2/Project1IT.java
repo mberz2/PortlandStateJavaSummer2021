@@ -37,6 +37,15 @@ class Project1IT extends InvokeMainTestCase {
 	}
 
 	@Test
+	void sevenCommandLineArguments(){
+		MainMethodResult result =
+				invokeMain("1", "2","3","4","5","6","7");
+		assertThat(result.getExitCode(), equalTo(1));
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("Error in"));
+	}
+
+	@Test
 	void printOptionEnabled(){
 		MainMethodResult result =
 				invokeMain("-print", "Matthew Berzinskas",

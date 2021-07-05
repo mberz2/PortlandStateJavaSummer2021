@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class Project1Test {
 
+	/*
 	@Test
 	void readmeCanBeReadAsResource() throws IOException {
 		try (
@@ -33,6 +34,7 @@ class Project1Test {
 	void fileCanBePrintedAsResource() {
 		assertDoesNotThrow(()-> Project1.printRes("README.txt"));
 	}
+	*/
 
 	@Test
 	void invalidResourcesCannotBeRead() {
