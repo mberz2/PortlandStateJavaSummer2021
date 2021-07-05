@@ -138,8 +138,13 @@ public class Project2 {
 				System.out.println(Arrays.toString(args));
 			}
 		}
-		else
+		else{
 			newArgs = Arrays.copyOfRange(args, 0, 6);
+			for (int i = 0; i < args.length; ++i){
+				System.out.println(Arrays.toString(args));
+			}
+		}
+
 
 		boolean err = false;
 
