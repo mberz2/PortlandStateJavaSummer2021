@@ -27,7 +27,7 @@ public class Project1 {
 			"Usage: java -jar /apptbook/target/apptbook-2021.0.0.jar " +
 					"[options] <args>";
 	public static final String README =
-			"java -jar /apptbook/target/apptbook-2021.0.0jar -README";
+			"java -jar /apptbook/target/apptbook-2021.0.0.jar -README";
 
 	/**
 	 * This is the main method/entrypoint for the program.
