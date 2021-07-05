@@ -10,7 +10,6 @@ Usage: java -jar /apptbook/target/apptbook-2021.0.0.jar [options] <args>
 Options are (options may appear in any order");
     -PRINT            - Prints a description of the new appointment
     -README           - Prints a README for this project and exits
-    -textFile file    - Where to read/write the appointment book
 
 args are (in this order):
     owner             - The person whose owns the appt book

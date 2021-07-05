@@ -62,8 +62,8 @@ public class Project2 {
 	 * following situations.
 	 * <ul>
 	 *     <li>0 arguments: No command line arguments.</li>
-	 *     <li>Greater than 8: The maximum number of arguments would be
-	 *     six inputs and two flags, so no more than 8 arguments.</li>
+	 *     <li>Greater than 10: The maximum number of arguments would be
+	 *     six inputs three flags, and a file path.</li>
 	 * </ul>
 	 * If either situation is encountered, the program will call to the method
 	 * that prints the proper program usage {@code printUsage} which also exits.
@@ -74,7 +74,7 @@ public class Project2 {
 		if (args.length == 0) {
 			System.err.println("Error: Missing command line arguments");
 			printUsage();
-		} else if (args.length > 8) {
+		} else if (args.length > 10) {
 			System.err.println("Error: Too many command line arguments");
 			printUsage();
 		}
@@ -93,6 +93,7 @@ public class Project2 {
 	 */
 	public static int checkOptions(String [] args) throws IOException {
 		int print = 0;
+		int file = 0;
 
 		for (String arg : args) {
 			if (arg.startsWith("-")) {
@@ -100,6 +101,8 @@ public class Project2 {
 					printRes("README.txt");
 				if (arg.equalsIgnoreCase(("-PRINT")))
 					print = 1;
+				if (arg.equalsIgnoreCase(("-textFile")))
+					file = 1;
 				else {
 					System.err.println(arg + " is not a correct option");
 					printUsage();
@@ -128,9 +131,13 @@ public class Project2 {
 		String[] newArgs;
 
 		// If the array list contains 7 items, one is a flag, trim it off.
-		// Otherwise all six are
-		if (args.length == 7)
+		// Otherwise all six are the correct arguments.
+		if (args.length == 9) {
 			newArgs = Arrays.copyOfRange(args, 1, 7);
+			for (int i = 0; i < args.length; ++i){
+				System.out.println(Arrays.toString(args));
+			}
+		}
 		else
 			newArgs = Arrays.copyOfRange(args, 0, 6);
 
