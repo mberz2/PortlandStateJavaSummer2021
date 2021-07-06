@@ -53,7 +53,7 @@ class Project1IT extends InvokeMainTestCase {
 						"2/2/2000", "20:00");
 		assertThat(result.getExitCode(), equalTo(0));
 		assertThat(result.getTextWrittenToStandardOut(),
-				containsString("Appointment Book for"));
+				containsString("appointment book"));
 		assertThat(result.getTextWrittenToStandardOut(),
 				containsString("Description"));
 		assertThat(result.getTextWrittenToStandardOut(),
