@@ -204,7 +204,7 @@ public class Project1 {
 	 * @param appBook Appointment book object to be printed.
 	 */
 	public static void print(AppointmentBook<Appointment> appBook){
-		System.out.println("Appointment Book for "+appBook.getOwnerName());
+		System.out.println(appBook);
 		Collection<Appointment> apps = appBook.getAppointments();
 		for (Appointment a : apps){
 			System.out.println("Description:\t"+a.getDescription());
