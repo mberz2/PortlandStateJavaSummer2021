@@ -57,7 +57,7 @@ class Project1IT extends InvokeMainTestCase {
 		assertThat(result.getTextWrittenToStandardOut(),
 				containsString("from"));
 		assertThat(result.getTextWrittenToStandardOut(),
-				containsString("to"));
+				containsString("until"));
 	}
 
 	@Test
