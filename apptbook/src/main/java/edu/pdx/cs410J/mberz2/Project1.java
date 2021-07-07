@@ -36,9 +36,6 @@ public class Project1 {
 	 */
 	public static void main(String[] args) throws IOException {
 
-		// Check arguments for correct number.
-		checkInput(args);
-
 		// Check for print and readme
 		int print = checkOptions(args);
 
@@ -124,6 +121,9 @@ public class Project1 {
 	 * @return Command line arguments stripped of any usage flags.
 	 */
 	public static String[] parseInput(String[] args) {
+
+		// Check arguments for correct number.
+		checkInput(args);
 
 		// New array for holding parsed arguments.
 		String[] newArgs;
