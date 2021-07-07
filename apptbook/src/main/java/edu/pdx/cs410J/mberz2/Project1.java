@@ -206,11 +206,8 @@ public class Project1 {
 	public static void print(AppointmentBook<Appointment> appBook){
 		System.out.println(appBook);
 		Collection<Appointment> apps = appBook.getAppointments();
-		for (Appointment a : apps){
-			System.out.println("Description:\t"+a.getDescription());
-			System.out.println("Begin Time:\t\t"+a.getBeginTimeString());
-			System.out.println("End Time:\t\t"+a.getEndTimeString());
-		}
+		for (Appointment a : apps)
+			System.out.println(a);
 
 		System.exit(0);
 	}
