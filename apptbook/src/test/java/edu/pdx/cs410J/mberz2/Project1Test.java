@@ -44,4 +44,11 @@ class Project1Test {
 		assertEquals(e.getMessage(), "File test.txt not found.");
 	}
 
+	@Test
+	void testParserTooFew(){
+		String [] test = {"test", "test"};
+		assertThrows(
+			NullPointerException.class, () -> Project1.parseInput(test)
+		);
+	}
 }
