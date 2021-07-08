@@ -1,10 +1,11 @@
 package edu.pdx.cs410J.mberz2;
-import edu.pdx.cs410J.AbstractAppointment;
 import edu.pdx.cs410J.AbstractAppointmentBook;
 import edu.pdx.cs410J.AppointmentBookParser;
 import edu.pdx.cs410J.ParserException;
 import java.io.*;
-import java.util.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -16,9 +17,6 @@ public class TextParser <T extends AbstractAppointmentBook<Appointment>>
 	private final String fileName;
 	private String owner;
 
-	private final Map<String, AbstractAppointmentBook<Appointment>>
-			appMap = new HashMap<>();
-
 	TextParser(String fileName){
 		this.fileName = fileName;
 	}
@@ -29,7 +27,7 @@ public class TextParser <T extends AbstractAppointmentBook<Appointment>>
 
 	public boolean checkOwner(String s){
 		if (!this.owner.equals(s)){
-			System.out.println("Wrong appointment owner.");
+			System.out.println("Wrong appointment owner. Not adding.");
 			return false;
 		}
 		return true;
@@ -37,8 +35,8 @@ public class TextParser <T extends AbstractAppointmentBook<Appointment>>
 
 	public T parse() throws ParserException {
 
-
 		AppointmentBook<Appointment> tempBook = new AppointmentBook<>();
+		DateFormat dateFormat = new SimpleDateFormat("M/d/yyyy HH:mm");
 
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(this.fileName));
@@ -47,7 +45,10 @@ public class TextParser <T extends AbstractAppointmentBook<Appointment>>
 			while((line = br.readLine()) != null) {
 
 				// Parse line based on comma to the end of the line.
-				String []  parsedApp = line.split(",");
+				String [] parsedApp = line.split(",\\s");
+
+				parsedApp[2] = String.valueOf(dateFormat.parse(parsedApp[2]+" "+parsedApp[3]));
+				System.out.println(parsedApp[2]);
 
 				// Create a temporary appointment.
 				Appointment app = new Appointment(parsedApp[1],
@@ -69,18 +70,11 @@ public class TextParser <T extends AbstractAppointmentBook<Appointment>>
 				tempBook.addAppointment(app);
 			}
 
-			System.out.println("Completed read in.");
-			System.out.println(tempBook);
-			Collection<Appointment> apps = tempBook.getAppointments();
-			for (Appointment a : apps)
-				System.out.println(a);
-
 			br.close();
-
 
 			return (T) tempBook;
 
-		} catch (IOException e) {
+		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 		}
 
