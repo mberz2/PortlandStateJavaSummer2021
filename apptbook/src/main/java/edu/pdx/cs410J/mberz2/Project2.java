@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.mberz2;
 import edu.pdx.cs410J.AbstractAppointment;
 import edu.pdx.cs410J.AbstractAppointmentBook;
+import edu.pdx.cs410J.AppointmentBookDumper;
 import edu.pdx.cs410J.ParserException;
 
 import java.io.*;
@@ -44,9 +45,13 @@ public class Project2 {
 		TextParser<AbstractAppointmentBook<Appointment>> textParser
 				= new TextParser<>(file);
 
-		AbstractAppointmentBook<Appointment> parsedAppointment = textParser.parse();
+		AbstractAppointmentBook<Appointment> parsedAppointment
+				= textParser.parse();
 
-		print(parsedAppointment);
+		TextDumper<AbstractAppointmentBook<Appointment>> textDumper
+				= new TextDumper<>("file2");
+
+		textDumper.dump(parsedAppointment);
 
 /*
 		// Check for print and readme

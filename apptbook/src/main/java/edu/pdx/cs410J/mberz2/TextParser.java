@@ -6,6 +6,8 @@ import java.io.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -37,7 +39,6 @@ public class TextParser <T extends AbstractAppointmentBook<Appointment>>
 	public T parse() throws ParserException {
 
 		AppointmentBook<Appointment> tempBook = new AppointmentBook<>();
-		SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy HH:mm");
 
 		try {
 
@@ -49,33 +50,30 @@ public class TextParser <T extends AbstractAppointmentBook<Appointment>>
 				// Parse line based on comma to the end of the line.
 				String [] parsedApp = line.split("\\|\\s");
 
-				parsedApp[2] = String.valueOf(sdf.parse(parsedApp[2]+" "+parsedApp[3]));
-				parsedApp[3] = String.valueOf(sdf.parse(parsedApp[4]+" "+parsedApp[5]));
-
 				// Create a temporary appointment.
 				Appointment app = new Appointment(parsedApp[1],
-						parsedApp[2], parsedApp[3]);
+						parsedApp[2]+" "+parsedApp[3],
+						parsedApp[4]+" "+parsedApp[5]);
 
 				// If the owner of the parser is null, no owner has been set.
 				// Set the owner to the first arg of the first line.
 				// Otherwise, check if the owner matches, if it does, add.
 				if (owner == null) {
 					setOwner(parsedApp[0]);
-				} else if (checkOwner(parsedApp[0])) {
-					this.owner = parsedApp[0];
 					tempBook.setOwnerName(owner);
-				} else {
-					continue;
-				}
+					tempBook.addAppointment(app);
 
-				tempBook.addAppointment(app);
+				} else if (checkOwner(parsedApp[0])) {
+					tempBook.addAppointment(app);
+
+				}
 			}
 
 			br.close();
 
 			return (T) tempBook;
 
-		} catch (IOException | ParseException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
