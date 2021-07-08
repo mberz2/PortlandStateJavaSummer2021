@@ -19,6 +19,9 @@ public class TextParser <T extends AbstractAppointmentBook<Appointment>>
 	private final String fileName;
 	//private final Collection<T> appList;
 
+	private Map<String, AbstractAppointmentBook<Appointment>> appMap
+			= new HashMap<String, AbstractAppointmentBook<Appointment>>();
+
 
 	TextParser(String fileName){
 		this.fileName = fileName;
@@ -27,26 +30,8 @@ public class TextParser <T extends AbstractAppointmentBook<Appointment>>
 	@Override
 	public T parse() throws ParserException {
 
-		System.out.println(this.fileName);
-
-		/*
-		try {
-			File myObj = new File("filename.txt");
-			if (myObj.createNewFile()) {
-				System.out.println("File created: " + myObj.getName());
-			} else {
-				System.out.println("File already exists.");
-			}
-		} catch (IOException e) {
-			System.out.println("An error occurred.");
-			e.printStackTrace();
-		}
-		*/
-
 		AppointmentBook<Appointment> appBook =
 				new AppointmentBook<>();
-
-		ArrayList<String> owners = new ArrayList<>();
 
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(this.fileName));
@@ -55,22 +40,41 @@ public class TextParser <T extends AbstractAppointmentBook<Appointment>>
 
 			while((line = br.readLine()) != null) {
 				String []  parsedApp = line.split(",");
-				System.out.println(Arrays.toString(parsedApp));
+				//System.out.println(Arrays.toString(parsedApp));
 				Appointment app = new Appointment(parsedApp[1], parsedApp[2]+parsedApp[3], parsedApp[4]+parsedApp[5]);
-				System.out.println(app);
 
-				if(owners.contains(parsedApp[0])){
-					System.out.println("Owner exists");
+				if(appMap.containsKey(parsedApp[0])){
+					//System.out.println("Owner exists");
+					AbstractAppointmentBook<Appointment> temp = appMap.get(parsedApp[0]);
+					//System.out.println("Current apps:");
+					//System.out.println(temp);
+					//System.out.println(temp.getAppointments());
+					//System.out.println("Adding app...");
+					temp.addAppointment(app);
+					//System.out.println(temp);
+					//System.out.println(temp.getAppointments());
+					appMap.put(parsedApp[0], temp);
 
 				} else {
-					System.out.println("Owner does not exist");
-					owners.add(parsedApp[0]);
+					//System.out.println("Owner does not exist");
+					AppointmentBook<Appointment> tempBook
+							= new AppointmentBook<Appointment>(parsedApp[0], app);
+					appMap.put(parsedApp[0],tempBook);
+					//System.out.println("Adding NEW app...");
+					//System.out.println(app);
+					//System.out.println();
+				}
+			}
+			br.close();
+
+			System.out.println("MAP CONTAINS "+appMap.size()+" owners");
+			for (Map.Entry<String, AbstractAppointmentBook<Appointment>> entry : appMap.entrySet()) {
+				System.out.println(entry.getValue().toString());
+				for(Appointment a : entry.getValue().getAppointments() ){
+					System.out.println(a);
 				}
 
-
 			}
-
-			br.close();
 
 		} catch (IOException e) {
 			e.printStackTrace();
