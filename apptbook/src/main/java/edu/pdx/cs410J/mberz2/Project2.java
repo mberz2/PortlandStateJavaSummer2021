@@ -1,7 +1,6 @@
 package edu.pdx.cs410J.mberz2;
 import edu.pdx.cs410J.AbstractAppointment;
 import edu.pdx.cs410J.AbstractAppointmentBook;
-import edu.pdx.cs410J.AppointmentBookDumper;
 import edu.pdx.cs410J.ParserException;
 
 import java.io.*;
@@ -27,6 +26,10 @@ import java.util.*;
  */
 public class Project2 {
 
+	private static final int MAX = 10;
+	private static int FLAGS = 0;
+	private static Map<String, Integer> options = new HashMap<>();
+
 	// Strings for commonly used messages.
 	public static final String USAGE =
 			"Usage: java -jar /apptbook/target/apptbook-2021.0.0.jar " +
@@ -41,7 +44,7 @@ public class Project2 {
 	 */
 	public static void main(String[] args) throws IOException, ParserException {
 
-		String file = args[0];
+		/*
 		TextParser<AbstractAppointmentBook<Appointment>> textParser
 				= new TextParser<>(file);
 
@@ -52,10 +55,7 @@ public class Project2 {
 				= new TextDumper<>("file2");
 
 		textDumper.dump(parsedAppointment);
-
-/*
-		// Check for print and readme
-		int print = checkOptions(args);
+		 */
 
 		// Check arguments for valid inputs.
 		String [] newArgs = parseInput(args);
@@ -69,22 +69,19 @@ public class Project2 {
 				new AppointmentBook<>(newArgs[0], app);
 
 		// If a print option was detected earlier, it is printed.
-		if(print == 1)
+		if(options.get("Print") == 1)
 			print(appBook);
 
- */
+		if(options.get("TextFile") == 1){
+			System.out.println("Begin file logic...");
+		}
+
 	}
 
 	/**
-	 * Method to check the correct number of arguments. The program handles the
-	 * following situations.
-	 * <ul>
-	 *     <li>0 arguments: No command line arguments.</li>
-	 *     <li>Greater than 8: The maximum number of arguments would be
-	 *     six inputs and two flags, so no more than 8 arguments.</li>
-	 * </ul>
-	 * If either situation is encountered, the program will call to the method
-	 * that prints the proper program usage {@code printUsage} which also exits.
+	 * Method to check the correct number of arguments If no arguments, or more
+	 * than the max are entered, then the program will call to the metho that
+	 * prints the proper program usage {@code printUsage} which also exits.
 	 * @param args Array of command line arguments.
 	 */
 	public static void checkInput(String [] args){
@@ -92,7 +89,7 @@ public class Project2 {
 		if (args.length == 0) {
 			System.err.println("Error: Missing command line arguments");
 			printUsage();
-		} else if (args.length > 8) {
+		} else if (args.length > MAX) {
 			System.err.println("Error: Too many command line arguments");
 			printUsage();
 		}
@@ -109,22 +106,39 @@ public class Project2 {
 	 * @return Numeric indicator for printing, 1 if yes, 0 if no.
 	 * @throws IOException if call to {@code printReadme} throws exception
 	 */
-	public static int checkOptions(String [] args) throws IOException {
-		int print = 0;
+	public static Map<String, Integer> checkOptions(String [] args) throws IOException {
+
+		options.put("Print", 0);
+		options.put("TextFile", 0);
 
 		for (String arg : args) {
 			if (arg.startsWith("-")) {
-				if (arg.equalsIgnoreCase(("-README")))
+				if (arg.equalsIgnoreCase(("-README"))) {
 					printRes("README2.txt");
-				if (arg.equalsIgnoreCase(("-PRINT")))
-					print = 1;
+				}
+				else if (arg.equalsIgnoreCase(("-PRINT"))) {
+					FLAGS++;
+					options.put("Print", 1);
+				}
+				else if (arg.equalsIgnoreCase(("-TEXTFILE"))){
+					FLAGS = FLAGS + 2;
+					options.put("TextFile", 1);
+				}
 				else {
 					System.err.println(arg + " is not a correct option");
 					printUsage();
 				}
 			}
 		}
-		return print;
+
+		System.out.println("Flags = " + FLAGS);
+		System.out.println("Args size = " + args.length);
+		if(FLAGS+6 > args.length) {
+			System.err.println("Error: Too few command line arguments");
+			printUsage();
+		}
+
+		return options;
 	}
 
 	/**
@@ -140,20 +154,14 @@ public class Project2 {
 	 * @param args Array of command line arguments.
 	 * @return Command line arguments stripped of any usage flags.
 	 */
-	public static String[] parseInput(String[] args) {
+	public static String[] parseInput(String[] args) throws IOException {
 
 		// Check arguments for correct number.
 		checkInput(args);
+		options = checkOptions(args);
 
 		// New array for holding parsed arguments.
-		String[] newArgs;
-
-		// If the array list contains 7 items, one is a flag, trim it off.
-		// Otherwise all six are
-		if (args.length == 7)
-			newArgs = Arrays.copyOfRange(args, 1, 7);
-		else
-			newArgs = Arrays.copyOfRange(args, 0, 6);
+		String[] newArgs = Arrays.copyOfRange(args, FLAGS, args.length);
 
 		boolean err = false;
 
@@ -249,5 +257,9 @@ public class Project2 {
 	public static void printUsage(){
 		System.err.println(USAGE);
 		System.exit(1);
+	}
+
+	public static void setOptions(Map<String, Integer> options) {
+		Project2.options = options;
 	}
 }
