@@ -33,8 +33,23 @@ public class TextParser <T extends AbstractAppointmentBook<Appointment>>
 	 */
 	@Override
 	public T parse() throws ParserException {
+		try {
+			FileReader input = new FileReader(this.fileName);
+			BufferedReader bufferedReader = new BufferedReader(input);
+			String oneLine;
 
+			while ((oneLine = bufferedReader.readLine()) != null) {
+				String[] parsedAppointment = oneLine.split(";");
+				appointmentBook.setOwner(parsedAppointment[0]);
+				Appointment appointment = new Appointment(parsedAppointment[1], parsedAppointment[2], parsedAppointment[3]);
+				appointmentBook.addAppointment(appointment);
+			}
+		} catch (FileNotFoundException e) {
+			throw new ParserException("FIle not Found.");
+		} catch (IOException e) {
+			throw new ParserException("Invalid file.");
+		}
 
-		return null;
+		return appointmentBook;
 	}
 }
