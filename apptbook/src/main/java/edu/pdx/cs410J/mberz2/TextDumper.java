@@ -36,9 +36,9 @@ public class TextDumper <T extends AbstractAppointmentBook<Appointment>>
 		// to a string which is then written to the file.
 		for (Appointment app : appointments) {
 			String toFile = appointment.getOwnerName()
-							+ ";" + app.getDescription()
-							+ ";" + app.getBeginTime()
-							+ ";" + app.getEndTime()
+							+ "|" + app.getDescription()
+							+ "|" + app.getBeginTime()
+							+ "|" + app.getEndTime()
 							+ "\n";
 			fileWriter.write(toFile);
 		}

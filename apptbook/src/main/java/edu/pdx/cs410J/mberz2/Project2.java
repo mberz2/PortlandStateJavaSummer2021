@@ -46,6 +46,8 @@ public class Project2 {
 
 		AbstractAppointmentBook<Appointment> parsedAppointment = textParser.parse();
 
+		print(parsedAppointment);
+
 /*
 		// Check for print and readme
 		int print = checkOptions(args);
@@ -216,7 +218,7 @@ public class Project2 {
 	 *
 	 * @param appBook Appointment book object to be printed.
 	 */
-	public static void print(AppointmentBook<Appointment> appBook){
+	public static void print(AbstractAppointmentBook<Appointment> appBook){
 		System.out.println(appBook);
 		Collection<Appointment> apps = appBook.getAppointments();
 		for (Appointment a : apps)
