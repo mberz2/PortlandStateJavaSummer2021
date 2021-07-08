@@ -12,7 +12,7 @@
   <packaging>pom</packaging>
   <name>PSUJavaSummer2021</name>
   <description>Source code written in the Summer 2021 offering of Advanced Programming with Java</description>
-  <url>https://mberz2.github.io/PortlandStateJavaSummer2021</url>
+  <url>https://github.com/mberz2/PortlandStateJavaSummer2021</url>
   <modules>
     <module>student</module>
     <module>apptbook</module>
