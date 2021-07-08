@@ -55,6 +55,10 @@ public class AppointmentBook<T extends AbstractAppointment>
 		return this.owner;
 	}
 
+	public void setOwnerName(String o) {
+		this.owner = o;
+	}
+
 	/**
 	 * Returns the collection containing all appointments.
 	 * @return String containing owner.

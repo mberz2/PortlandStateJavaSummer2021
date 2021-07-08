@@ -1,4 +1,5 @@
 package edu.pdx.cs410J.mberz2;
+import edu.pdx.cs410J.AbstractAppointment;
 import edu.pdx.cs410J.AbstractAppointmentBook;
 import edu.pdx.cs410J.AppointmentBookParser;
 import edu.pdx.cs410J.ParserException;
@@ -13,16 +14,31 @@ public class TextParser <T extends AbstractAppointmentBook<Appointment>>
 		implements AppointmentBookParser<T> {
 
 	private final String fileName;
+	private String owner;
 
-	private final Map<String, AbstractAppointmentBook<Appointment>> appMap
-			= new HashMap<>();
+	private final Map<String, AbstractAppointmentBook<Appointment>>
+			appMap = new HashMap<>();
 
 	TextParser(String fileName){
 		this.fileName = fileName;
 	}
 
-	@Override
+	public void setOwner(String s){
+		this.owner = s;
+	}
+
+	public boolean checkOwner(String s){
+		if (!this.owner.equals(s)){
+			System.out.println("Wrong appointment owner.");
+			return false;
+		}
+		return true;
+	}
+
 	public T parse() throws ParserException {
+
+
+		AppointmentBook<Appointment> tempBook = new AppointmentBook<>();
 
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(this.fileName));
@@ -30,35 +46,39 @@ public class TextParser <T extends AbstractAppointmentBook<Appointment>>
 
 			while((line = br.readLine()) != null) {
 
+				// Parse line based on comma to the end of the line.
 				String []  parsedApp = line.split(",");
+
+				// Create a temporary appointment.
 				Appointment app = new Appointment(parsedApp[1],
 						parsedApp[2]+parsedApp[3],
 						parsedApp[4]+parsedApp[5]);
 
-				if(appMap.containsKey(parsedApp[0])){
-					AbstractAppointmentBook<Appointment> temp =
-							appMap.get(parsedApp[0]);
-					temp.addAppointment(app);
-					appMap.put(parsedApp[0], temp);
-
+				// If the owner of the parser is null, no owner has been set.
+				// Set the owner to the first arg of the first line.
+				// Otherwise, check if the owner matches, if it does, add.
+				if (owner == null) {
+					setOwner(parsedApp[0]);
+				} else if (checkOwner(parsedApp[0])) {
+					this.owner = parsedApp[0];
+					tempBook.setOwnerName(owner);
 				} else {
-					AppointmentBook<Appointment> tempBook
-							= new AppointmentBook<>(parsedApp[0], app);
-					appMap.put(parsedApp[0],tempBook);
+					continue;
 				}
+
+				tempBook.addAppointment(app);
 			}
+
+			System.out.println("Completed read in.");
+			System.out.println(tempBook);
+			Collection<Appointment> apps = tempBook.getAppointments();
+			for (Appointment a : apps)
+				System.out.println(a);
+
 			br.close();
 
-			/*
-			//Test Printer
-			for (Map.Entry<String, AbstractAppointmentBook<Appointment>> entry
-					: appMap.entrySet()) {
-				System.out.println(entry.getValue().toString());
-				for(Appointment a : entry.getValue().getAppointments() ){
-					System.out.println(a);
-				}
-			}
-			 */
+
+			return (T) tempBook;
 
 		} catch (IOException e) {
 			e.printStackTrace();
