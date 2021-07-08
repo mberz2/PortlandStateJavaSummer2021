@@ -1,5 +1,8 @@
 package edu.pdx.cs410J.mberz2;
 import edu.pdx.cs410J.AbstractAppointment;
+import edu.pdx.cs410J.AbstractAppointmentBook;
+import edu.pdx.cs410J.ParserException;
+
 import java.io.*;
 import java.util.*;
 
@@ -35,8 +38,18 @@ public class Project2 {
 	 * @param args Command line arguments passed in as strings.
 	 * @throws IOException Throws an IOException in the readme printing method.
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, ParserException {
 
+		String file = args[0];
+		TextParser<AbstractAppointmentBook<Appointment>> textParser
+				= new TextParser<>(file);
+
+		AbstractAppointmentBook<Appointment> parsedAppointment =
+				new AppointmentBook<>();
+
+		parsedAppointment = textParser.parse();
+
+/*
 		// Check for print and readme
 		int print = checkOptions(args);
 
@@ -54,6 +67,8 @@ public class Project2 {
 		// If a print option was detected earlier, it is printed.
 		if(print == 1)
 			print(appBook);
+
+ */
 	}
 
 	/**
@@ -96,7 +111,7 @@ public class Project2 {
 		for (String arg : args) {
 			if (arg.startsWith("-")) {
 				if (arg.equalsIgnoreCase(("-README")))
-					printRes("README.txt");
+					printRes("README2.txt");
 				if (arg.equalsIgnoreCase(("-PRINT")))
 					print = 1;
 				else {

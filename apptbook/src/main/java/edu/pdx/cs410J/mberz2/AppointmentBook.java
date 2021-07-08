@@ -21,8 +21,12 @@ public class AppointmentBook<T extends AbstractAppointment>
 	// Suppresses default constructor, ensuring non-instatiability.
 	// private AppointmentBook(){}
 
-	private final String owner;
-	private final Collection<T> appList;
+	private String owner;
+	private Collection<T> appList = new ArrayList<>();
+
+	AppointmentBook(){
+
+	}
 
 	/**
 	 * Parameterized constructor for an appointment object. Sets the private

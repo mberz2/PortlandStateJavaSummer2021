@@ -3,8 +3,11 @@ import edu.pdx.cs410J.AbstractAppointmentBook;
 import edu.pdx.cs410J.AppointmentBookParser;
 import edu.pdx.cs410J.ParserException;
 
+import java.io.*;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -14,42 +17,65 @@ public class TextParser <T extends AbstractAppointmentBook<Appointment>>
 		implements AppointmentBookParser<T> {
 
 	private final String fileName;
-	private final Collection<T> appList;
+	//private final Collection<T> appList;
 
-	/**
-	 *
-	 * @param fileName
-	 * @param app
-	 */
-	TextParser(String fileName, T app){
+
+	TextParser(String fileName){
 		this.fileName = fileName;
-		this.appList = new ArrayList<>();
 	}
 
-	/**
-	 *
-	 * @return
-	 * @throws ParserException
-	 */
 	@Override
 	public T parse() throws ParserException {
-		try {
-			FileReader input = new FileReader(this.fileName);
-			BufferedReader bufferedReader = new BufferedReader(input);
-			String oneLine;
 
-			while ((oneLine = bufferedReader.readLine()) != null) {
-				String[] parsedAppointment = oneLine.split(";");
-				appointmentBook.setOwner(parsedAppointment[0]);
-				Appointment appointment = new Appointment(parsedAppointment[1], parsedAppointment[2], parsedAppointment[3]);
-				appointmentBook.addAppointment(appointment);
+		System.out.println(this.fileName);
+
+		/*
+		try {
+			File myObj = new File("filename.txt");
+			if (myObj.createNewFile()) {
+				System.out.println("File created: " + myObj.getName());
+			} else {
+				System.out.println("File already exists.");
 			}
-		} catch (FileNotFoundException e) {
-			throw new ParserException("FIle not Found.");
 		} catch (IOException e) {
-			throw new ParserException("Invalid file.");
+			System.out.println("An error occurred.");
+			e.printStackTrace();
+		}
+		*/
+
+		AppointmentBook<Appointment> appBook =
+				new AppointmentBook<>();
+
+		ArrayList<String> owners = new ArrayList<>();
+
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(this.fileName));
+			ArrayList<String> listOfLines = new ArrayList<>();
+			String line;
+
+			while((line = br.readLine()) != null) {
+				String []  parsedApp = line.split(",");
+				System.out.println(Arrays.toString(parsedApp));
+				Appointment app = new Appointment(parsedApp[1], parsedApp[2]+parsedApp[3], parsedApp[4]+parsedApp[5]);
+				System.out.println(app);
+
+				if(owners.contains(parsedApp[0])){
+					System.out.println("Owner exists");
+
+				} else {
+					System.out.println("Owner does not exist");
+					owners.add(parsedApp[0]);
+				}
+
+
+			}
+
+			br.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
-		return appointmentBook;
+		return null;
 	}
 }
