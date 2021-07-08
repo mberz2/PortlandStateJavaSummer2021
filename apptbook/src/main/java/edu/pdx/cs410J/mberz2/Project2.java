@@ -44,10 +44,7 @@ public class Project2 {
 		TextParser<AbstractAppointmentBook<Appointment>> textParser
 				= new TextParser<>(file);
 
-		AbstractAppointmentBook<Appointment> parsedAppointment =
-				new AppointmentBook<>();
-
-		parsedAppointment = textParser.parse();
+		AbstractAppointmentBook<Appointment> parsedAppointment = textParser.parse();
 
 /*
 		// Check for print and readme
