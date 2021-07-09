@@ -50,7 +50,6 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 				// Set the owner to the first arg of the first line.
 				// Otherwise, check if the owner matches, if it does, add.
 				if (owner == null) {
-
 					setOwner(parsedApp[0]);
 					tempBook.setOwnerName(owner);
 					tempBook.addAppointment(app);

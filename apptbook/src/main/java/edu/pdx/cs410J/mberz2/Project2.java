@@ -37,68 +37,40 @@ public class Project2 {
 	public static final String README =
 			"java -jar /apptbook/target/apptbook-2021.0.0.jar -README";
 
-	/**
-	 * This is the main method/entrypoint for the program.
-	 * @param args Command line arguments passed in as strings.
-	 * @throws IOException Throws an IOException in the readme printing method.
-	 */
+
 	public static void main(String[] args) throws IOException, ParserException {
 
 		// Check arguments for valid inputs.
-		String [] newArgs = parseInput(args);
+		checkInput(args);
 
-		// Create a new appointment from parsed input.
-		Appointment app = new Appointment(newArgs[1],
-				newArgs[2]+" "+newArgs[3], newArgs[4]+" "+newArgs[5]);
+		AppointmentBook newBook = parseInput(args);
 
-		// Create a new appointment book from the owner argument and appt.
-		AppointmentBook appBook =
-				new AppointmentBook (newArgs[0], app);
-
+		//Combine and dump.
 		if(options.get("TextFile") == 1){
-			//System.out.println("Begin file logic...");
+			AppointmentBook tempBook = loadFile();
 
-			TextParser textParser = new TextParser(FILE);
+			Collection<Appointment> apps = tempBook.getAppointments();
+			for (Appointment a: apps)
+				newBook.addAppointment(a);
 
-			TextDumper textDumper
-					= new TextDumper (FILE);
+			printAppt(tempBook);
 
-			AppointmentBook parsedAppointment
-					= textParser.parse();
-
-			//New appointments
-			Collection<Appointment> apps = appBook.getAppointments();
-
-			//If parsed appointments exist, merge them
-			if (parsedAppointment != null){
-				//System.out.println("File not empty...");
-				for (Appointment a : apps)
-					parsedAppointment.addAppointment(a);
-				textDumper.dump(parsedAppointment);
-
-				if(options.get("Print") == 1)
-					print(parsedAppointment);
-			}
-
-			//Otherwise, just add the new one.
-			textDumper.dump(appBook);
-
-			// If a print option was detected earlier, it is printed.
-			if(options.get("Print") == 1)
-				print(appBook);
+			//writeFile(tempBook);
 		}
+
+		if(options.get("Print") == 1)
+			printAppt(newBook);
 
 		System.exit(0);
 
 	}
 
-	/**
-	 * Method to check the correct number of arguments If no arguments, or more
-	 * than the max are entered, then the program will call to the metho that
-	 * prints the proper program usage {@code printUsage} which also exits.
-	 * @param args Array of command line arguments.
-	 */
-	public static void checkInput(String [] args){
+
+	public static void checkInput(String [] args) throws IOException, ParserException {
+
+		options.put("Print", 0);
+		options.put("TextFile", 0);
+		options.put("Parsed", 0);
 
 		/* Base cases, ZERO or TOO MANY (over total acceptable, MAX) */
 		if (args.length == 0) {
@@ -108,31 +80,6 @@ public class Project2 {
 			System.err.println("Error: Too many command line arguments");
 			printUsage();
 		}
-
-		/* Check for FLAGS, will determine next set of allowable numbers */
-
-		/* If print is enabled, can only have 7, 8, or 10 args. */
-
-		/* If textFile is enabled, can only have 8, 9 or 10 args */
-
-		/* If no options, can only have 6 args */
-	}
-
-	/**
-	 * Method checks for the presence of a {@code -PRINT} or {@code -README}
-	 * option flag on the inputted arguments. It also checks for other entries
-	 * that are not recognized. If the print flag is enabled, it sends back
-	 * a code for later printing. If readme flag is enabled, it sends to the
-	 * printResource method for printing the readme.
-	 *
-	 * @param args Command line arguments passed in as string.
-	 * @return Numeric indicator for printing, 1 if yes, 0 if no.
-	 * @throws IOException if call to {@code printReadme} throws exception
-	 */
-	public static Map<String, Integer> checkOptions(String [] args) throws IOException {
-
-		options.put("Print", 0);
-		options.put("TextFile", 0);
 
 		for (String arg : args) {
 			if (arg.startsWith("-")) {
@@ -148,7 +95,6 @@ public class Project2 {
 					options.put("TextFile", 1);
 					int i = Arrays.asList(args).indexOf(arg);
 					FILE = args[i+1];
-					System.out.println(FILE);
 				}
 				else {
 					System.err.println(arg + " is not a correct option");
@@ -165,38 +111,40 @@ public class Project2 {
 			printUsage();
 		}
 
-		System.out.println("Flags = " + FLAGS);
-		System.out.println("Flags +6 = "+ (FLAGS+6));
-		System.out.println("Args size = " + args.length);
+		//System.out.println("Flags = " + FLAGS);
+		//System.out.println("Flags +6 = "+ (FLAGS+6));
+		//System.out.println("Args size = " + args.length);
 
-		if((FLAGS+6) < args.length) {
-			System.out.println("HERE");
-			System.out.println((FLAGS+6));
-			System.err.println("Error: Too few command line arguments");
-			printUsage();
-		}
+		//if((FLAGS+6) < args.length) {
+			//System.out.println("HERE");
+			//System.out.println((FLAGS+6));
+			//System.err.println("Error: Too few command line arguments");
+			//printUsage();
 
-		return options;
+		/* Check for FLAGS, will determine next set of allowable numbers */
+
+		/* If print is enabled, can only have 7, 8, or 10 args. */
+
+		/* If textFile is enabled, can only have 8, 9 or 10 args */
+
+		/* If no options, can only have 6 args */
 	}
 
-	/**
-	 * Method parse the command line arguments using regular expressions.
-	 * <p>First checks for options flags and ensures they are correct.</p>
-	 * <p> Next the method checks the inputs in order against the required
-	 * regular expressions.</p>
-	 * <p><b>Note:</b> If any of the expressions are incorrect, an error message
-	 * is printed displaying the mistake.</p>
-	 * <p>At the end of the parsing, if an error was detected in any arg, the
-	 * program exits with the usage message and error code.</p>
-	 *
-	 * @param args Array of command line arguments.
-	 * @return Command line arguments stripped of any usage flags.
-	 */
-	public static String[] parseInput(String[] args) throws IOException {
+	public static AppointmentBook loadFile() throws ParserException, IOException {
+		TextParser textParser = new TextParser(FILE);
+		AppointmentBook parsedAppointment = textParser.parse();
 
-		// Check arguments for correct number.
-		checkInput(args);
-		options = checkOptions(args);
+		options.put("Parsed", 1);
+		return parsedAppointment;
+	}
+
+	public static void writeFile(AppointmentBook appBook) throws IOException {
+		TextDumper textDumper = new TextDumper(FILE);
+		textDumper.dump(appBook);
+	}
+
+
+	public static AppointmentBook parseInput(String[] args) {
 
 		// New array for holding parsed arguments.
 		String[] newArgs = Arrays.copyOfRange(args, FLAGS, args.length);
@@ -232,18 +180,15 @@ public class Project2 {
 			System.exit(1);
 		}
 
-		return newArgs;
+
+		// Create a new appointment from parsed input.
+		Appointment app = new Appointment(newArgs[1],
+				newArgs[2]+" "+newArgs[3], newArgs[4]+" "+newArgs[5]);
+
+		return new AppointmentBook(newArgs[0], app);
 	}
 
-	/**
-	 * Method to print the contents of a file, loaded as a resource, from
-	 * the relative-path of the resource directory. Retrieves the file
-	 * and prints it via a buffered reader. Exits normally after the print.
-	 *
-	 * @param s String of resource to be read.
-	 * @throws IOException if unable to find the requested file.
-	 * @throws NullPointerException if the requested file is null.
-	 */
+
 	public static void printRes(String s) throws IOException {
 
 		// Create an input stream from the file indicated at resource class.
@@ -262,34 +207,21 @@ public class Project2 {
 		throw new NullPointerException ("File "+s+" not found.");
 	}
 
-	/**
-	 * Method prints the contents of an appointment book.
-	 * <p>Creates a {@code Collection} object and uses a loop to iterate through
-	 * all the appointments in the collection, printing them.</p>
-	 *
-	 * @param appBook Appointment book object to be printed.
-	 */
-	public static void print(AppointmentBook appBook){
+
+	public static void printAppt(AppointmentBook appBook){
 		System.out.println(appBook);
 		Collection<Appointment> apps = appBook.getAppointments();
 		for (Appointment a : apps)
 			System.out.println(a);
 	}
 
-	/**
-	 * Method prints an error with the related argument.
-	 *
-	 * @param s String containing the incorrect field.
-	 * @param x String containing the incorrect argument.
-	 */
+
 	public static void printError(String s, String x){
 		System.err.println("Error in <" + s + "> argument.");
 		System.err.println("<" + x + "> contains improper characters.");
 	}
 
-	/**
-	 * Method prints the usage of the program an then exits.
-	 */
+
 	public static void printUsage(){
 		System.err.println(USAGE);
 		System.exit(1);
