@@ -101,7 +101,8 @@ public class Project2 {
 	 * @param args Array of command line arguments.
 	 */
 	public static void checkInput(String [] args){
-		//Check for correct number of arguments.
+
+		/* Base cases, ZERO or TOO MANY (over total acceptable, MAX) */
 		if (args.length == 0) {
 			System.err.println("Error: Missing command line arguments");
 			printUsage();
@@ -109,6 +110,14 @@ public class Project2 {
 			System.err.println("Error: Too many command line arguments");
 			printUsage();
 		}
+
+		/* Check for FLAGS, will determine next set of allowable numbers */
+
+		/* If print is enabled, can only have 7, 8, or 10 args. */
+
+		/* If textFile is enabled, can only have 8, 9 or 10 args */
+
+		/* If no options, can only have 6 args */
 	}
 
 	/**
@@ -150,9 +159,19 @@ public class Project2 {
 			}
 		}
 
-		//System.out.println("Flags = " + FLAGS);
-		//System.out.println("Args size = " + args.length);
-		if(FLAGS+6 > args.length) {
+		if((args.length - FLAGS) > 6){
+			System.err.println("Error: Too MANY command line arguments");
+			printUsage();
+		} else if (args.length < 6) {
+			System.err.println("Error: Too FEW command line arguments");
+			printUsage();
+		}
+
+		System.out.println("Flags = " + FLAGS);
+		System.out.println("Flags +6 = "+ (FLAGS+6));
+		System.out.println("Args size = " + args.length);
+
+		if((FLAGS+6) < args.length) {
 			System.out.println("HERE");
 			System.out.println((FLAGS+6));
 			System.err.println("Error: Too few command line arguments");
