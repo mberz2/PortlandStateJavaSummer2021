@@ -59,7 +59,7 @@ public class Project2 {
 	}
 
 
-	public static void checkInput(String [] args) throws IOException, ParserException {
+	public static void checkInput(String [] args) throws IOException {
 
 		options.put("Print", 0);
 		options.put("TextFile", 0);
@@ -96,31 +96,23 @@ public class Project2 {
 			}
 		}
 
-		if((args.length - FLAGS) > 6){
-			System.err.println("Error: Too MANY command line arguments");
-			printUsage();
-		} else if (args.length < 6) {
-			System.err.println("Error: Too FEW command line arguments");
-			printUsage();
-		}
-
-		//System.out.println("Flags = " + FLAGS);
-		//System.out.println("Flags +6 = "+ (FLAGS+6));
-		//System.out.println("Args size = " + args.length);
-
-		//if((FLAGS+6) < args.length) {
-			//System.out.println("HERE");
-			//System.out.println((FLAGS+6));
-			//System.err.println("Error: Too few command line arguments");
-			//printUsage();
-
 		/* Check for FLAGS, will determine next set of allowable numbers */
+		if((args.length - FLAGS) >6)
+			printErrorUsage("Error: Too MANY command line arguments", 1);
+		else if (args.length <6)
+			printErrorUsage("Error: Too FEW command line arguments", 1);
 
 		/* If print is enabled, can only have 7, 8, or 10 args. */
+		//if(((options.get("Print") == 1) && args.length != 7) ||
+				//((options.get("Print") == 1) && args.length != 9)){
+		if(printEnabled() && (args.length != 7 && args.length != 9))
+				printErrorUsage("Invalid number of arguments " +
+						"(for -print enabled).", 1);
 
 		/* If textFile is enabled, can only have 8, 9 or 10 args */
-
-		/* If no options, can only have 6 args */
+		else if(fileEnabled() && (args.length != 8 && args.length != 9))
+			printErrorUsage("Invalid number of arguments " +
+					"(for -textFile enabled).", 1);
 	}
 
 	public static AppointmentBook parseInput(String[] args) {
@@ -159,7 +151,6 @@ public class Project2 {
 			System.exit(1);
 		}
 
-
 		// Create a new appointment from parsed input.
 		Appointment app = new Appointment(newArgs[1],
 				newArgs[2]+" "+newArgs[3], newArgs[4]+" "+newArgs[5]);
@@ -167,11 +158,8 @@ public class Project2 {
 		return new AppointmentBook(newArgs[0], app);
 	}
 
-	public static void combine(){
-
-	}
-
-	public static AppointmentBook loadFile(AppointmentBook appBook) throws ParserException, IOException {
+	public static AppointmentBook loadFile(AppointmentBook appBook)
+			throws ParserException {
 		TextParser textParser = new TextParser(FILE);
 		AppointmentBook tempBook = textParser.parse();
 
@@ -224,9 +212,23 @@ public class Project2 {
 		System.err.println("<" + x + "> contains improper characters.");
 	}
 
+	public static void printErrorUsage(String s, int status){
+		System.err.println(s);
+		printUsage();
+		System.exit(status);
+	}
+
 	public static void printUsage(){
 		System.err.println(USAGE);
 		System.exit(1);
+	}
+
+	public static boolean printEnabled(){
+		return options.get("Print")==1;
+	}
+
+	public static boolean fileEnabled(){
+		return options.get("TextFile")==1;
 	}
 
 }
