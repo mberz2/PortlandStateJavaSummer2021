@@ -1,20 +1,16 @@
 package edu.pdx.cs410J.mberz2;
+
+import edu.pdx.cs410J.AbstractAppointment;
 import edu.pdx.cs410J.AbstractAppointmentBook;
 import edu.pdx.cs410J.AppointmentBookParser;
 import edu.pdx.cs410J.ParserException;
 import java.io.*;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
 
 /**
  *
  * @param <T>
  */
-public class TextParser <T extends AbstractAppointmentBook<Appointment>>
+public class TextParser <T extends AbstractAppointmentBook<AbstractAppointment>>
 		implements AppointmentBookParser<T> {
 
 	private final String fileName;
@@ -38,7 +34,7 @@ public class TextParser <T extends AbstractAppointmentBook<Appointment>>
 
 	public T parse() throws ParserException {
 
-		AppointmentBook<Appointment> tempBook = new AppointmentBook<>();
+		AppointmentBook<AbstractAppointment> tempBook = new AppointmentBook<>();
 
 		try {
 
