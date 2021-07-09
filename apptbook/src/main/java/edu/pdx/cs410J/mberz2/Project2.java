@@ -28,7 +28,7 @@ public class Project2 {
 	private static final int MAX = 10;
 	private static int FLAGS = 0;
 	private static String FILE = "";
-	private static Map<String, Integer> options = new HashMap<>();
+	private static final Map<String, Integer> options = new HashMap<>();
 
 	// Strings for commonly used messages.
 	public static final String USAGE =
