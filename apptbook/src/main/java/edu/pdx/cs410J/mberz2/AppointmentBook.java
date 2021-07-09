@@ -1,6 +1,5 @@
 package edu.pdx.cs410J.mberz2;
 
-import edu.pdx.cs410J.AbstractAppointment;
 import edu.pdx.cs410J.AbstractAppointmentBook;
 import java.util.*;
 

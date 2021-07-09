@@ -1,14 +1,12 @@
 package edu.pdx.cs410J.mberz2;
 
-import edu.pdx.cs410J.AbstractAppointment;
-import edu.pdx.cs410J.AbstractAppointmentBook;
+
 import edu.pdx.cs410J.AppointmentBookDumper;
 import java.io.*;
 import java.util.Collection;
 
 /**
  *
- * @param <T>
  */
 public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
 
