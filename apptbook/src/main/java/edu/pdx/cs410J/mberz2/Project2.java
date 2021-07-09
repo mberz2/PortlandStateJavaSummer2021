@@ -120,36 +120,8 @@ public class Project2 {
 		// New array for holding parsed arguments.
 		String[] newArgs = Arrays.copyOfRange(args, FLAGS, args.length);
 
-		boolean err = false;
-
-		String datePat = "^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$";
-		String timePat = "^([01]?\\d|2[0-3]):?([0-5]\\d)$";
-
-		if (!(newArgs[2].matches(datePat))) {
-			printSyntaxError("begin time (date)", newArgs[2]);
-			err = true;
-		}
-
-		if (!(newArgs[3].matches(timePat))) {
-			printSyntaxError("begin time (time)", newArgs[3]);
-			err = true;
-		}
-
-		if (!(newArgs[4].matches(datePat))) {
-			printSyntaxError("end time (date)", newArgs[4]);
-			err = true;
-		}
-
-		if (!(newArgs[5].matches(timePat))) {
-			printSyntaxError("end time (time)", newArgs[5]);
-			err = true;
-		}
-
-		if (err) {
-			System.err.println("Run with -README to see proper formatting.");
-			System.err.println(README);
-			System.exit(1);
-		}
+		StringParser sp = new StringParser();
+		sp.validateString(args);
 
 		// Create a new appointment from parsed input.
 		Appointment app = new Appointment(newArgs[1],
