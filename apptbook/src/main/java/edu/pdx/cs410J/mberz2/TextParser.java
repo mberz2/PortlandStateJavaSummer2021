@@ -46,27 +46,28 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 				//Check parsedApp
 				StringParser sp = new StringParser();
 				if(!sp.validateString(parsedApp)){
-					System.err.println("Run with -README to see proper formatting.");
+					System.err.println("Run with -README to see " +
+							"proper formatting.");
 					System.err.println(README);
 					System.exit(1);
 				}
 
-					// Create a temporary appointment.
-					Appointment app = new Appointment(parsedApp[1],
-							parsedApp[2]+" "+parsedApp[3],
-							parsedApp[4]+" "+parsedApp[5]);
+				// Create a temporary appointment.
+				Appointment app = new Appointment(parsedApp[1],
+						parsedApp[2]+" "+parsedApp[3],
+						parsedApp[4]+" "+parsedApp[5]);
 
-					// If the owner of the parser is null, no owner has been set.
-					// Set the owner to the first arg of the first line.
-					// Otherwise, check if the owner matches, if it does, add.
-					if (owner == null) {
-						setOwner(parsedApp[0]);
-						tempBook.setOwnerName(owner);
-						tempBook.addAppointment(app);
+				// If the owner of the parser is null, no owner has been set.
+				// Set the owner to the first arg of the first line.
+				// Otherwise, check if the owner matches, if it does, add.
+				if (owner == null) {
+					setOwner(parsedApp[0]);
+					tempBook.setOwnerName(owner);
+					tempBook.addAppointment(app);
 
-					} else if (checkOwner(parsedApp[0])) {
-						tempBook.addAppointment(app);
-					}
+				} else if (checkOwner(parsedApp[0])) {
+					tempBook.addAppointment(app);
+				}
 			}
 
 			br.close();
