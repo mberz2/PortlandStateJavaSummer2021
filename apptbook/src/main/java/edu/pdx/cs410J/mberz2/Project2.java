@@ -58,7 +58,6 @@ public class Project2 {
 
 	}
 
-
 	public static void checkInput(String [] args) throws IOException {
 
 		options.put("Print", 0);
@@ -68,10 +67,10 @@ public class Project2 {
 		/* Base cases, ZERO or TOO MANY (over total acceptable, MAX) */
 		if (args.length == 0) {
 			System.err.println("Error: Missing command line arguments");
-			printUsage();
+			printUsage(1);
 		} else if (args.length > MAX) {
 			System.err.println("Error: Too many command line arguments");
-			printUsage();
+			printUsage(1);
 		}
 
 		for (String arg : args) {
@@ -91,7 +90,7 @@ public class Project2 {
 				}
 				else {
 					System.err.println(arg + " is not a correct option");
-					printUsage();
+					printUsage(1);
 				}
 			}
 		}
@@ -121,7 +120,11 @@ public class Project2 {
 		String[] newArgs = Arrays.copyOfRange(args, FLAGS, args.length);
 
 		StringParser sp = new StringParser();
-		sp.validateString(args);
+		if (!sp.validateString(args)) {
+			System.err.println("Run with -README to see proper formatting.");
+			System.err.println(README);
+			System.exit(1);
+		};
 
 		// Create a new appointment from parsed input.
 		Appointment app = new Appointment(newArgs[1],
@@ -186,13 +189,12 @@ public class Project2 {
 
 	public static void printErrorUsage(String s, int status){
 		System.err.println(s);
-		printUsage();
-		System.exit(status);
+		printUsage(status);
 	}
 
-	public static void printUsage(){
+	public static void printUsage(int status){
 		System.err.println(USAGE);
-		System.exit(1);
+		System.exit(status);
 	}
 
 	public static boolean printEnabled(){

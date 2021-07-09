@@ -10,7 +10,7 @@ public class StringParser {
 
 	public StringParser(){}
 
-	public void validateString(String [] args){
+	public boolean validateString(String [] args){
 
 		boolean err = false;
 
@@ -40,11 +40,7 @@ public class StringParser {
 			err = true;
 		}
 
-		if (err) {
-			System.err.println("Run with -README to see proper formatting.");
-			System.err.println(README);
-			System.exit(1);
-		}
+		return !err;
 	}
 
 }

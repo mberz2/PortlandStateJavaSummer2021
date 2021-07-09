@@ -45,7 +45,11 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 
 				//Check parsedApp
 				StringParser sp = new StringParser();
-				sp.validateString(parsedApp);
+				if(!sp.validateString(parsedApp)){
+					System.err.println("Run with -README to see proper formatting.");
+					System.err.println(README);
+					System.exit(1);
+				}
 
 					// Create a temporary appointment.
 					Appointment app = new Appointment(parsedApp[1],
