@@ -47,15 +47,8 @@ public class Project2 {
 
 		//Combine and dump.
 		if(options.get("TextFile") == 1){
-			AppointmentBook tempBook = loadFile();
-
-			Collection<Appointment> apps = tempBook.getAppointments();
-			for (Appointment a: apps)
-				newBook.addAppointment(a);
-
-			printAppt(tempBook);
-
-			//writeFile(tempBook);
+			AppointmentBook tempBook = loadFile(newBook);
+			writeFile(tempBook);
 		}
 
 		if(options.get("Print") == 1)
@@ -130,20 +123,6 @@ public class Project2 {
 		/* If no options, can only have 6 args */
 	}
 
-	public static AppointmentBook loadFile() throws ParserException, IOException {
-		TextParser textParser = new TextParser(FILE);
-		AppointmentBook parsedAppointment = textParser.parse();
-
-		options.put("Parsed", 1);
-		return parsedAppointment;
-	}
-
-	public static void writeFile(AppointmentBook appBook) throws IOException {
-		TextDumper textDumper = new TextDumper(FILE);
-		textDumper.dump(appBook);
-	}
-
-
 	public static AppointmentBook parseInput(String[] args) {
 
 		// New array for holding parsed arguments.
@@ -155,22 +134,22 @@ public class Project2 {
 		String timePat = "^([01]?\\d|2[0-3]):?([0-5]\\d)$";
 
 		if (!(newArgs[2].matches(datePat))) {
-			printError("begin time (date)", newArgs[2]);
+			printSyntaxError("begin time (date)", newArgs[2]);
 			err = true;
 		}
 
 		if (!(newArgs[3].matches(timePat))) {
-			printError("begin time (time)", newArgs[3]);
+			printSyntaxError("begin time (time)", newArgs[3]);
 			err = true;
 		}
 
 		if (!(newArgs[4].matches(datePat))) {
-			printError("end time (date)", newArgs[4]);
+			printSyntaxError("end time (date)", newArgs[4]);
 			err = true;
 		}
 
 		if (!(newArgs[5].matches(timePat))) {
-			printError("end time (time)", newArgs[5]);
+			printSyntaxError("end time (time)", newArgs[5]);
 			err = true;
 		}
 
@@ -188,6 +167,32 @@ public class Project2 {
 		return new AppointmentBook(newArgs[0], app);
 	}
 
+	public static void combine(){
+
+	}
+
+	public static AppointmentBook loadFile(AppointmentBook appBook) throws ParserException, IOException {
+		TextParser textParser = new TextParser(FILE);
+		AppointmentBook tempBook = textParser.parse();
+
+		if(!tempBook.getOwnerName().equals(appBook.getOwnerName())){
+			System.err.println("Incompatible owners.\nPlease check that the" +
+					"new appointment owner is the same as the loaded file.");
+			System.exit(1);
+		}
+
+		Collection<Appointment> apps = tempBook.getAppointments();
+		for (Appointment a: apps)
+			appBook.addAppointment(a);
+
+		options.put("Parsed", 1);
+		return appBook;
+	}
+
+	public static void writeFile(AppointmentBook appBook) throws IOException {
+		TextDumper textDumper = new TextDumper(FILE);
+		textDumper.dump(appBook);
+	}
 
 	public static void printRes(String s) throws IOException {
 
@@ -207,7 +212,6 @@ public class Project2 {
 		throw new NullPointerException ("File "+s+" not found.");
 	}
 
-
 	public static void printAppt(AppointmentBook appBook){
 		System.out.println(appBook);
 		Collection<Appointment> apps = appBook.getAppointments();
@@ -215,12 +219,10 @@ public class Project2 {
 			System.out.println(a);
 	}
 
-
-	public static void printError(String s, String x){
+	public static void printSyntaxError(String s, String x){
 		System.err.println("Error in <" + s + "> argument.");
 		System.err.println("<" + x + "> contains improper characters.");
 	}
-
 
 	public static void printUsage(){
 		System.err.println(USAGE);
