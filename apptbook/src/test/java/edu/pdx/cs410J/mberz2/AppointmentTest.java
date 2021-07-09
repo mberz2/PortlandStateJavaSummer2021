@@ -60,8 +60,8 @@ public class AppointmentTest {
 	@Test
 	void getApptBookOwnerNeedsToBeImplemented() {
 		Appointment appt = new Appointment(null, null, null);
-		AppointmentBook<Appointment> appBook =
-				new AppointmentBook<>(null, appt);
+		AppointmentBook appBook =
+				new AppointmentBook(null, appt);
 		assertThrows(UnsupportedOperationException.class,
 				appBook::getOwnerName);
 	}
@@ -69,16 +69,16 @@ public class AppointmentTest {
 	@Test
 	void getApptBookOwnerImplemented() {
 		Appointment appt = new Appointment(null, null, null);
-		AppointmentBook<Appointment> appBook =
-				new AppointmentBook<>("test", appt);
+		AppointmentBook appBook =
+				new AppointmentBook("test", appt);
 		assertEquals("test", appBook.getOwnerName());
 	}
 
 	@Test
 	void NewAppointmentEmptyAppointment(){
 		assertThrows(UnsupportedOperationException.class, () -> {
-					AppointmentBook<Appointment> appBook =
-							new AppointmentBook<>("test", null);
+					AppointmentBook appBook =
+							new AppointmentBook("test", null);
 					appBook.getAppointments();
 		});
 	}
@@ -86,16 +86,16 @@ public class AppointmentTest {
 	@Test
 	void NewAppointmentIsNotEmpty(){
 		Appointment appt = new Appointment(null, null, null);
-		AppointmentBook<Appointment> appBook =
-				new AppointmentBook<>("test", appt);
+		AppointmentBook appBook =
+				new AppointmentBook("test", appt);
 		appBook.getAppointments();
 	}
 
 	@Test
 	void AddAppointmentEmptyAppointment(){
 		Appointment appt = new Appointment(null, null, null);
-		AppointmentBook<Appointment> appBook =
-				new AppointmentBook<>("test", appt);
+		AppointmentBook appBook =
+				new AppointmentBook("test", appt);
 
 		assertThrows(UnsupportedOperationException.class, ()
 				-> appBook.addAppointment(null));
@@ -105,8 +105,8 @@ public class AppointmentTest {
 	void AddAppointmentIsNotEmpty(){
 		assertDoesNotThrow(()->{
 			Appointment appt = new Appointment(null, null, null);
-			AppointmentBook<Appointment> appBook =
-					new AppointmentBook<>("test", appt);
+			AppointmentBook appBook =
+					new AppointmentBook("test", appt);
 			Appointment appt2 = new Appointment(null, null, null);
 			appBook.addAppointment(appt2);
 		});
@@ -117,8 +117,8 @@ public class AppointmentTest {
 		assertThrows(UnsupportedOperationException.class, () -> {
 			Appointment appt =
 					new Appointment("Test", "12:00", "13:00");
-			AppointmentBook<Appointment> appBook =
-					new AppointmentBook<>("test", appt);
+			AppointmentBook appBook =
+					new AppointmentBook("test", appt);
 
 			appBook.getAppointments().clear();
 			appBook.getAppointments();
@@ -129,8 +129,8 @@ public class AppointmentTest {
 	void getAppointmentIsNotEmpty(){
 		Appointment appt =
 				new Appointment("Test", "12:00", "13:00");
-		AppointmentBook<Appointment> appBook =
-				new AppointmentBook<>("test", appt);
+		AppointmentBook appBook =
+				new AppointmentBook("test", appt);
 
 		Collection<Appointment> output = appBook.getAppointments();
 		assertFalse(output.isEmpty());

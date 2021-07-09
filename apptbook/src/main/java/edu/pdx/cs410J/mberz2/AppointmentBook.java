@@ -15,14 +15,13 @@ import java.util.*;
  * @since 2020-6-23
  * @see AbstractAppointmentBook
  */
-public class AppointmentBook<T extends AbstractAppointment>
-		extends AbstractAppointmentBook<T> {
+public class AppointmentBook extends AbstractAppointmentBook<Appointment> {
 
 	// Suppresses default constructor, ensuring non-instatiability.
 	// private AppointmentBook(){}
 
 	private String owner;
-	private Collection<T> appList = new ArrayList<>();
+	private Collection<Appointment> appList = new ArrayList<>();
 
 	AppointmentBook(){
 
@@ -37,7 +36,7 @@ public class AppointmentBook<T extends AbstractAppointment>
 	 * @param app Appointment object to add to collection.
 	 * @see Appointment
 	 */
-	AppointmentBook(String o, T app){
+	AppointmentBook(String o, Appointment app){
 		this.owner = o;
 		this.appList = new ArrayList<>();
 		addAppointment(app);
@@ -64,7 +63,7 @@ public class AppointmentBook<T extends AbstractAppointment>
 	 * @return String containing owner.
 	 */
 	@Override
-	public Collection<T> getAppointments() {
+	public Collection<Appointment> getAppointments() {
 		if (this.appList == null || this.appList.isEmpty())
 			throw new UnsupportedOperationException("Appointment is empty.");
 		return appList; }
@@ -76,9 +75,10 @@ public class AppointmentBook<T extends AbstractAppointment>
 	 * @see Appointment
 	 */
 	@Override
-	public void addAppointment(T app) {
+	public void addAppointment(Appointment app) {
 		if (app == null)
 			throw new UnsupportedOperationException("Appointment is empty.");
 		appList.add(app);
 	}
+
 }

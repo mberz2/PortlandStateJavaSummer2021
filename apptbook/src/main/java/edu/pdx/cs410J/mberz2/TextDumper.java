@@ -10,8 +10,7 @@ import java.util.Collection;
  *
  * @param <T>
  */
-public class TextDumper <T extends AbstractAppointmentBook<AbstractAppointment>>
-		implements AppointmentBookDumper<T> {
+public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
 
 	private final String fileName;
 
@@ -29,15 +28,14 @@ public class TextDumper <T extends AbstractAppointmentBook<AbstractAppointment>>
 	 * @throws IOException
 	 */
 	@Override
-	public void dump(T appointment) throws IOException {
+	public void dump(AppointmentBook appointment) throws IOException {
 		File file = new File(fileName);
 		FileWriter fileWriter = new FileWriter(file, false);
-		Collection<AbstractAppointment> appointments = appointment.getAppointments();
 
-		Collection<AbstractAppointment> apps = appointment.getAppointments();
+		Collection<Appointment> apps = appointment.getAppointments();
 		//System.out.println(apps);
 
-		for (AbstractAppointment a: apps) {
+		for (Appointment a: apps) {
 
 			String[] btSplit = a.getBeginTimeString().split("\\s");
 			String[] etSplit = a.getBeginTimeString().split("\\s");

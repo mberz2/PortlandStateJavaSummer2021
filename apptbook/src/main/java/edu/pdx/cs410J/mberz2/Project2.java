@@ -1,7 +1,6 @@
 package edu.pdx.cs410J.mberz2;
 
 import edu.pdx.cs410J.AbstractAppointment;
-import edu.pdx.cs410J.AbstractAppointmentBook;
 import edu.pdx.cs410J.ParserException;
 import java.io.*;
 import java.util.*;
@@ -53,28 +52,27 @@ public class Project2 {
 				newArgs[2]+" "+newArgs[3], newArgs[4]+" "+newArgs[5]);
 
 		// Create a new appointment book from the owner argument and appt.
-		AppointmentBook<AbstractAppointment> appBook =
-				new AppointmentBook<>(newArgs[0], app);
+		AppointmentBook appBook =
+				new AppointmentBook (newArgs[0], app);
 
 		if(options.get("TextFile") == 1){
 			//System.out.println("Begin file logic...");
 
-			TextParser<AbstractAppointmentBook<AbstractAppointment>> textParser
-					= new TextParser<>(FILE);
+			TextParser textParser = new TextParser(FILE);
 
-			TextDumper<AbstractAppointmentBook<AbstractAppointment>> textDumper
-					= new TextDumper<>(FILE);
+			TextDumper textDumper
+					= new TextDumper (FILE);
 
-			AbstractAppointmentBook<AbstractAppointment> parsedAppointment
+			AppointmentBook parsedAppointment
 					= textParser.parse();
 
 			//New appointments
-			Collection<AbstractAppointment> apps = appBook.getAppointments();
+			Collection<Appointment> apps = appBook.getAppointments();
 
 			//If parsed appointments exist, merge them
 			if (parsedAppointment != null){
 				//System.out.println("File not empty...");
-				for (AbstractAppointment a : apps)
+				for (Appointment a : apps)
 					parsedAppointment.addAppointment(a);
 				textDumper.dump(parsedAppointment);
 
@@ -271,10 +269,10 @@ public class Project2 {
 	 *
 	 * @param appBook Appointment book object to be printed.
 	 */
-	public static void print(AbstractAppointmentBook<AbstractAppointment> appBook){
+	public static void print(AppointmentBook appBook){
 		System.out.println(appBook);
-		Collection<AbstractAppointment> apps = appBook.getAppointments();
-		for (AbstractAppointment a : apps)
+		Collection<Appointment> apps = appBook.getAppointments();
+		for (Appointment a : apps)
 			System.out.println(a);
 	}
 

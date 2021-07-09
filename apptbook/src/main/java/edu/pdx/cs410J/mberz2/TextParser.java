@@ -1,22 +1,17 @@
 package edu.pdx.cs410J.mberz2;
-
-import edu.pdx.cs410J.AbstractAppointment;
-import edu.pdx.cs410J.AbstractAppointmentBook;
 import edu.pdx.cs410J.AppointmentBookParser;
 import edu.pdx.cs410J.ParserException;
 import java.io.*;
 
 /**
  *
- * @param <T>
  */
-public class TextParser <T extends AbstractAppointmentBook<AbstractAppointment>>
-		implements AppointmentBookParser<T> {
+public class TextParser implements AppointmentBookParser<AppointmentBook> {
 
 	private final String fileName;
 	private String owner;
 
-	TextParser(String fileName){
+	TextParser (String fileName){
 		this.fileName = fileName;
 	}
 
@@ -32,12 +27,12 @@ public class TextParser <T extends AbstractAppointmentBook<AbstractAppointment>>
 		return true;
 	}
 
-	public T parse() throws ParserException {
+	@Override
+	public AppointmentBook parse () throws ParserException {
 
-		AppointmentBook<AbstractAppointment> tempBook = new AppointmentBook<>();
+		AppointmentBook tempBook = new AppointmentBook();
 
 		try {
-
 			BufferedReader br = new BufferedReader(new FileReader(this.fileName));
 			String line;
 
@@ -55,6 +50,7 @@ public class TextParser <T extends AbstractAppointmentBook<AbstractAppointment>>
 				// Set the owner to the first arg of the first line.
 				// Otherwise, check if the owner matches, if it does, add.
 				if (owner == null) {
+
 					setOwner(parsedApp[0]);
 					tempBook.setOwnerName(owner);
 					tempBook.addAppointment(app);
@@ -67,7 +63,7 @@ public class TextParser <T extends AbstractAppointmentBook<AbstractAppointment>>
 
 			br.close();
 
-			return (T) tempBook;
+			return tempBook;
 
 		} catch (FileNotFoundException e){
 			System.out.println("File not found.");
