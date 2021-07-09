@@ -28,6 +28,7 @@ public class Project2 {
 
 	private static final int MAX = 10;
 	private static int FLAGS = 0;
+	private static String FILE = "";
 	private static Map<String, Integer> options = new HashMap<>();
 
 	// Strings for commonly used messages.
@@ -44,19 +45,6 @@ public class Project2 {
 	 */
 	public static void main(String[] args) throws IOException, ParserException {
 
-		/*
-		TextParser<AbstractAppointmentBook<Appointment>> textParser
-				= new TextParser<>(file);
-
-		AbstractAppointmentBook<Appointment> parsedAppointment
-				= textParser.parse();
-
-		TextDumper<AbstractAppointmentBook<Appointment>> textDumper
-				= new TextDumper<>("file2");
-
-		textDumper.dump(parsedAppointment);
-		 */
-
 		// Check arguments for valid inputs.
 		String [] newArgs = parseInput(args);
 
@@ -68,13 +56,41 @@ public class Project2 {
 		AppointmentBook<Appointment> appBook =
 				new AppointmentBook<>(newArgs[0], app);
 
-		// If a print option was detected earlier, it is printed.
-		if(options.get("Print") == 1)
-			print(appBook);
-
 		if(options.get("TextFile") == 1){
 			System.out.println("Begin file logic...");
+
+			TextParser<AbstractAppointmentBook<Appointment>> textParser
+					= new TextParser<>(FILE);
+
+			TextDumper<AbstractAppointmentBook<Appointment>> textDumper
+					= new TextDumper<>(FILE);
+
+			AbstractAppointmentBook<Appointment> parsedAppointment
+					= textParser.parse();
+
+			//New appointments
+			Collection<Appointment> apps = appBook.getAppointments();
+
+			//If parsed appointments exist, merge them
+			if (parsedAppointment != null){
+				System.out.println("File not empty...");
+				for (Appointment a : apps)
+					parsedAppointment.addAppointment(a);
+				textDumper.dump(parsedAppointment);
+
+				if(options.get("Print") == 1)
+					print(parsedAppointment);
+			}
+
+			//Otherwise, just add the new one.
+			textDumper.dump(appBook);
+
+			// If a print option was detected earlier, it is printed.
+			if(options.get("Print") == 1)
+				print(appBook);
 		}
+
+		System.exit(0);
 
 	}
 
@@ -123,6 +139,9 @@ public class Project2 {
 				else if (arg.equalsIgnoreCase(("-TEXTFILE"))){
 					FLAGS = FLAGS + 2;
 					options.put("TextFile", 1);
+					int i = Arrays.asList(args).indexOf(arg);
+					FILE = args[i+1];
+					System.out.println(FILE);
 				}
 				else {
 					System.err.println(arg + " is not a correct option");
@@ -236,8 +255,6 @@ public class Project2 {
 		Collection<Appointment> apps = appBook.getAppointments();
 		for (Appointment a : apps)
 			System.out.println(a);
-
-		System.exit(0);
 	}
 
 	/**
@@ -259,7 +276,4 @@ public class Project2 {
 		System.exit(1);
 	}
 
-	public static void setOptions(Map<String, Integer> options) {
-		Project2.options = options;
-	}
 }

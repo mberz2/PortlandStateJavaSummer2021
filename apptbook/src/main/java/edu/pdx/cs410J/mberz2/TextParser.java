@@ -48,7 +48,7 @@ public class TextParser <T extends AbstractAppointmentBook<Appointment>>
 			while((line = br.readLine()) != null) {
 
 				// Parse line based on comma to the end of the line.
-				String [] parsedApp = line.split("\\|\\s");
+				String [] parsedApp = line.split("\\|");
 
 				// Create a temporary appointment.
 				Appointment app = new Appointment(parsedApp[1],
@@ -72,6 +72,9 @@ public class TextParser <T extends AbstractAppointmentBook<Appointment>>
 			br.close();
 
 			return (T) tempBook;
+
+		} catch (FileNotFoundException e){
+			System.out.println("File not found.");
 
 		} catch (IOException e) {
 			e.printStackTrace();
