@@ -153,7 +153,8 @@ public class Project2 {
 		//System.out.println("Flags = " + FLAGS);
 		//System.out.println("Args size = " + args.length);
 		if(FLAGS+6 > args.length) {
-			//System.out.println((FLAGS+6));
+			System.out.println("HERE");
+			System.out.println((FLAGS+6));
 			System.err.println("Error: Too few command line arguments");
 			printUsage();
 		}

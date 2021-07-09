@@ -45,7 +45,7 @@ class Project2IT extends InvokeMainTestCase {
 				invokeMain("1", "2","3","4","5","6","7");
 		assertThat(result.getExitCode(), equalTo(1));
 		assertThat(result.getTextWrittenToStandardError(),
-				containsString("Error in"));
+				containsString("Error"));
 	}
 
 	//@Test
@@ -84,8 +84,7 @@ class Project2IT extends InvokeMainTestCase {
 	@Test
 	void incorrectBeginDateRegEx(){
 		MainMethodResult result =
-				invokeMain("Matthew Berzinskas", "test description",
-						"aa1/1/1999", "10:00", "2/2/2000", "20:00");
+				invokeMain("Matthew Berzinskas", "test description", "aa1/1/1999", "10:00", "2/2/2000", "20:00");
 		assertThat(result.getExitCode(), equalTo(1));
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("improper"));
@@ -94,8 +93,7 @@ class Project2IT extends InvokeMainTestCase {
 	@Test
 	void incorrectBeginTimeRegEx(){
 		MainMethodResult result =
-				invokeMain("Matthew Berzinskas", "test description",
-						"1/1/1999", "aa10:00", "2/2/2000", "20:00");
+				invokeMain("Matthew Berzinskas", "test description", "1/1/1999", "aa10:00", "2/2/2000", "20:00");
 		assertThat(result.getExitCode(), equalTo(1));
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("improper"));
@@ -119,6 +117,14 @@ class Project2IT extends InvokeMainTestCase {
 		assertThat(result.getExitCode(), equalTo(1));
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("improper"));
+	}
+
+	@Test
+	void textFileOptionCreatesFile(){
+		MainMethodResult result =
+				invokeMain("-textFile", "file", "Matthew Berzinskas", "test description",
+						"1/1/1999", "10:00", "2/2/2000", "20:00");
+		assertThat(result.getExitCode(), equalTo(0));
 	}
 
 }
