@@ -47,8 +47,8 @@ public class Project1 {
 				newArgs[2]+" "+newArgs[3], newArgs[4]+" "+newArgs[5]);
 
 		// Create a new appointment book from the owner argument and appt.
-		AppointmentBook<Appointment> appBook =
-				new AppointmentBook<>(newArgs[0], app);
+		AppointmentBook appBook =
+				new AppointmentBook(newArgs[0], app);
 
 		// If a print option was detected earlier, it is printed.
 		if(print == 1)
@@ -203,7 +203,7 @@ public class Project1 {
 	 *
 	 * @param appBook Appointment book object to be printed.
 	 */
-	public static void print(AppointmentBook<Appointment> appBook){
+	public static void print(AppointmentBook appBook){
 		System.out.println(appBook);
 		Collection<Appointment> apps = appBook.getAppointments();
 		for (Appointment a : apps)
