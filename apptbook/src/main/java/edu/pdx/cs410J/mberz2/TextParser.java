@@ -3,11 +3,15 @@ import edu.pdx.cs410J.AppointmentBookParser;
 import edu.pdx.cs410J.ParserException;
 import java.io.*;
 
+import static edu.pdx.cs410J.mberz2.Project2.*;
+
 /**
  *
  */
 public class TextParser implements AppointmentBookParser<AppointmentBook> {
 
+	public static final String README =
+			"java -jar /apptbook/target/apptbook-2021.0.0.jar -README";
 	private final String fileName;
 	private String owner;
 
@@ -41,23 +45,25 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 				// Parse line based on comma to the end of the line.
 				String [] parsedApp = line.split("\\|");
 
-				// Create a temporary appointment.
-				Appointment app = new Appointment(parsedApp[1],
-						parsedApp[2]+" "+parsedApp[3],
-						parsedApp[4]+" "+parsedApp[5]);
+				//Check parsedApp
+				validateInput(parsedApp);
 
-				// If the owner of the parser is null, no owner has been set.
-				// Set the owner to the first arg of the first line.
-				// Otherwise, check if the owner matches, if it does, add.
-				if (owner == null) {
-					setOwner(parsedApp[0]);
-					tempBook.setOwnerName(owner);
-					tempBook.addAppointment(app);
+					// Create a temporary appointment.
+					Appointment app = new Appointment(parsedApp[1],
+							parsedApp[2]+" "+parsedApp[3],
+							parsedApp[4]+" "+parsedApp[5]);
 
-				} else if (checkOwner(parsedApp[0])) {
-					tempBook.addAppointment(app);
+					// If the owner of the parser is null, no owner has been set.
+					// Set the owner to the first arg of the first line.
+					// Otherwise, check if the owner matches, if it does, add.
+					if (owner == null) {
+						setOwner(parsedApp[0]);
+						tempBook.setOwnerName(owner);
+						tempBook.addAppointment(app);
 
-				}
+					} else if (checkOwner(parsedApp[0])) {
+						tempBook.addAppointment(app);
+					}
 			}
 
 			br.close();
@@ -72,5 +78,42 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 		}
 
 		return null;
+	}
+
+	public void validateInput(String [] args){
+
+		boolean err = false;
+
+		String datePat = "^[0-3]?[0-9]/[0-3]?[0-9]/(?:[0-9]{2})?[0-9]{2}$";
+		String timePat = "^([01]?\\d|2[0-3]):?([0-5]\\d)$";
+
+		if(args.length != 6)
+			printErrorUsage("Missing appointment arguments in file.", 0);
+
+		if (!(args[2].matches(datePat))) {
+			printSyntaxError("begin time (date) [from file]", args[2]);
+			err = true;
+		}
+
+		if (!(args[3].matches(timePat))) {
+			printSyntaxError("begin time (time) [from file]", args[3]);
+			err = true;
+		}
+
+		if (!(args[4].matches(datePat))) {
+			printSyntaxError("end time (date) [from file]", args[4]);
+			err = true;
+		}
+
+		if (!(args[5].matches(timePat))) {
+			printSyntaxError("end time (time) [from file]", args[5]);
+			err = true;
+		}
+
+		if (err) {
+			System.err.println("Run with -README to see proper formatting.");
+			System.err.println(README);
+			System.exit(1);
+		}
 	}
 }
