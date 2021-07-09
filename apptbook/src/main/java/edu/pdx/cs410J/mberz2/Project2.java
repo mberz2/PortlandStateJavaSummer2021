@@ -57,7 +57,7 @@ public class Project2 {
 				new AppointmentBook<>(newArgs[0], app);
 
 		if(options.get("TextFile") == 1){
-			System.out.println("Begin file logic...");
+			//System.out.println("Begin file logic...");
 
 			TextParser<AbstractAppointmentBook<AbstractAppointment>> textParser
 					= new TextParser<>(FILE);
@@ -73,7 +73,7 @@ public class Project2 {
 
 			//If parsed appointments exist, merge them
 			if (parsedAppointment != null){
-				System.out.println("File not empty...");
+				//System.out.println("File not empty...");
 				for (AbstractAppointment a : apps)
 					parsedAppointment.addAppointment(a);
 				textDumper.dump(parsedAppointment);
@@ -150,9 +150,10 @@ public class Project2 {
 			}
 		}
 
-		System.out.println("Flags = " + FLAGS);
-		System.out.println("Args size = " + args.length);
+		//System.out.println("Flags = " + FLAGS);
+		//System.out.println("Args size = " + args.length);
 		if(FLAGS+6 > args.length) {
+			//System.out.println((FLAGS+6));
 			System.err.println("Error: Too few command line arguments");
 			printUsage();
 		}
