@@ -23,10 +23,18 @@ class Project2IT extends InvokeMainTestCase {
 	private final String [] tooMany = {"Owner", "Description",
 			"1/1/1000", "10:00", "1/1/1000", "10:30", "Owner", "Description",
 			"1/1/1000", "10:00", "1/1/1000", "10:30",};
+	private final String [] tooManyFlags = {"-print", "Owner", "Description",
+			"1/1/1000", "10:00", "1/1/1000", "10:30", "Owner", "Description",
+			"1/1/1000", "10:00", "1/1/1000", "10:30",};
+	private final String [] tooFewFlags = {"-print", "Owner", "Description"};
 	private final String [] validAppt = {"Owner", "Description",
 			"1/1/1000", "10:00", "1/1/1000", "10:30"};
 	private final String [] validPrint = {"-print", "Owner", "Description",
 			"1/1/1000", "10:00", "1/1/1000", "10:30"};
+	private final String [] invalidPrint = {"-print", "Owner", "Description",
+			"1/1/1000", "10:00", "1/1/1000"};
+	private final String [] invalidTextArgs = {"-textFile", "Owner", "Description",
+			"1/1/1000", "10:00", "1/1/1000"};
 	private final String [] validFile = {"-textFile", "test", "Test Owner",
 			"Description", "1/1/1000", "10:00", "1/1/1000", "10:30"};
 	private final String [] invalidFile = {"-textFile", "Owner", "Description",
@@ -42,10 +50,14 @@ class Project2IT extends InvokeMainTestCase {
 			"1/1/1000", "10:00", "a1/1/1000", "10:30"};
 	private final String [] invalidApptEt = {"Owner", "Description",
 			"1/1/1000", "10:00", "1/1/1000", "a10:30"};
+	private final String [] validReadme = {"-readme", "Owner", "Description",
+			"1/1/1000", "10:00", "1/1/1000", "10:30"};
+	private final String [] invalidOption = {"-te", "Owner", "Description",
+			"1/1/1000", "10:00", "1/1/1000", "10:30"};
 
 	@Test
 	void testNoCommandLineArguments() {
-		MainMethodResult result = invokeMain();
+		MainMethodResult result = invokeMain(tooFew);
 		assertThat(result.getExitCode(), equalTo(1));
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("Missing command line arguments"));
@@ -60,6 +72,23 @@ class Project2IT extends InvokeMainTestCase {
 	}
 
 	@Test
+	void testTooManyCommandLineArgumentsFlags(){
+		MainMethodResult result = invokeMain(tooManyFlags);
+		assertThat(result.getExitCode(), equalTo(1));
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("Too many"));
+	}
+
+	@Test
+	void testTooFewCommandLineArgumentsFlags(){
+		MainMethodResult result = invokeMain(tooFewFlags);
+		assertThat(result.getExitCode(), equalTo(1));
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("Too FEW"));
+	}
+
+
+	@Test
 	void validAppointment(){
 		assertDoesNotThrow(() -> {MainMethodResult result = invokeMain(validAppt);
 		assertThat(result.getExitCode(), equalTo(0));});
@@ -71,6 +100,22 @@ class Project2IT extends InvokeMainTestCase {
 			assertThat(result.getTextWrittenToStandardOut(),
 					containsString("appointment"));
 			assertThat(result.getExitCode(), equalTo(0));});
+	}
+
+	@Test
+	void invalidPrint(){
+		assertDoesNotThrow(() -> {MainMethodResult result = invokeMain(invalidPrint);
+			assertThat(result.getTextWrittenToStandardError(),
+					containsString("Invalid"));
+			assertThat(result.getExitCode(), equalTo(1));});
+	}
+
+	@Test
+	void invalidTextFileArgs(){
+		assertDoesNotThrow(() -> {MainMethodResult result = invokeMain(invalidTextArgs);
+			assertThat(result.getTextWrittenToStandardError(),
+					containsString("Invalid"));
+			assertThat(result.getExitCode(), equalTo(1));});
 	}
 
 	@Test
@@ -124,6 +169,22 @@ class Project2IT extends InvokeMainTestCase {
 		MainMethodResult result = invokeMain(invalidApptEt);
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("end time (time) [from file]"));
+		assertThat(result.getExitCode(), equalTo(1));
+	}
+
+	@Test
+	void validReadme(){
+		MainMethodResult result = invokeMain(validReadme);
+		assertThat(result.getTextWrittenToStandardOut(),
+				containsString("Readme"));
+		assertThat(result.getExitCode(), equalTo(0));
+	}
+
+	@Test
+	void invalidOption(){
+		MainMethodResult result = invokeMain(invalidOption);
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("not a correct option"));
 		assertThat(result.getExitCode(), equalTo(1));
 	}
 }
