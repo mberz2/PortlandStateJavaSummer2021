@@ -18,7 +18,7 @@ public class StringParser {
 		String timePat = "^([01]?\\d|2[0-3]):?([0-5]\\d)$";
 
 		if(args.length != 6)
-			printErrorUsage("Missing appointment arguments in file.", 0);
+			printErrorUsage("Error: Less than six arguments.", 0);
 
 		if (!(args[2].matches(datePat))) {
 			printSyntaxError("begin time (date) [from file]", args[2]);

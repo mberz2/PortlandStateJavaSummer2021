@@ -74,9 +74,8 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 
 			return tempBook;
 
-		} catch (FileNotFoundException e){
-			System.out.println("File not found.");
-
+		} catch(FileNotFoundException exception) {
+			System.out.println("The file was not found.");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
