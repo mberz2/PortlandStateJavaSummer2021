@@ -29,7 +29,7 @@ public class Project2 {
 	private static final int MAX = 10;
 
 	/* Total number of enabled options flags, used to find first appt. arg */
-	private static int FLAGS = 0;
+	private static int FLAGS;
 
 	/* Contains the path to the file, if textFile is enabled. */
 	private static String FILE = "";
@@ -64,6 +64,8 @@ public class Project2 {
 	 * @throws ParserException Exception handling for improper parsing.
 	 */
 	public static void main(String[] args) throws IOException, ParserException {
+
+		FLAGS = 0;
 
 		System.out.println(Arrays.toString(args));
 		// Check arguments for valid inputs.
@@ -167,7 +169,6 @@ public class Project2 {
 		// New array for holding parsed arguments.
 		String[] newArgs = Arrays.copyOfRange(args, FLAGS, args.length);
 
-		System.out.println(Arrays.toString(newArgs));
 
 		StringParser sp = new StringParser();
 		if (!sp.validateString(newArgs)) {

@@ -64,7 +64,6 @@ class Project2IT extends InvokeMainTestCase {
 				"test description", "1/1/1999", "10:00",
 				"2/2/2000", "20:00"};
 		MainMethodResult result = invokeMain(args);
-		System.out.println(result.getTextWrittenToStandardOut());
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("Incompatible owners"));
 		assertThat(result.getExitCode(), equalTo(1));
