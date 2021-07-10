@@ -22,9 +22,7 @@ public class AppointmentBook extends AbstractAppointmentBook<Appointment> {
 	private String owner;
 	private Collection<Appointment> appList = new ArrayList<>();
 
-	AppointmentBook(){
-
-	}
+	AppointmentBook(){}
 
 	/**
 	 * Parameterized constructor for an appointment object. Sets the private
@@ -51,10 +49,6 @@ public class AppointmentBook extends AbstractAppointmentBook<Appointment> {
 		if (owner == null)
 			throw new UnsupportedOperationException("Book not implemented.");
 		return this.owner;
-	}
-
-	public void setOwnerName(String o) {
-		this.owner = o;
 	}
 
 	/**
