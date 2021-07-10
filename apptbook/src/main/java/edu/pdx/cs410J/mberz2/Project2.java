@@ -35,11 +35,7 @@ public class Project2 {
 	private static String FILE = "";
 
 	/* Map containing the different option fields, set all to 0 */
-	private static final Map<String, Integer> OPTIONS = new HashMap<>(){{
-		put("Print", 0);
-		put("TextFile", 0);
-		put("Parsed", 0);
-	}};
+	private static final Map<String, Integer> OPTIONS = new HashMap<>();
 
 	/* String containing syntax for program usage. */
 	public static final String USAGE =
@@ -66,8 +62,10 @@ public class Project2 {
 	public static void main(String[] args) throws IOException, ParserException {
 
 		FLAGS = 0;
+		OPTIONS.put("Print", 0);
+		OPTIONS.put("TextFile", 0);
+		OPTIONS.put("Parsed", 0);
 
-		System.out.println(Arrays.toString(args));
 		// Check arguments for valid inputs.
 		checkInput(args);
 
