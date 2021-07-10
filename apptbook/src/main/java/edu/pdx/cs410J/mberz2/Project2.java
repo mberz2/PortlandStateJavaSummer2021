@@ -142,12 +142,12 @@ public class Project2 {
 
 		/* If print is enabled, can only have 7, 8, or 10 args. */
 		if(printEnabled() && (args.length != 7 && args.length != 9))
-				printErrorUsage("Invalid number of arguments " +
+				printErrorUsage("Error: Invalid number of arguments " +
 						"(for -print enabled).", 1);
 
 		/* If textFile is enabled, can only have 8, 9 or 10 args */
 		else if(fileEnabled() && (args.length != 8 && args.length != 9))
-			printErrorUsage("Invalid number of arguments " +
+			printErrorUsage("Error: Invalid number of arguments " +
 					"(for -textFile enabled).", 1);
 	}
 

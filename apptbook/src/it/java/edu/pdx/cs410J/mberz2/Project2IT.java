@@ -87,7 +87,7 @@ class Project2IT extends InvokeMainTestCase {
 				invokeMain("Matthew Berzinskas", "test description", "aa1/1/1999", "10:00", "2/2/2000", "20:00");
 		assertThat(result.getExitCode(), equalTo(1));
 		assertThat(result.getTextWrittenToStandardError(),
-				containsString("improper"));
+				containsString("Error"));
 	}
 
 	@Test
