@@ -65,6 +65,7 @@ public class Project2 {
 	 */
 	public static void main(String[] args) throws IOException, ParserException {
 
+		System.out.println(Arrays.toString(args));
 		// Check arguments for valid inputs.
 		checkInput(args);
 
@@ -166,8 +167,10 @@ public class Project2 {
 		// New array for holding parsed arguments.
 		String[] newArgs = Arrays.copyOfRange(args, FLAGS, args.length);
 
+		System.out.println(Arrays.toString(newArgs));
+
 		StringParser sp = new StringParser();
-		if (!sp.validateString(args)) {
+		if (!sp.validateString(newArgs)) {
 			System.err.println("Run with -README to see proper formatting.");
 			System.err.println(README);
 			System.exit(1);

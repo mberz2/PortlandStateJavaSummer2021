@@ -29,4 +29,56 @@ class Project2IT extends InvokeMainTestCase {
 				containsString("Missing command line arguments"));
 	}
 
+	@Test
+	void validAppointment(){
+		MainMethodResult result =
+				invokeMain("Matthew Berzinskas",
+						"test description", "1/1/1999", "10:00",
+						"2/2/2000", "20:00");
+
+		System.out.println(result.getTextWrittenToStandardOut());
+	}
+
+	@Test
+	void invalidTextFile(){
+		MainMethodResult result =
+				invokeMain("-textFile", "-print", "Matthew Berzinskas",
+						"test description", "1/1/1999", "10:00",
+						"2/2/2000", "20:00");
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("Invalid number of arguments"));
+	}
+
+	@Test
+	void validTextFile(){
+		MainMethodResult result =
+				invokeMain("-textFile", "file", "-print", "Matthew Berzinskas",
+						"test description", "1/1/1999", "10:00",
+						"2/2/2000", "20:00");
+		assertThat(result.getExitCode(), equalTo(0));
+	}
+
+	@Test
+	void incorrectOwnerWithTestFile(){
+		String [] args = {"-textFile", "test", "-print", "Matthew Berzinskas",
+				"test description", "1/1/1999", "10:00",
+				"2/2/2000", "20:00"};
+		MainMethodResult result = invokeMain(args);
+		System.out.println(result.getTextWrittenToStandardOut());
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("Incompatible owners"));
+		assertThat(result.getExitCode(), equalTo(1));
+	}
+
+	@Test
+	void incorrectBeginDate(){
+		MainMethodResult result =
+				invokeMain("-textFile", "file", "-print", "Matthew Berzinskas",
+						"test description", "a1/1/1999", "10:00",
+						"2/2/2000", "20:00");
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("begin time (date) [from file]"));
+		assertThat(result.getExitCode(), equalTo(1));
+	}
+
 }
