@@ -3,6 +3,8 @@ package edu.pdx.cs410J.mberz2;
 import edu.pdx.cs410J.AbstractAppointment;
 import edu.pdx.cs410J.ParserException;
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -31,8 +33,11 @@ public class Project2 {
 	/* Total number of enabled options flags, used to find first appt. arg */
 	private static int FLAGS;
 
-	/* Contains the path to the file, if textFile is enabled. */
+	/* Contains the file name, if textFile is enabled. */
 	private static String FILE = "";
+
+	/* Contains the path name, if textFile is enabled. */
+	private static String PATH = "";
 
 	/* Map containing the different option fields, set all to 0 */
 	private static final Map<String, Integer> OPTIONS = new HashMap<>();
@@ -125,8 +130,10 @@ public class Project2 {
 				else if (arg.equalsIgnoreCase(("-TEXTFILE"))){
 					FLAGS = FLAGS + 2;
 					OPTIONS.put("TextFile", 1);
+
 					int i = Arrays.asList(args).indexOf(arg);
 					FILE = args[i+1];
+
 				}
 				else {
 					System.err.println(arg + " is not a correct option");
@@ -198,8 +205,14 @@ public class Project2 {
 		TextParser textParser = new TextParser(FILE);
 		AppointmentBook tempBook = textParser.parse();
 
+		/* There was nothing in the tempBook/file. */
+		if(tempBook == null){
+			System.out.println("File was empty or did not exist.");
+			return appBook;
+		}
+
 		// If the owners of the new book and the parsed book don't match, exit
-		if(!tempBook.getOwnerName().equals(appBook.getOwnerName())){
+		else if(!tempBook.getOwnerName().equals(appBook.getOwnerName())){
 			System.err.println("Incompatible owners.\nPlease check that the" +
 					"new appointment owner is the same as the loaded file.");
 			System.exit(1);

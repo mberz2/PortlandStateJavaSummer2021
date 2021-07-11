@@ -2,6 +2,10 @@ package edu.pdx.cs410J.mberz2;
 import edu.pdx.cs410J.AppointmentBookParser;
 import edu.pdx.cs410J.ParserException;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static edu.pdx.cs410J.mberz2.Project2.*;
 
@@ -74,10 +78,14 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 
 			return tempBook;
 
-		} catch(FileNotFoundException exception) {
-			System.out.println("The file was not found.");
+		} catch(FileNotFoundException | NoSuchFileException exception) {
+			//System.out.println("The file or directory was not found.");
+			//System.exit(1);
+
+			return null;
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.exit(1);
 		}
 
 		return null;

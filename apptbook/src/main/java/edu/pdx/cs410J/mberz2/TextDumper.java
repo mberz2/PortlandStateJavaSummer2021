@@ -3,6 +3,8 @@ package edu.pdx.cs410J.mberz2;
 
 import edu.pdx.cs410J.AppointmentBookDumper;
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 
 /**
@@ -27,7 +29,7 @@ public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
 	 */
 	@Override
 	public void dump(AppointmentBook appointment) throws IOException {
-		File file = new File(fileName);
+		File file = new File(String.valueOf(Paths.get(fileName)));
 		FileWriter fileWriter = new FileWriter(file, false);
 
 		Collection<Appointment> apps = appointment.getAppointments();
