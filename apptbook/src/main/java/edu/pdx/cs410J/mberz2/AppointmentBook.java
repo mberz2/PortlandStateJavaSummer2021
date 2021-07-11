@@ -22,7 +22,7 @@ public class AppointmentBook extends AbstractAppointmentBook<Appointment> {
 	private String owner;
 	private Collection<Appointment> appList = new ArrayList<>();
 
-	AppointmentBook(){}
+	public AppointmentBook(){}
 
 	/**
 	 * Parameterized constructor for an appointment object. Sets the private
@@ -33,7 +33,7 @@ public class AppointmentBook extends AbstractAppointmentBook<Appointment> {
 	 * @param app Appointment object to add to collection.
 	 * @see Appointment
 	 */
-	AppointmentBook(String o, Appointment app){
+	public AppointmentBook(String o, Appointment app){
 		this.owner = o;
 		this.appList = new ArrayList<>();
 		addAppointment(app);

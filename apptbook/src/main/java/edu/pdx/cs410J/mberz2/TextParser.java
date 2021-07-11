@@ -2,10 +2,7 @@ package edu.pdx.cs410J.mberz2;
 import edu.pdx.cs410J.AppointmentBookParser;
 import edu.pdx.cs410J.ParserException;
 import java.io.*;
-import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static edu.pdx.cs410J.mberz2.Project2.*;
 
@@ -14,11 +11,11 @@ import static edu.pdx.cs410J.mberz2.Project2.*;
  */
 public class TextParser implements AppointmentBookParser<AppointmentBook> {
 
-	private final String fileName;
+	private final FileInputStream file;
 	private String owner;
 
-	TextParser (String fileName){
-		this.fileName = fileName;
+	TextParser (FileInputStream file){
+		this.file = file;
 	}
 
 	public void setOwner(String s){
@@ -36,10 +33,12 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 	@Override
 	public AppointmentBook parse () throws ParserException {
 
+		//Check empty file.
+
 		AppointmentBook tempBook = new AppointmentBook();
 
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(this.fileName));
+			BufferedReader br = new BufferedReader(new InputStreamReader(this.file));
 			String line;
 
 			while((line = br.readLine()) != null) {

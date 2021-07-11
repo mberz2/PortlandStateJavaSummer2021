@@ -209,7 +209,7 @@ class Project2IT extends InvokeMainTestCase {
 		System.out.println(result.getTextWrittenToStandardOut());
 		System.out.println(result.getTextWrittenToStandardError());
 		assertThat(result.getTextWrittenToStandardError(),
-				containsString("Invalid character"));
+				containsString("Invalid"));
 		assertThat(result.getExitCode(), equalTo(1));
 	}
 

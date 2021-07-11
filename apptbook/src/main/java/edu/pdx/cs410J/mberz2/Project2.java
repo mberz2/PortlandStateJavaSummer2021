@@ -3,6 +3,9 @@ package edu.pdx.cs410J.mberz2;
 import edu.pdx.cs410J.AbstractAppointment;
 import edu.pdx.cs410J.ParserException;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -34,10 +37,7 @@ public class Project2 {
 	private static int FLAGS;
 
 	/* Contains the file name, if textFile is enabled. */
-	private static String FILE = "";
-
-	/* Contains the path name, if textFile is enabled. */
-	private static String PATH = "";
+	private static String FILE;
 
 	/* Map containing the different option fields, set all to 0 */
 	private static final Map<String, Integer> OPTIONS = new HashMap<>();
@@ -201,17 +201,21 @@ public class Project2 {
 	 */
 	public static AppointmentBook loadFile(AppointmentBook appBook)
 			throws ParserException {
-		// Create new textParser object and attempt to retrieve the appts.
-		TextParser textParser = new TextParser(FILE);
-		AppointmentBook tempBook = textParser.parse();
 
-		/* There was nothing in the tempBook/file. */
-		if(tempBook == null){
+		FileInputStream file = null;
+		// Create new textParser object and attempt to retrieve the appts.
+		try {
+			file = new FileInputStream(FILE);
+		} catch (FileNotFoundException e){
+			/* There was nothing in the tempBook/file or was not found. */
 			return appBook;
 		}
 
+		TextParser textParser = new TextParser(file);
+		AppointmentBook tempBook = textParser.parse();
+
 		// If the owners of the new book and the parsed book don't match, exit
-		else if(!tempBook.getOwnerName().equals(appBook.getOwnerName())){
+		if(!tempBook.getOwnerName().equals(appBook.getOwnerName())){
 			System.err.println("Incompatible owners.\nPlease check that the" +
 					"new appointment owner is the same as the loaded file.");
 			System.exit(1);
@@ -233,8 +237,28 @@ public class Project2 {
 	 * @throws IOException Exception handling for writing the output to file.
 	 */
 	public static void writeFile(AppointmentBook appBook) throws IOException {
-		TextDumper textDumper = new TextDumper(FILE);
+
+		StringWriter sw = new StringWriter();
+
+		Collection<Appointment> apps = appBook.getAppointments();
+
+		for (Appointment a: apps) {
+			String[] btSplit = a.getBeginTimeString().split("\\s");
+			String[] etSplit = a.getBeginTimeString().split("\\s");
+
+			String toFile = appBook.getOwnerName()
+					+ "|" + a.getDescription()
+					+ "|" + btSplit[0] + "|" + btSplit[1]
+					+ "|" + etSplit[0] + "|" + etSplit[1]
+					+ "\n";
+
+			sw.write(toFile);
+		}
+
+		TextDumper textDumper = new TextDumper(sw);
+		textDumper.setFileName(FILE);
 		textDumper.dump(appBook);
+
 	}
 
 	/**
