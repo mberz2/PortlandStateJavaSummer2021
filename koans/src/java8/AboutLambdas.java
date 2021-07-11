@@ -40,7 +40,7 @@ public class AboutLambdas {
             return n.toUpperCase();
         };
         String capitalized = caps.capitalize("James");
-        assertEquals(capitalized, __);
+        assertEquals(capitalized, "JAMES");
     }
 
     @Koan
