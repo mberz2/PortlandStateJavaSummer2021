@@ -258,6 +258,7 @@ public class Project2 {
 		TextDumper textDumper = new TextDumper(sw);
 		textDumper.setFileName(FILE);
 		textDumper.dump(appBook);
+		sw.flush();
 
 	}
 

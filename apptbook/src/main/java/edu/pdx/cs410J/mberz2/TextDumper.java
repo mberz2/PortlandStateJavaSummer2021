@@ -28,14 +28,13 @@ public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
 	 */
 	@Override
 	public void dump(AppointmentBook appointment) throws IOException {
-		System.out.println(stream);
 
-		if (!Files.exists(Path.of(fileName))){
-			System.out.println("Creating file...");
+		if (!Files.exists(Path.of(fileName)))
 			Files.createFile(Path.of(fileName));
-		}
 
 		FileWriter fileWriter = new FileWriter(fileName);
 		fileWriter.write(String.valueOf(stream));
+		fileWriter.flush();
+		fileWriter.close();
 	}
 }
