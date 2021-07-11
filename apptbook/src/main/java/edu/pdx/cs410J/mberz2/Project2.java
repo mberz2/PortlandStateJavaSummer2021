@@ -207,7 +207,6 @@ public class Project2 {
 
 		/* There was nothing in the tempBook/file. */
 		if(tempBook == null){
-			System.out.println("File was empty or did not exist.");
 			return appBook;
 		}
 

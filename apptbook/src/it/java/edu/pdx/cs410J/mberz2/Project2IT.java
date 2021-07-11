@@ -37,9 +37,14 @@ class Project2IT extends InvokeMainTestCase {
 			"1/1/1000", "10:00", "1/1/1000"};
 	private final String [] validFile = {"-textFile", "test", "Test Owner",
 			"Description", "1/1/1000", "10:00", "1/1/1000", "10:30"};
-	private final String [] invalidFile = {"-textFile", "Owner", "Description",
+	private final String [] invalidFile = {"-textFile", "test/test", "Test Owner",
+			"Description", "1/1/1000", "10:00", "1/1/1000", "10:30"};
+	private final String [] noFile = {"-textFile", "Owner", "Description",
 			"1/1/1000", "10:00", "1/1/1000", "10:30"};
 	private final String [] invalidFileOwner = {"-textFile", "test",
+			"Test Owner2", "Description",
+			"1/1/1000", "10:00", "1/1/1000", "10:30"};
+	private final String [] invalidFileChar = {"-textFile", "*/test",
 			"Test Owner2", "Description",
 			"1/1/1000", "10:00", "1/1/1000", "10:30"};
 	private final String [] invalidApptBd = {"Owner", "Description",
@@ -123,7 +128,7 @@ class Project2IT extends InvokeMainTestCase {
 		MainMethodResult result = invokeMain(invalidFile);
 		assertThat(result.getExitCode(), equalTo(1));
 		assertThat(result.getTextWrittenToStandardError(),
-				containsString("Invalid number of arguments"));
+				containsString("No such directory."));
 	}
 
 	@Test
@@ -176,7 +181,7 @@ class Project2IT extends InvokeMainTestCase {
 	void validReadme(){
 		MainMethodResult result = invokeMain(validReadme);
 		assertThat(result.getTextWrittenToStandardOut(),
-				containsString("Readme"));
+				containsString("README"));
 		assertThat(result.getExitCode(), equalTo(0));
 	}
 
@@ -187,4 +192,25 @@ class Project2IT extends InvokeMainTestCase {
 				containsString("not a correct option"));
 		assertThat(result.getExitCode(), equalTo(1));
 	}
+
+	@Test
+	void invalidTextFilePath(){
+		MainMethodResult result = invokeMain(invalidFile);
+		System.out.println(result.getTextWrittenToStandardOut());
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("No such directory"));
+		assertThat(result.getExitCode(), equalTo(1));
+	}
+
+	@Test
+	void invalidTextFileChar(){
+		MainMethodResult result = invokeMain(invalidFileChar);
+		System.out.println(result.getTextWrittenToStandardOut());
+		System.out.println(result.getTextWrittenToStandardOut());
+		System.out.println(result.getTextWrittenToStandardError());
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("Invalid character"));
+		assertThat(result.getExitCode(), equalTo(1));
+	}
+
 }
