@@ -2,8 +2,6 @@ package edu.pdx.cs410J.mberz2;
 import edu.pdx.cs410J.AppointmentBookParser;
 import edu.pdx.cs410J.ParserException;
 import java.io.*;
-import java.nio.file.NoSuchFileException;
-
 import static edu.pdx.cs410J.mberz2.Project2.*;
 
 /**
