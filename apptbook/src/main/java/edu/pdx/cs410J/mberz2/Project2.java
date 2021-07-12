@@ -197,34 +197,32 @@ public class Project2 {
 	public static AppointmentBook loadFile(AppointmentBook appBook)
 			throws ParserException {
 
-		File file = new File(FILE);
-		InputStream stream;
-
-		// Create new textParser object and attempt to retrieve the appts.
 		try {
-			stream = new FileInputStream(file);
-		} catch (FileNotFoundException e){
-			/* There was nothing in the tempBook/file or was not found. */
-			return appBook;
-		}
+			TextParser textParser = new TextParser(new FileReader(FILE));
 
-		if(file.length()>1){
-			TextParser textParser = new TextParser(stream);
+			//Check if anything is in the file.
 			AppointmentBook tempBook = textParser.parse();
+			if (tempBook == null){
+				System.out.println("Nothing in file.");
+			}
 
 			// If the owners of the new book and the parsed book don't match, exit
-			if(!tempBook.getOwnerName().equals(appBook.getOwnerName())){
+			else if(!tempBook.getOwnerName().equals(appBook.getOwnerName())){
 				System.err.println("Incompatible owners.\nPlease check that the" +
 						"new appointment owner is the same as the loaded file.");
 				System.exit(1);
+			} else {
+				// Combining the appointments.
+				Collection<Appointment> apps = tempBook.getAppointments();
+				for (Appointment a: apps)
+					appBook.addAppointment(a);
 			}
 
-			// Combining the appointments.
-			Collection<Appointment> apps = tempBook.getAppointments();
-			for (Appointment a: apps)
-				appBook.addAppointment(a);
 
-			OPTIONS.put("Parsed", 1);
+		} catch (FileNotFoundException e){
+
+			//Nothing to merge, return original book.
+			return appBook;
 		}
 
 		return appBook;

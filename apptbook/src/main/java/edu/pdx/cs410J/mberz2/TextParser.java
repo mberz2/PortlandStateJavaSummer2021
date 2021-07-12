@@ -9,11 +9,11 @@ import static edu.pdx.cs410J.mberz2.Project2.*;
  */
 public class TextParser implements AppointmentBookParser<AppointmentBook> {
 
-	private final InputStream stream;
+	private final BufferedReader reader;
 	private String owner;
 
-	TextParser (InputStream stream){
-		this.stream = stream;
+	TextParser (Reader reader){
+		this.reader = new BufferedReader(reader);
 	}
 
 	public void setOwner(String s){
@@ -32,14 +32,12 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 	public AppointmentBook parse () throws ParserException {
 
 		AppointmentBook tempBook = new AppointmentBook();
-		InputStreamReader stream = new InputStreamReader(this.stream);
 
 		try {
-			BufferedReader br = new BufferedReader(stream);
 
 			String line;
 
-			while((line = br.readLine()) != null) {
+			while((line = reader.readLine()) != null) {
 
 				// Parse line based on comma to the end of the line.
 				String [] parsedApp = line.split("\\|");
@@ -71,7 +69,7 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 				}
 			}
 
-			br.close();
+			reader.close();
 
 			return tempBook;
 

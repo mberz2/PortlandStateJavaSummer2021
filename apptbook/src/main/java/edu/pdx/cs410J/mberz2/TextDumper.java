@@ -16,7 +16,7 @@ public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
 	private final Writer writer;
 	private String fileName;
 
-	public TextDumper(StringWriter writer) {
+	public TextDumper(Writer writer) {
 		this.writer = writer;
 	}
 
