@@ -35,7 +35,7 @@ class Project2IT extends InvokeMainTestCase {
 			"1/1/1000", "10:00", "1/1/1000"};
 	private final String [] invalidTextArgs = {"-textFile", "Owner", "Description",
 			"1/1/1000", "10:00", "1/1/1000"};
-	private final String [] validFile = {"-textFile", "test", "Test Owner",
+	private final String [] validFile = {"-textFile", "TEST", "Test Owner",
 			"Description", "1/1/1000", "10:00", "1/1/1000", "10:30"};
 	private final String [] invalidFile = {"-textFile", "test/test", "Test Owner",
 			"Description", "1/1/1000", "10:00", "1/1/1000", "10:30"};
@@ -134,6 +134,7 @@ class Project2IT extends InvokeMainTestCase {
 	@Test
 	void validTextFile(){
 		MainMethodResult result = invokeMain(validFile);
+		System.out.println(result.getTextWrittenToStandardOut());
 		assertThat(result.getExitCode(), equalTo(0));
 	}
 

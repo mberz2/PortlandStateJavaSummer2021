@@ -11,11 +11,11 @@ import static edu.pdx.cs410J.mberz2.Project2.*;
  */
 public class TextParser implements AppointmentBookParser<AppointmentBook> {
 
-	private final FileInputStream file;
+	private final InputStream stream;
 	private String owner;
 
-	TextParser (FileInputStream file){
-		this.file = file;
+	TextParser (InputStream stream){
+		this.stream = stream;
 	}
 
 	public void setOwner(String s){
@@ -33,12 +33,12 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 	@Override
 	public AppointmentBook parse () throws ParserException {
 
-		//Check empty file.
-
 		AppointmentBook tempBook = new AppointmentBook();
+		InputStreamReader stream = new InputStreamReader(this.stream);
 
 		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(this.file));
+			BufferedReader br = new BufferedReader(stream);
+
 			String line;
 
 			while((line = br.readLine()) != null) {
@@ -77,11 +77,6 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 
 			return tempBook;
 
-		} catch(FileNotFoundException | NoSuchFileException exception) {
-			//System.out.println("The file or directory was not found.");
-			//System.exit(1);
-
-			return null;
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);

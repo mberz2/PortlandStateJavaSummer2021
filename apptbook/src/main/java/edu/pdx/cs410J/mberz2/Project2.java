@@ -3,11 +3,6 @@ package edu.pdx.cs410J.mberz2;
 import edu.pdx.cs410J.AbstractAppointment;
 import edu.pdx.cs410J.ParserException;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.InvalidPathException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -202,31 +197,36 @@ public class Project2 {
 	public static AppointmentBook loadFile(AppointmentBook appBook)
 			throws ParserException {
 
-		FileInputStream file = null;
+		File file = new File(FILE);
+		InputStream stream;
+
 		// Create new textParser object and attempt to retrieve the appts.
 		try {
-			file = new FileInputStream(FILE);
+			stream = new FileInputStream(file);
 		} catch (FileNotFoundException e){
 			/* There was nothing in the tempBook/file or was not found. */
 			return appBook;
 		}
 
-		TextParser textParser = new TextParser(file);
-		AppointmentBook tempBook = textParser.parse();
+		if(file.length()>1){
+			TextParser textParser = new TextParser(stream);
+			AppointmentBook tempBook = textParser.parse();
 
-		// If the owners of the new book and the parsed book don't match, exit
-		if(!tempBook.getOwnerName().equals(appBook.getOwnerName())){
-			System.err.println("Incompatible owners.\nPlease check that the" +
-					"new appointment owner is the same as the loaded file.");
-			System.exit(1);
+			// If the owners of the new book and the parsed book don't match, exit
+			if(!tempBook.getOwnerName().equals(appBook.getOwnerName())){
+				System.err.println("Incompatible owners.\nPlease check that the" +
+						"new appointment owner is the same as the loaded file.");
+				System.exit(1);
+			}
+
+			// Combining the appointments.
+			Collection<Appointment> apps = tempBook.getAppointments();
+			for (Appointment a: apps)
+				appBook.addAppointment(a);
+
+			OPTIONS.put("Parsed", 1);
 		}
 
-		// Combining the appointments.
-		Collection<Appointment> apps = tempBook.getAppointments();
-		for (Appointment a: apps)
-			appBook.addAppointment(a);
-
-		OPTIONS.put("Parsed", 1);
 		return appBook;
 	}
 

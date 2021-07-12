@@ -29,6 +29,9 @@ public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
 	@Override
 	public void dump(AppointmentBook appointment) throws IOException {
 
+		if(fileName == null)
+			throw new NullPointerException("Error: No filename.");
+
 		if (!Files.exists(Path.of(fileName)))
 			Files.createFile(Path.of(fileName));
 
