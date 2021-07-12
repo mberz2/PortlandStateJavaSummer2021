@@ -134,7 +134,6 @@ class Project2IT extends InvokeMainTestCase {
 	@Test
 	void validTextFile(){
 		MainMethodResult result = invokeMain(validFile);
-		System.out.println(result.getTextWrittenToStandardOut());
 		assertThat(result.getExitCode(), equalTo(0));
 	}
 
@@ -197,7 +196,6 @@ class Project2IT extends InvokeMainTestCase {
 	@Test
 	void invalidTextFilePath(){
 		MainMethodResult result = invokeMain(invalidFile);
-		System.out.println(result.getTextWrittenToStandardOut());
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("No such directory"));
 		assertThat(result.getExitCode(), equalTo(1));
@@ -206,11 +204,17 @@ class Project2IT extends InvokeMainTestCase {
 	@Test
 	void invalidTextFileChar(){
 		MainMethodResult result = invokeMain(invalidFileChar);
-		System.out.println(result.getTextWrittenToStandardOut());
-		System.out.println(result.getTextWrittenToStandardOut());
-		System.out.println(result.getTextWrittenToStandardError());
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("Invalid"));
+		assertThat(result.getExitCode(), equalTo(1));
+	}
+
+	@Test
+	void noFileArgument(){
+		MainMethodResult result = invokeMain(noFile);
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("Invalid"));
+		System.out.println(result.getTextWrittenToStandardError());
 		assertThat(result.getExitCode(), equalTo(1));
 	}
 

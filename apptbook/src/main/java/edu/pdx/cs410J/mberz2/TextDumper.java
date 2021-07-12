@@ -3,6 +3,8 @@ package edu.pdx.cs410J.mberz2;
 import edu.pdx.cs410J.AppointmentBookDumper;
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 
 /**
@@ -32,12 +34,22 @@ public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
 		if(fileName == null)
 			throw new NullPointerException("Error: No filename.");
 
-		if (!Files.exists(Path.of(fileName)))
-			Files.createFile(Path.of(fileName));
+		try {
+			if (!Files.exists(Path.of(fileName)))
+				Files.createFile(Path.of(fileName));
 
-		FileWriter fileWriter = new FileWriter(fileName);
-		fileWriter.write(String.valueOf(stream));
-		fileWriter.flush();
-		fileWriter.close();
+			FileWriter fileWriter = new FileWriter(fileName);
+			fileWriter.write(String.valueOf(stream));
+			fileWriter.flush();
+			fileWriter.close();
+
+		} catch (InvalidPathException e){
+			System.err.println("Error: Invalid character in path.");
+			System.exit(1);
+		} catch (NoSuchFileException e){
+			System.err.println("Error: No such directory.");
+			System.exit(1);
+		}
+
 	}
 }
