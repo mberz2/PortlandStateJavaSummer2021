@@ -12,11 +12,11 @@ import java.nio.file.Path;
  */
 public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
 
-	private final StringWriter stream;
+	private final StringWriter writer;
 	private String fileName;
 
-	public TextDumper(StringWriter stream) {
-		this.stream = stream;
+	public TextDumper(StringWriter writer) {
+		this.writer = writer;
 	}
 
 	public void setFileName(String f){
@@ -39,7 +39,7 @@ public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
 				Files.createFile(Path.of(fileName));
 
 			FileWriter fileWriter = new FileWriter(fileName);
-			fileWriter.write(String.valueOf(stream));
+			fileWriter.write(String.valueOf(writer));
 			fileWriter.flush();
 			fileWriter.close();
 
