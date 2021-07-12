@@ -33,6 +33,14 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 
 		AppointmentBook tempBook = new AppointmentBook();
 
+		try{
+			if(!reader.ready()){
+				throw new ParserException("Error: Malformed or empty file.");
+			}
+		} catch (IOException e) {
+			throw new ParserException("Error: While parsing.");
+		}
+
 		try {
 
 			String line;

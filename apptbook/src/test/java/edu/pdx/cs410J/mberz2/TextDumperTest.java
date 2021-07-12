@@ -1,6 +1,13 @@
 package edu.pdx.cs410J.mberz2;
 
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 
 public class TextDumperTest {
 
@@ -8,6 +15,27 @@ public class TextDumperTest {
 		return Project2.class.getResourceAsStream(f);
 	}
 
+	@Test
+	void dumperDumpsAppointmentBookOwner() throws IOException {
+		String owner = "Owner";
+
+		Appointment app = new Appointment("Description",
+				"1/1/1000 10:00", "1/1/1000 10:30");
+
+		AppointmentBook book = new AppointmentBook(owner, app);
+
+		StringWriter sw = new StringWriter();
+		TextDumper dumper = new TextDumper(sw);
+
+		dumper.setFileName("foo");
+		dumper.dump(book);
+
+		sw.flush();
+
+		String dumpedText = sw.toString();
+		assertThat(dumpedText, containsString(owner));
+
+	}
 
 }
 
