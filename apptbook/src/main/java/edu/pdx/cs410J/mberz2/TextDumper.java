@@ -6,13 +6,14 @@ import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
+import java.util.Collection;
 
 /**
  *
  */
 public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
 
-	private final StringWriter writer;
+	private final Writer writer;
 	private String fileName;
 
 	public TextDumper(StringWriter writer) {
@@ -25,11 +26,21 @@ public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
 
 	/**
 	 *
-	 * @param appointment
 	 * @throws IOException
 	 */
 	@Override
-	public void dump(AppointmentBook appointment) throws IOException {
+	public void dump(AppointmentBook appBook) throws IOException {
+
+		Collection<Appointment> apps = appBook.getAppointments();
+		for (Appointment a: apps) {
+			String[] btSplit = a.getBeginTimeString().split("\\s");
+			String[] etSplit = a.getBeginTimeString().split("\\s");
+
+			writer.write(appBook.getOwnerName() + "|" + a.getDescription()
+					+ "|" + btSplit[0] + "|" + btSplit[1]
+					+ "|" + etSplit[0] + "|" + etSplit[1]
+					+ "\n");
+		}
 
 		if(fileName == null)
 			throw new NullPointerException("Error: No filename.");
@@ -50,6 +61,8 @@ public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
 			System.err.println("Error: No such directory.");
 			System.exit(1);
 		}
+
+		writer.flush();
 
 	}
 }

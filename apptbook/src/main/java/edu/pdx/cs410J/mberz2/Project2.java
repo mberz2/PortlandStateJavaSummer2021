@@ -238,27 +238,9 @@ public class Project2 {
 	 */
 	public static void writeFile(AppointmentBook appBook) throws IOException {
 
-		StringWriter sw = new StringWriter();
-
-		Collection<Appointment> apps = appBook.getAppointments();
-
-		for (Appointment a: apps) {
-			String[] btSplit = a.getBeginTimeString().split("\\s");
-			String[] etSplit = a.getBeginTimeString().split("\\s");
-
-			String toFile = appBook.getOwnerName()
-					+ "|" + a.getDescription()
-					+ "|" + btSplit[0] + "|" + btSplit[1]
-					+ "|" + etSplit[0] + "|" + etSplit[1]
-					+ "\n";
-
-			sw.write(toFile);
-		}
-
-		TextDumper textDumper = new TextDumper(sw);
+		TextDumper textDumper = new TextDumper(new StringWriter());
 		textDumper.setFileName(FILE);
 		textDumper.dump(appBook);
-		sw.flush();
 
 	}
 
