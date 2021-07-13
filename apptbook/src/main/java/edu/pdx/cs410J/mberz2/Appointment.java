@@ -1,6 +1,13 @@
 package edu.pdx.cs410J.mberz2;
 
 import edu.pdx.cs410J.AbstractAppointment;
+import edu.pdx.cs410J.ParserException;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * This class extends the read-only {@link AbstractAppointment} class.
@@ -21,9 +28,9 @@ public class Appointment extends AbstractAppointment {
 	/* String containing the appointment description. */
 	private final String desc;
 	/* String containing the begin time in MM/DD/YYY HH:MM format */
-	private final String beginTime;
+	private final Date beginTime;
 	/* String containing the end time in MM/DD/YYY HH:MM format */
-	private final String endTime;
+	private final Date endTime;
 
 	/**
 	 * Parameterized constructor for an appointment object. Sets the private
@@ -33,10 +40,22 @@ public class Appointment extends AbstractAppointment {
 	 * @param bt String for the appt. begin time. {@code MM/DD/YYYY HH:MM}
 	 * @param et String for the appt. end time. {@code MM/DD/YYYY HH:MM}
 	 */
-	Appointment (String d, String bt, String et){
+	Appointment (String d, String bt, String et) throws ParserException {
 		this.desc = d;
-		this.beginTime = bt;
-		this.endTime = et;
+
+		DateFormat format =
+				new SimpleDateFormat("MM/dd/yyyy hh:mm", Locale.ENGLISH);
+		try {
+			this.beginTime = format.parse(bt);
+		} catch (ParseException e){
+			throw (new ParserException("Error: Unable to parse begin date."));
+		}
+
+		try {
+			this.endTime = format.parse(et);
+		} catch (ParseException e){
+			throw (new ParserException("Error: Unable to parse begin date."));
+		}
 	}
 
 	/**
@@ -49,7 +68,7 @@ public class Appointment extends AbstractAppointment {
 		if (beginTime == null)
 			throw new UnsupportedOperationException
 					("Appointment not implemented.");
-		return this.beginTime;
+		return String.valueOf(this.beginTime);
 	}
 
 
@@ -63,7 +82,7 @@ public class Appointment extends AbstractAppointment {
 		if (endTime == null)
 		    throw new UnsupportedOperationException
 				    ("Appointment not implemented.");
-		return this.endTime;
+		return String.valueOf(this.endTime);
 	}
 
 	/**
