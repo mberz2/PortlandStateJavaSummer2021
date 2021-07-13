@@ -78,7 +78,6 @@ public class Appointment extends AbstractAppointment
 
 	}
 
-
 	/**
 	 * Method to return the appointment's begin time.
 	 * @return String containing end time. {@code MM/DD/YYYY HH:MM am/pm}
@@ -109,7 +108,49 @@ public class Appointment extends AbstractAppointment
 	}
 
 	@Override
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	@Override
+	public Date getBeginTime() {
+		return beginTime;
+	}
+
+
+	@Override
 	public int compareTo(Appointment a) {
-		return 0;
+
+		if (a.getBeginTime() == null
+				|| a.getEndTime() == null
+				|| a.getDescription() == null)
+			throw (new NullPointerException("Error: Missing date/time."));
+
+		int diff = this.beginTime.compareTo(a.getBeginTime());
+
+		/* Same beginning date/time. */
+		if (diff == 0) {
+
+			/* Check ending time. */
+			diff = this.endTime.compareTo(a.getEndTime());
+
+			if (diff == 0) {
+
+				/* Same beginning and end times. Compare desc. */
+				return this.desc.compareTo(a.getDescription());
+			}
+
+		}
+
+		return diff;
 	}
 }
+
+
+
+/*
+		return DateFormat.
+				getTimeInstance(DateFormat.SHORT).format(this.beginTime).
+				compareTo(DateFormat.getTimeInstance(DateFormat.SHORT).
+						format(a.beginTime));
+*/

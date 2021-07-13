@@ -1,4 +1,5 @@
 package edu.pdx.cs410J.mberz2;
+import edu.pdx.cs410J.ParserException;
 import org.junit.jupiter.api.Test;
 import java.util.Collection;
 
@@ -8,6 +9,33 @@ import static org.junit.jupiter.api.Assertions.*;
 * Unit tests for the {@link Appointment} and {@link AppointmentBook} classes.
 */
 public class AppointmentTest {
+
+	@Test
+	void compareDateAndTimes () throws ParserException {
+		Appointment app = new Appointment("test", "7/13/2021 2:00 pm",
+				"7/13/2021 2:05 pm");
+		Appointment sameBegin = new Appointment("test2", "7/13/2021 2:00 pm",
+				"7/13/2021 2:15 pm");
+		Appointment sameBeginEnd = new Appointment("testttt", "7/13/2021 2:00 pm",
+				"7/13/2021 2:05 pm");
+		Appointment sameAll = new Appointment("a", "7/13/2021 2:00 pm",
+				"7/13/2021 2:05 pm");
+
+
+		/* 0 if the argument Date is equal to this Date; a value less than 0 if
+		this Date is before the Date argument; and a value greater than 0 if
+		this Date is after the Date argument. */
+
+		int x = app.compareTo(sameBegin);
+		System.out.println(x);
+
+		x = app.compareTo(sameBeginEnd);
+		System.out.println(x);
+
+		x = app.compareTo(sameAll);
+		System.out.println(x);
+	}
+
 
 	/*
 	//Appointment Tests
