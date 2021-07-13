@@ -61,6 +61,9 @@ class Project2IT extends InvokeMainTestCase {
 	private final String [] invalidOption = {"-te", "Owner", "Description",
 			"1/1/1000", "10:00", "1/1/1000", "10:30"};
 
+	private final String [] forbiddenFile = {"-textFile", "/etc/shadow", "Owner",
+			"Description", "1/1/1000", "10:00", "1/1/1000", "10:30"};
+
 	@Test
 	void testNoCommandLineArguments() {
 		MainMethodResult result = invokeMain(tooFew);

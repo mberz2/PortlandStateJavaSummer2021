@@ -22,6 +22,15 @@ public class TextParserTest {
 	}
 
 	@Test
+	void invalidFileCannotBeParsed() {
+		InputStream resource = getClass().getResourceAsStream("/");
+		assertNotNull(resource);
+
+		TextParser parser = new TextParser(new InputStreamReader(resource));
+		assertThrows(ParserException.class, parser::parse);
+	}
+
+	@Test
 	void appointmentBookOwnerCanBeDumpedAndParsed() throws IOException, ParserException {
 		String owner = "Owner";
 		Appointment app = new Appointment("Description",

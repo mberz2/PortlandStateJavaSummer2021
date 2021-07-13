@@ -48,7 +48,8 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 				throw new ParserException("Error: Malformed or empty file.");
 			}
 		} catch (IOException e) {
-			throw new ParserException("Error: While parsing.");
+			e.printStackTrace();
+			System.exit(1);
 		}
 
 		try {

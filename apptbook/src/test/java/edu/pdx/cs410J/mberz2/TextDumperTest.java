@@ -26,8 +26,6 @@ public class TextDumperTest {
 
 		StringWriter sw = new StringWriter();
 		TextDumper dumper = new TextDumper(sw);
-
-		//dumper.setFileName("foo");
 		dumper.dump(book);
 
 		sw.flush();

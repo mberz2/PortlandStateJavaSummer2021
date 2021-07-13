@@ -9,33 +9,12 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class Project1Test {
 
-	/*
-	@Test
-	void readmeCanBeReadAsResource() throws IOException {
-		try (
-				InputStream readme =
-						Project1.class.getResourceAsStream("README.txt")
-		) {
-			assertThat(readme, not(nullValue()));
-			BufferedReader reader =
-					new BufferedReader(new InputStreamReader(readme));
-			String line = reader.readLine();
-			assertThat(line, containsString("README"));
-		}
-	}
-
-	@Test
-	void fileCanBePrintedAsResource() {
-		assertDoesNotThrow(()-> Project1.printRes("README.txt"));
-	}
-	*/
-
 	@Test
 	void invalidResourcesCannotBeRead() {
 		NullPointerException e = assertThrows(
-				NullPointerException.class, () -> Project1.printRes("test.txt")
+				NullPointerException.class, () -> Project1.printRes("foo.txt")
 		);
-		assertEquals(e.getMessage(), "File test.txt not found.");
+		assertEquals(e.getMessage(), "File foo.txt not found.");
 	}
 
 	@Test
