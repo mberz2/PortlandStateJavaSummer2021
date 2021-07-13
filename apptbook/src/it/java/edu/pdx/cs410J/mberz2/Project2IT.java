@@ -153,7 +153,8 @@ class Project2IT extends InvokeMainTestCase {
 
 	@Test
 	void incorrectOwnerWithTestFile(){
-		MainMethodResult result = invokeMain(invalidFileOwner);
+		MainMethodResult result = invokeMain(validFile);
+		result = invokeMain(invalidFileOwner);
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("Incompatible owners"));
 		assertThat(result.getExitCode(), equalTo(1));
