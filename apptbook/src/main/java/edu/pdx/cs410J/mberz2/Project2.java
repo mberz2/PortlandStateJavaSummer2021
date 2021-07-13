@@ -169,7 +169,6 @@ public class Project2 {
 		// New array for holding parsed arguments.
 		String[] newArgs = Arrays.copyOfRange(args, FLAGS, args.length);
 
-
 		StringParser sp = new StringParser();
 		if (!sp.validateString(newArgs)) {
 			System.err.println("Run with -README to see proper formatting.");
@@ -277,18 +276,6 @@ public class Project2 {
 		Collection<Appointment> apps = appBook.getAppointments();
 		for (Appointment a : apps)
 			System.out.println(a);
-	}
-
-	/**
-	 * Method printing errors in syntax/command line arguments. Displays the
-	 * field that was incorrect, and the incorrect input.
-	 *
-	 * @param s String containing the argument that was incorrect.
-	 * @param x String containing the incorrectly formatted orgument.
-	 */
-	public static void printSyntaxError(String s, String x){
-		System.err.println("Error in <" + s + "> argument.");
-		System.err.println("<" + x + "> contains improper characters.");
 	}
 
 	/**
