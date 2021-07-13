@@ -2,21 +2,14 @@ package edu.pdx.cs410J.mberz2;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-
+import java.io.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 
 public class TextDumperTest {
 
-	InputStream loader (String f) {
-		return Project2.class.getResourceAsStream(f);
-	}
-
 	@Test
-	void dumperDumpsAppointmentBookOwner() throws IOException {
+	void dumperDumpsAppointmentBookOwner() {
 		String owner = "Owner";
 
 		Appointment app = new Appointment("Description",
@@ -36,25 +29,3 @@ public class TextDumperTest {
 	}
 
 }
-
-
-		/*
-	@Test
-	void readmeCanBeReadAsResource() throws IOException {
-		try (
-				InputStream readme =
-						Project1.class.getResourceAsStream("README.txt")
-		) {
-			assertThat(readme, not(nullValue()));
-			BufferedReader reader =
-					new BufferedReader(new InputStreamReader(readme));
-			String line = reader.readLine();
-			assertThat(line, containsString("README"));
-		}
-	}
-
-	@Test
-	void fileCanBePrintedAsResource() {
-		assertDoesNotThrow(()-> Project1.printRes("README.txt"));
-	}
-	*/
