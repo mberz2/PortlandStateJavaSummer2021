@@ -249,7 +249,7 @@ public class Project2 {
 	 */
 	public static void printRes(String s) throws IOException {
 		// Create an input stream from the file indicated at resource class.
-		InputStream file = Project1.class.getResourceAsStream(s);
+		InputStream file = Project2.class.getResourceAsStream(s);
 
 		// If it is not null, start printing until there are no more lines.
 		if (file != null) {

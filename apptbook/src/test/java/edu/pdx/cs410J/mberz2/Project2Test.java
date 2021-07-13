@@ -13,6 +13,15 @@ import static org.junit.jupiter.api.Assertions.*;
 public class Project2Test {
 
 	@Test
+	void nonexistentFileCannotBeLoaded() {
+		NullPointerException e = assertThrows(
+				NullPointerException.class, () -> Project2.printRes("foo.txt")
+		);
+		assertEquals(e.getMessage(), "File foo.txt not found.");
+	}
+
+
+	@Test
 	void emptyFileCannotBeParsed() {
 		InputStream resource = getClass().getResourceAsStream("emptyFile.txt");
 		assertNotNull(resource);
@@ -22,7 +31,7 @@ public class Project2Test {
 	}
 
 	@Test
-	void appointmentBookOwnerCanBeDumpedAndParsed() throws IOException, ParserException {
+	void appointmentBookOwnerCanBeDumpedAndParsed() throws ParserException {
 		String owner = "Owner";
 		Appointment app = new Appointment("Desc",
 				"1/1/2021 10:00",
@@ -40,7 +49,8 @@ public class Project2Test {
 	}
 
 	@Test
-	void appointmentBookOwnerCanBeDumpedToFileAndParsed(@TempDir File dir) throws IOException, ParserException {
+	void appointmentBookOwnerCanBeDumpedToFileAndParsed(@TempDir File dir)
+			throws IOException, ParserException {
 		File textFile = new File(dir, "appointments.txt");
 
 		String owner = "Owner";

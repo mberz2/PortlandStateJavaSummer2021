@@ -64,7 +64,6 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 				if(!sp.validateString(parsedApp))
 					throw (new ParserException("Error: malformed or empty file."));
 
-				System.out.println("Something to parse");
 				// Create a temporary appointment.
 				Appointment app = new Appointment(parsedApp[1],
 						parsedApp[2]+" "+parsedApp[3],
@@ -75,7 +74,6 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 
 			}
 
-			System.out.println("RETURNING not null");
 			reader.close();
 			return tempBook;
 
