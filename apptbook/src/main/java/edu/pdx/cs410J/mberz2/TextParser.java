@@ -86,6 +86,4 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 
 		return null;
 	}
-
-
 }
