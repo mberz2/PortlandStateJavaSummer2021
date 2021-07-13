@@ -236,10 +236,13 @@ public class Project2 {
 	 */
 	public static void writeFile(AppointmentBook appBook) throws IOException {
 
-		TextDumper textDumper = new TextDumper(new FileWriter(FILE));
-		//textDumper.setFileName(FILE);
-		textDumper.dump(appBook);
-
+		try{
+			TextDumper textDumper = new TextDumper(new FileWriter(FILE));
+			textDumper.dump(appBook);
+		} catch (FileNotFoundException e){
+			System.err.println("Error: No such file/directory.");
+			System.exit(1);
+		}
 	}
 
 	/**

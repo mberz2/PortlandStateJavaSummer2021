@@ -3,35 +3,38 @@ package edu.pdx.cs410J.mberz2;
 import edu.pdx.cs410J.AppointmentBookDumper;
 import java.io.*;
 import java.util.Collection;
-import java.nio.file.*;
-
 
 /**
  * This class implements read-only class {@link AppointmentBookDumper}. This
- * class contains methods for dumping the contents of a Writer object into a
- * given path.
+ * class contains methods for dumping the contents of an appointmentBook object
+ * into a given writer.
+ *
+ *  @author Matthew Berzinskas
+ *  @since 2020-6-23
+ *  @see AppointmentBook
  */
 public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
 
+	/* Writer containing the output stream. */
 	private final Writer writer;
-	//private String fileName;
 
+	/**
+	 * Default constructor.
+	 *
+	 * @param writer Writer object containing the output stream.
+	 */
 	public TextDumper(Writer writer) {
 		this.writer = writer;
 	}
 
-	/*
-	public void setFileName(String f){
-		this.fileName = f;
-	}
-	 */
-
 	/**
-	 *
-	 * @throws IOException
+	 * Method for dumping the contents of an appointmentBook object to a given
+	 * output stream/writer. The method loops through each appointment in a
+	 * book, formats the output with delimiters, and then writes them to the
+	 * writer data member of the object.
 	 */
 	@Override
-	public void dump(AppointmentBook appBook) throws IOException {
+	public void dump(AppointmentBook appBook) {
 
 		try {
 			Collection<Appointment> apps = appBook.getAppointments();
@@ -49,11 +52,8 @@ public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
 			writer.flush();
 			writer.close();
 
-		} catch (InvalidPathException e){
-			System.err.println("Error: Invalid character in path.");
-			System.exit(1);
-		} catch (NoSuchFileException e){
-			System.err.println("Error: No such directory.");
+		} catch (IOException e){
+			System.err.println("Error: IOException in writing.");
 			System.exit(1);
 		}
 

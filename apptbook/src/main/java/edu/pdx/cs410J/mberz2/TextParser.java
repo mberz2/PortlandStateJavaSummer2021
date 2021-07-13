@@ -10,9 +10,9 @@ import static edu.pdx.cs410J.mberz2.Project2.*;
  * This class contains methods for the parsing of a BufferedReader into an
  * appointmentBook object.
  *
- *  * @author Matthew Berzinskas
- *  * @since 2020-6-23
- *  * @see AppointmentBook
+ *  @author Matthew Berzinskas
+ *  @since 2020-6-23
+ *  @see AppointmentBook
  */
 public class TextParser implements AppointmentBookParser<AppointmentBook> {
 

@@ -129,7 +129,7 @@ class Project2IT extends InvokeMainTestCase {
 		MainMethodResult result = invokeMain(invalidFile);
 		assertThat(result.getExitCode(), equalTo(1));
 		assertThat(result.getTextWrittenToStandardError(),
-				containsString("No such directory."));
+				containsString("No such file/directory."));
 	}
 
 	@Test
@@ -141,8 +141,6 @@ class Project2IT extends InvokeMainTestCase {
 	@Test
 	void incorrectOwnerWithTestFile(){
 		MainMethodResult result = invokeMain(invalidFileOwner);
-		System.out.println(result.getTextWrittenToStandardError());
-		System.out.println(result.getTextWrittenToStandardOut());
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("Incompatible owners"));
 		assertThat(result.getExitCode(), equalTo(1));
@@ -200,15 +198,17 @@ class Project2IT extends InvokeMainTestCase {
 	void invalidTextFilePath(){
 		MainMethodResult result = invokeMain(invalidFile);
 		assertThat(result.getTextWrittenToStandardError(),
-				containsString("No such directory"));
+				containsString("No such file/directory"));
 		assertThat(result.getExitCode(), equalTo(1));
 	}
 
 	@Test
 	void invalidTextFileChar(){
 		MainMethodResult result = invokeMain(invalidFileChar);
+		System.out.println(result.getTextWrittenToStandardError());
+		System.out.println(result.getTextWrittenToStandardOut());
 		assertThat(result.getTextWrittenToStandardError(),
-				containsString("Invalid"));
+				containsString("Error"));
 		assertThat(result.getExitCode(), equalTo(1));
 	}
 
