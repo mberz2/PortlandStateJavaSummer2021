@@ -26,13 +26,16 @@ import java.util.*;
 public class Project3 {
 
 	/* MAX sets teh maximum number of input arguments. */
-	private static final int MAX = 12;
+	private static final int MAX = 14;
 
 	/* Total number of enabled options flags, used to find first appt. arg */
 	private static int FLAGS;
 
 	/* Contains the file name, if textFile is enabled. */
 	private static String FILE;
+
+	/* Contains the file name, if pretty printer is enabled. */
+	private static String PRINTER;
 
 	/* Map containing the different option fields, set all to 0 */
 	private static final Map<String, Integer> OPTIONS = new HashMap<>();
@@ -66,6 +69,7 @@ public class Project3 {
 		OPTIONS.put("Print", 0);
 		OPTIONS.put("TextFile", 0);
 		OPTIONS.put("Parsed", 0);
+		OPTIONS.put("Pretty", 0);
 
 		// Check arguments for valid inputs.
 		checkInput(args);
@@ -133,6 +137,14 @@ public class Project3 {
 					FILE = args[i+1];
 
 				}
+				else if (arg.equalsIgnoreCase(("-PRETTY"))){
+					FLAGS = FLAGS + 2;
+					OPTIONS.put("Pretty", 1);
+
+					int i = Arrays.asList(args).indexOf(arg);
+					PRINTER = args[i+1];
+
+				}
 				else {
 					System.err.println(arg + " is not a correct option");
 					printUsage(1);
@@ -146,13 +158,13 @@ public class Project3 {
 		else if (args.length < 8)
 			printErrorUsage("Error: Too FEW command line arguments", 1);
 
-		/* If print is enabled, can only have 7, 8, or 10 args. */
-		if(printEnabled() && (args.length != 7 && args.length != 9))
+		/* If print is enabled, can only have 9, 11, or 14 args. */
+		if(printEnabled() && (args.length != 9 && args.length != 11))
 			printErrorUsage("Error: Invalid number of arguments " +
 					"(for -print enabled).", 1);
 
-			/* If textFile is enabled, can only have 8, 9 or 10 args */
-		else if(fileEnabled() && (args.length != 8 && args.length != 9))
+			/* If textFile is enabled, can only have 11, 13 or 14 args */
+		else if(fileEnabled() && (args.length != 11 && args.length != 13))
 			printErrorUsage("Error: Invalid number of arguments " +
 					"(for -textFile enabled).", 1);
 	}
@@ -179,7 +191,6 @@ public class Project3 {
 				newArgs[5]+" "+newArgs[6]+" "+newArgs[7]);
 
 		System.out.println(app);
-		System.exit(1);
 
 		return new AppointmentBook(newArgs[0], app);
 	}

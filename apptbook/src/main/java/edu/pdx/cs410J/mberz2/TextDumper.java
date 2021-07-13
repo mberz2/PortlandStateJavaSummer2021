@@ -2,6 +2,7 @@ package edu.pdx.cs410J.mberz2;
 
 import edu.pdx.cs410J.AppointmentBookDumper;
 import java.io.*;
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -39,13 +40,15 @@ public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
 		try {
 			Collection<Appointment> apps = appBook.getAppointments();
 			for (Appointment a: apps) {
+				System.out.println(a);
+
 				String[] btSplit = a.getBeginTimeString().split("\\s");
-				String[] etSplit = a.getBeginTimeString().split("\\s");
+				String[] etSplit = a.getEndTimeString().split("\\s");
 
 				writer.write(appBook.getOwnerName() + "|"
 						+ a.getDescription()
-						+ "|" + btSplit[0] + "|" + btSplit[1]
-						+ "|" + etSplit[0] + "|" + etSplit[1]
+						+ "|" + btSplit[0] + "|" + btSplit[1] + "|" + btSplit[2]
+						+ "|" + etSplit[0] + "|" + etSplit[1] + "|" + etSplit[2]
 						+ "\n");
 			}
 
