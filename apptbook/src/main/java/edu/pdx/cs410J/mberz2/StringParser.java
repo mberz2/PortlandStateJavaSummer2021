@@ -1,15 +1,29 @@
 package edu.pdx.cs410J.mberz2;
 
-import static edu.pdx.cs410J.mberz2.Project2.printErrorUsage;
-import static edu.pdx.cs410J.mberz2.Project2.printSyntaxError;
+import edu.pdx.cs410J.AbstractAppointment;
 
+/**
+ * Class implements methods for validating syntax of command line arguments
+ * using regex. If the syntax is invalid, it prints an error message with the
+ * the problematic argument. Meant to ease parsing/validation of command line
+ * arguments and file-based arguments for appointment book creation.
+ *
+ * @author Matthew Berzinskas
+ * @since 2020-6-23
+ * @see Appointment
+ * @see AbstractAppointment
+ */
 public class StringParser {
 
-	public static final String README =
-			"java -jar /apptbook/target/apptbook-2021.0.0.jar -README";
-
+	/* Default constructor */
 	public StringParser(){}
 
+	/**
+	 * Method for validating an array of strings against simple regex.
+	 *
+	 * @param args String arguments to validate.
+	 * @return Boolean value based on whether or not an error was encountered.
+	 */
 	public boolean validateString(String [] args){
 
 		boolean err = false;
@@ -42,6 +56,18 @@ public class StringParser {
 		}
 
 		return !err;
+	}
+
+	/**
+	 * Method printing errors in syntax/command line arguments. Displays the
+	 * field that was incorrect, and the incorrect input.
+	 *
+	 * @param s String containing the argument that was incorrect.
+	 * @param x String containing the incorrectly formatted orgument.
+	 */
+	public static void printSyntaxError(String s, String x){
+		System.err.println("Error in <" + s + "> argument.");
+		System.err.println("<" + x + "> contains improper characters.");
 	}
 
 }
