@@ -22,10 +22,12 @@ import java.util.Collection;
  */
 public class Project1 {
 
-	// Strings for commonly used messages.
+	/* String containing the command line usage instructions. */
 	public static final String USAGE =
 			"Usage: java -jar /apptbook/target/apptbook-2021.0.0.jar " +
 					"[options] <args>";
+
+	/* String containing the README run instructions. */
 	public static final String README =
 			"java -jar /apptbook/target/apptbook-2021.0.0.jar -README";
 

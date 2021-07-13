@@ -15,7 +15,9 @@ import edu.pdx.cs410J.AbstractAppointment;
  */
 public class StringParser {
 
-	/* Default constructor */
+	/**
+	 * Default constructor for a StringParser object.
+	 */
 	public StringParser(){}
 
 	/**

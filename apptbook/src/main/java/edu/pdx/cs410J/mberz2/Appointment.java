@@ -18,8 +18,11 @@ public class Appointment extends AbstractAppointment {
     // Suppresses default constructor, ensuring non-instatiability.
 	//private Appointment(){}
 
+	/* String containing the appointment description. */
 	private final String desc;
+	/* String containing the begin time in MM/DD/YYY HH:MM format */
 	private final String beginTime;
+	/* String containing the end time in MM/DD/YYY HH:MM format */
 	private final String endTime;
 
 	/**

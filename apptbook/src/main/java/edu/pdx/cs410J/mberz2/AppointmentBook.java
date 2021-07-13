@@ -19,9 +19,15 @@ public class AppointmentBook extends AbstractAppointmentBook<Appointment> {
 	// Suppresses default constructor, ensuring non-instatiability.
 	// private AppointmentBook(){}
 
+	/* String containing the appointment book owner */
 	private String owner;
+
+	/* Collection containing an arrayList of appointment objects. */
 	private Collection<Appointment> appList = new ArrayList<>();
 
+	/**
+	 * Default constructor for an AppointmentBook Object.
+	 */
 	public AppointmentBook(){}
 
 	/**
@@ -51,6 +57,11 @@ public class AppointmentBook extends AbstractAppointmentBook<Appointment> {
 		return this.owner;
 	}
 
+	/**
+	 * Setter to set the owner data member to the passed in argument.
+	 *
+	 * @param o String containing the owner argument.
+	 */
 	public void setOwnerName(String o) {
 		this.owner = o;
 	}

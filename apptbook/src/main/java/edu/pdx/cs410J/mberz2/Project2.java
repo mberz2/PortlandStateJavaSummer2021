@@ -41,6 +41,7 @@ public class Project2 {
 	public static final String USAGE =
 			"Usage: java -jar /apptbook/target/apptbook-2021.0.0.jar " +
 					"[options] <args>";
+
 	/* String containing syntax for how to display README */
 	public static final String README =
 			"java -jar /apptbook/target/apptbook-2021.0.0.jar -README";
