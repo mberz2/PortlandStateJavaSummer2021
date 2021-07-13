@@ -165,7 +165,8 @@ public class Project3 {
 	 * @param args String array containing the command line arguments.
 	 * @return appointmentBook object containing the new appointment.
 	 */
-	public static AppointmentBook parseInput(String[] args) {
+	public static AppointmentBook parseInput(String[] args)
+			throws ParserException {
 
 		// New array for holding parsed arguments.
 		String[] newArgs = Arrays.copyOfRange(args, FLAGS, args.length);

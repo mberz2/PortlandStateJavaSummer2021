@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.containsString;
 
 public class TextDumperTest {
 
+	/*
 	@Test
 	void dumperDumpsAppointmentBookOwner() {
 		String owner = "Owner";
@@ -67,6 +68,6 @@ public class TextDumperTest {
 		assertThat(dumpedText, containsString(date));
 
 	}
-
+*/
 
 }
