@@ -1,13 +1,14 @@
 package edu.pdx.cs410J.mberz2;
+
 import edu.pdx.cs410J.AppointmentBookParser;
 import edu.pdx.cs410J.ParserException;
 import java.io.*;
 import static edu.pdx.cs410J.mberz2.Project2.*;
 
 /**
- * This class implements only class {@link AppointmentBookParser}. This class
- * contains methods for the parsing of a BufferedReader into an appointment book
- * object. The buffered reader contains an input stream to a File, or resource.
+ * This class implements read-only class {@link AppointmentBookParser}.
+ * This class contains methods for the parsing of a BufferedReader into an
+ * appointmentBook object.
  *
  *  * @author Matthew Berzinskas
  *  * @since 2020-6-23
@@ -62,8 +63,8 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 				//Check parsedApp
 				StringParser sp = new StringParser();
 				if(!sp.validateString(parsedApp)){
-					System.err.println("Run with -README to see " +
-							"proper formatting.");
+					System.err.println("Error: File not properly formatted.\n" +
+							"Run with -README to see proper formatting.");
 					System.err.println(README);
 					System.exit(1);
 				}

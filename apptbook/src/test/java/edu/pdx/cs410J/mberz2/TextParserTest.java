@@ -31,7 +31,6 @@ public class TextParserTest {
 
 		StringWriter sw = new StringWriter();
 		TextDumper dumper = new TextDumper(sw);
-		dumper.setFileName("TEST");
 		dumper.dump(book);
 
 		TextParser parser = new TextParser(new StringReader(sw.toString()));

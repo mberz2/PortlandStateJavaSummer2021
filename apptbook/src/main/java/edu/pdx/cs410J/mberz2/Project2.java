@@ -236,8 +236,8 @@ public class Project2 {
 	 */
 	public static void writeFile(AppointmentBook appBook) throws IOException {
 
-		TextDumper textDumper = new TextDumper(new StringWriter());
-		textDumper.setFileName(FILE);
+		TextDumper textDumper = new TextDumper(new FileWriter(FILE));
+		//textDumper.setFileName(FILE);
 		textDumper.dump(appBook);
 
 	}
