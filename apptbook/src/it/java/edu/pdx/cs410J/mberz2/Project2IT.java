@@ -219,8 +219,6 @@ class Project2IT extends InvokeMainTestCase {
 	@Test
 	void invalidTextFileChar(){
 		MainMethodResult result = invokeMain(invalidFileChar);
-		System.out.println(result.getTextWrittenToStandardError());
-		System.out.println(result.getTextWrittenToStandardOut());
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("Error"));
 		assertThat(result.getExitCode(), equalTo(1));
@@ -231,7 +229,6 @@ class Project2IT extends InvokeMainTestCase {
 		MainMethodResult result = invokeMain(noFile);
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("Invalid"));
-		System.out.println(result.getTextWrittenToStandardError());
 		assertThat(result.getExitCode(), equalTo(1));
 	}
 
