@@ -11,11 +11,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TextParserTest {
 
-	//		assertDoesNotThrow(() ->{		});
-
 	@Test
 	void emptyFileCannotBeParsed() {
-		InputStream resource = getClass().getResourceAsStream("emptyFile.txt");
+		InputStream resource =
+				getClass().getResourceAsStream("emptyFile.txt");
 		assertNotNull(resource);
 
 		TextParser parser = new TextParser(new InputStreamReader(resource));
@@ -24,14 +23,15 @@ public class TextParserTest {
 
 	@Test
 	void malformedFileCannotBeParsed() {
-			InputStream resource = getClass().getResourceAsStream("malformed.txt");
+			InputStream resource =
+					getClass().getResourceAsStream("malformed.txt");
 			assertNotNull(resource);
 			TextParser parser = new TextParser(new InputStreamReader(resource));
 			assertThrows(ParserException.class, parser::parse);
 	}
 
 	@Test
-	void appointmentBookOwnerCanBeDumpedAndParsed() throws IOException, ParserException {
+	void appointmentBookOwnerCanBeDumpedAndParsed() throws ParserException {
 		String owner = "Owner";
 		Appointment app = new Appointment("Description",
 				"1/1/1000 10:00", "1/1/1000 10:30");
