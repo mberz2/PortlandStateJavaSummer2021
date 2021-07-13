@@ -31,6 +31,9 @@ public class Appointment extends AbstractAppointment {
 	private final Date beginTime;
 	/* String containing the end time in MM/DD/YYY HH:MM format */
 	private final Date endTime;
+	/* DateFormat object containing the date format */
+	DateFormat dateFormat =
+			new SimpleDateFormat("MM/dd/yyyy hh:mm a", Locale.ENGLISH);
 
 	/**
 	 * Parameterized constructor for an appointment object. Sets the private
@@ -43,16 +46,14 @@ public class Appointment extends AbstractAppointment {
 	Appointment (String d, String bt, String et) throws ParserException {
 		this.desc = d;
 
-		DateFormat format =
-				new SimpleDateFormat("MM/dd/yyyy hh:mm", Locale.ENGLISH);
 		try {
-			this.beginTime = format.parse(bt);
+			this.beginTime = dateFormat.parse(bt.trim());
 		} catch (ParseException e){
 			throw (new ParserException("Error: Unable to parse begin date."));
 		}
 
 		try {
-			this.endTime = format.parse(et);
+			this.endTime = dateFormat.parse(et.trim());
 		} catch (ParseException e){
 			throw (new ParserException("Error: Unable to parse begin date."));
 		}
@@ -60,7 +61,7 @@ public class Appointment extends AbstractAppointment {
 
 	/**
 	 * Method to return the appointment's begin time.
-	 * @return String containing begin time. {@code MM/DD/YYYY HH:MM}
+	 * @return String containing begin time. {@code MM/DD/YYYY HH:MM am/pm}
 	 * @throws UnsupportedOperationException if beginTime is null.
 	 */
 	@Override
@@ -68,13 +69,13 @@ public class Appointment extends AbstractAppointment {
 		if (beginTime == null)
 			throw new UnsupportedOperationException
 					("Appointment not implemented.");
-		return String.valueOf(this.beginTime);
+		return dateFormat.format(this.beginTime);
 	}
 
 
 	/**
 	 * Method to return the appointment's begin time.
-	 * @return String containing end time. {@code MM/DD/YYYY HH:MM}
+	 * @return String containing end time. {@code MM/DD/YYYY HH:MM am/pm}
 	 * @throws UnsupportedOperationException if endTime is null.
 	 */
 	@Override
@@ -82,7 +83,7 @@ public class Appointment extends AbstractAppointment {
 		if (endTime == null)
 		    throw new UnsupportedOperationException
 				    ("Appointment not implemented.");
-		return String.valueOf(this.endTime);
+		return dateFormat.format(this.endTime);
 	}
 
 	/**

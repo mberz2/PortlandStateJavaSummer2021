@@ -26,7 +26,7 @@ import java.util.*;
 public class Project3 {
 
 	/* MAX sets teh maximum number of input arguments. */
-	private static final int MAX = 10;
+	private static final int MAX = 12;
 
 	/* Total number of enabled options flags, used to find first appt. arg */
 	private static int FLAGS;
@@ -102,6 +102,8 @@ public class Project3 {
 	 */
 	public static void checkInput(String [] args) throws IOException {
 
+		System.out.println(args.length);
+
 		/* Base cases, ZERO or TOO MANY (over total acceptable, MAX) */
 		if (args.length == 0) {
 			System.err.println("Error: Missing command line arguments");
@@ -117,7 +119,7 @@ public class Project3 {
 		for (String arg : args) {
 			if (arg.startsWith("-")) {
 				if (arg.equalsIgnoreCase(("-README"))) {
-					printRes("README2.txt");
+					printRes("README3.txt");
 				}
 				else if (arg.equalsIgnoreCase(("-PRINT"))) {
 					FLAGS++;
@@ -139,9 +141,9 @@ public class Project3 {
 		}
 
 		/* Check for FLAGS, will determine next set of allowable numbers */
-		if((args.length - FLAGS) >6)
+		if((args.length - FLAGS) > 8)
 			printErrorUsage("Error: Too MANY command line arguments", 1);
-		else if (args.length <6)
+		else if (args.length < 8)
 			printErrorUsage("Error: Too FEW command line arguments", 1);
 
 		/* If print is enabled, can only have 7, 8, or 10 args. */
@@ -171,16 +173,13 @@ public class Project3 {
 		// New array for holding parsed arguments.
 		String[] newArgs = Arrays.copyOfRange(args, FLAGS, args.length);
 
-		StringParser sp = new StringParser();
-		if (!sp.validateString(newArgs)) {
-			System.err.println("Run with -README to see proper formatting.");
-			System.err.println(README);
-			System.exit(1);
-		}
-
 		// Create a new appointment from parsed input.
 		Appointment app = new Appointment(newArgs[1],
-				newArgs[2]+" "+newArgs[3], newArgs[4]+" "+newArgs[5]);
+				newArgs[2]+" "+newArgs[3]+" "+newArgs[4],
+				newArgs[5]+" "+newArgs[6]+" "+newArgs[7]);
+
+		System.out.println(app);
+		System.exit(1);
 
 		return new AppointmentBook(newArgs[0], app);
 	}
