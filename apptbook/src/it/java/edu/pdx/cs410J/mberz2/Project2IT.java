@@ -44,7 +44,7 @@ class Project2IT extends InvokeMainTestCase {
 			"Description", "1/1/1000", "10:00", "1/1/1000", "10:30"};
 	private final String [] noFile = {"-textFile", "Owner", "Description",
 			"1/1/1000", "10:00", "1/1/1000", "10:30"};
-	private final String [] invalidFileOwner = {"-textFile", "test",
+	private final String [] invalidFileOwner = {"-textFile", "TEST",
 			"Test Owner2", "Description",
 			"1/1/1000", "10:00", "1/1/1000", "10:30"};
 	private final String [] invalidFileChar = {"-textFile", "*/test",
