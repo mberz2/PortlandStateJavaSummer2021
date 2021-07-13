@@ -190,8 +190,6 @@ public class Project3 {
 				newArgs[2]+" "+newArgs[3]+" "+newArgs[4],
 				newArgs[5]+" "+newArgs[6]+" "+newArgs[7]);
 
-		System.out.println(app);
-
 		return new AppointmentBook(newArgs[0], app);
 	}
 

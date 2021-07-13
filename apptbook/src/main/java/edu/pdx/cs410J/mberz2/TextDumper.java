@@ -40,7 +40,6 @@ public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
 		try {
 			Collection<Appointment> apps = appBook.getAppointments();
 			for (Appointment a: apps) {
-				System.out.println(a);
 
 				String[] btSplit = a.getBeginTimeString().split("\\s");
 				String[] etSplit = a.getEndTimeString().split("\\s");
