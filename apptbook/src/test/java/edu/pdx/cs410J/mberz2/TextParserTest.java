@@ -7,10 +7,11 @@ import java.io.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TextParserTest {
+
+	//		assertDoesNotThrow(() ->{		});
 
 	@Test
 	void emptyFileCannotBeParsed() {
@@ -22,12 +23,11 @@ public class TextParserTest {
 	}
 
 	@Test
-	void invalidFileCannotBeParsed() {
-		InputStream resource = getClass().getResourceAsStream("/");
-		assertNotNull(resource);
-
-		TextParser parser = new TextParser(new InputStreamReader(resource));
-		assertThrows(ParserException.class, parser::parse);
+	void malformedFileCannotBeParsed() {
+			InputStream resource = getClass().getResourceAsStream("malformed.txt");
+			assertNotNull(resource);
+			TextParser parser = new TextParser(new InputStreamReader(resource));
+			assertThrows(ParserException.class, parser::parse);
 	}
 
 	@Test
@@ -49,25 +49,3 @@ public class TextParserTest {
 	}
 
 }
-
-	/*
-	@Test
-	void appointmentBookOwnerCanBeDumpedToFileAndParsed(@TempDir File dir) throws IOException, ParserException {
-		File textFile = new File(dir, "appointments.txt");
-
-		Appointment app = new Appointment("Description",
-				"1/1/1000 10:00", "1/1/1000 10:30");
-
-		String owner = "Owner";
-		AppointmentBook book = new AppointmentBook(owner, app);
-
-		TextDumper dumper = new TextDumper(new FileWriter(textFile));
-		dumper.setFileName("TEST");
-		dumper.dump(book);
-
-		TextParser parser = new TextParser(new FileReader(textFile));
-		book = parser.parse();
-
-		assertThat(book.getOwnerName(), equalTo(owner));
-	}
-	 */

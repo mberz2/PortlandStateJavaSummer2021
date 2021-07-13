@@ -202,12 +202,9 @@ public class Project2 {
 
 			//Check if anything is in the file.
 			AppointmentBook tempBook = textParser.parse();
-			if (tempBook == null){
-				System.out.println("Nothing in file.");
-			}
 
 			// If the owners of the new book and the parsed book don't match, exit
-			else if(!tempBook.getOwnerName().equals(appBook.getOwnerName())){
+			if(!tempBook.getOwnerName().equals(appBook.getOwnerName())){
 				System.err.println("Incompatible owners.\nPlease check that the" +
 						"new appointment owner is the same as the loaded file.");
 				System.exit(1);

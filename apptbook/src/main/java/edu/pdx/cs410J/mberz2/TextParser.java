@@ -41,8 +41,6 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 	@Override
 	public AppointmentBook parse () throws ParserException {
 
-		AppointmentBook tempBook = new AppointmentBook();
-
 		try{
 			if(!reader.ready()){
 				throw new ParserException("Error: Malformed or empty file.");
@@ -54,6 +52,7 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 
 		try {
 
+			AppointmentBook tempBook = new AppointmentBook();
 			String line;
 
 			while((line = reader.readLine()) != null) {
@@ -63,13 +62,10 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 
 				//Check parsedApp
 				StringParser sp = new StringParser();
-				if(!sp.validateString(parsedApp)){
-					System.err.println("Error: File not properly formatted.\n" +
-							"Run with -README to see proper formatting.");
-					System.err.println(README);
-					System.exit(1);
-				}
+				if(!sp.validateString(parsedApp))
+					throw (new ParserException("Error: malformed or empty file."));
 
+				System.out.println("Something to parse");
 				// Create a temporary appointment.
 				Appointment app = new Appointment(parsedApp[1],
 						parsedApp[2]+" "+parsedApp[3],
@@ -80,6 +76,7 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 
 			}
 
+			System.out.println("RETURNING not null");
 			reader.close();
 			return tempBook;
 

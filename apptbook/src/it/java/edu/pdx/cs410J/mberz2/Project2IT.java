@@ -24,6 +24,8 @@ class Project2IT extends InvokeMainTestCase {
 	private final String [] tooMany = {"Owner", "Description",
 			"1/1/1000", "10:00", "1/1/1000", "10:30", "Owner", "Description",
 			"1/1/1000", "10:00", "1/1/1000", "10:30",};
+	private final String [] tooManyOption = {"-print", "Owner", "Description",
+			"1/1/1000", "10:00", "1/1/1000", "10:30", "Owner"};
 	private final String [] tooManyFlags = {"-print", "Owner", "Description",
 			"1/1/1000", "10:00", "1/1/1000", "10:30", "Owner", "Description",
 			"1/1/1000", "10:00", "1/1/1000", "10:30",};
@@ -78,6 +80,14 @@ class Project2IT extends InvokeMainTestCase {
 		assertThat(result.getExitCode(), equalTo(1));
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("Too many"));
+	}
+
+	@Test
+	void testTooManyCommandLineArgumentsOptions(){
+		MainMethodResult result = invokeMain(tooManyOption);
+		assertThat(result.getExitCode(), equalTo(1));
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("Too MANY"));
 	}
 
 	@Test
