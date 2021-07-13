@@ -20,7 +20,8 @@ import java.util.Locale;
  * @since 2020-6-23
  * @see AbstractAppointment
  */
-public class Appointment extends AbstractAppointment {
+public class Appointment extends AbstractAppointment
+		implements Comparable<Appointment>{
 
     // Suppresses default constructor, ensuring non-instatiability.
 	//private Appointment(){}
@@ -105,5 +106,10 @@ public class Appointment extends AbstractAppointment {
 		    throw new UnsupportedOperationException
 				    ("Appointment not implemented.");
 		return this.desc;
+	}
+
+	@Override
+	public int compareTo(Appointment a) {
+		return 0;
 	}
 }
