@@ -46,6 +46,7 @@ public class Appointment extends AbstractAppointment {
 	Appointment (String d, String bt, String et) throws ParserException {
 		this.desc = d;
 
+
 		try {
 			this.beginTime = dateFormat.parse(bt.trim());
 		} catch (ParseException e){
@@ -69,7 +70,11 @@ public class Appointment extends AbstractAppointment {
 		if (beginTime == null)
 			throw new UnsupportedOperationException
 					("Appointment not implemented.");
-		return dateFormat.format(this.beginTime);
+
+		return DateFormat.getDateInstance(DateFormat.SHORT).format(beginTime)
+				+ " "
+				+ DateFormat.getTimeInstance(DateFormat.SHORT).format(beginTime);
+
 	}
 
 
@@ -83,7 +88,10 @@ public class Appointment extends AbstractAppointment {
 		if (endTime == null)
 		    throw new UnsupportedOperationException
 				    ("Appointment not implemented.");
-		return dateFormat.format(this.endTime);
+
+		return DateFormat.getDateInstance(DateFormat.SHORT).format(endTime)
+				+ " "
+				+ DateFormat.getTimeInstance(DateFormat.SHORT).format(endTime);
 	}
 
 	/**

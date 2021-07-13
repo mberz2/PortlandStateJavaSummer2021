@@ -57,19 +57,15 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 			while((line = reader.readLine()) != null) {
 
 				// Parse line based on comma to the end of the line.
-				String [] parsedApp = line.split("\\|");
+				String [] newArgs = line.split("\\|");
 
-				//Check parsedApp
-				StringParser sp = new StringParser();
-				if(!sp.validateString(parsedApp))
-					throw (new ParserException("Error: malformed or empty file."));
 
 				// Create a temporary appointment.
-				Appointment app = new Appointment(parsedApp[1],
-						parsedApp[2]+" "+parsedApp[3],
-						parsedApp[4]+" "+parsedApp[5]);
+				Appointment app = new Appointment(newArgs[1],
+						newArgs[2]+" "+newArgs[3]+" "+newArgs[4],
+						newArgs[5]+" "+newArgs[6]+" "+newArgs[7]);
 
-				tempBook.setOwnerName(parsedApp[0]);
+				tempBook.setOwnerName(newArgs[0]);
 				tempBook.addAppointment(app);
 
 			}
