@@ -35,7 +35,7 @@ public class Project3 {
 	private static String FILE;
 
 	/* Contains the file name, if pretty printer is enabled. */
-	private static String PRINTER;
+	private static Writer WRITER;
 
 	/* Map containing the different option fields, set all to 0 */
 	private static final Map<String, Integer> OPTIONS = new HashMap<>();
@@ -89,12 +89,7 @@ public class Project3 {
 			writeFile(tempBook);
 
 			if(OPTIONS.get("Pretty") == 1){
-				PrettyPrinter printer = new PrettyPrinter(new FileWriter(PRINTER));
-				printer.dump(tempBook);
-			}
-
-			if(OPTIONS.get("Pretty") == 2){
-				PrettyPrinter printer = new PrettyPrinter(new PrintWriter(System.out));
+				PrettyPrinter printer = new PrettyPrinter(WRITER);
 				printer.dump(tempBook);
 			}
 
@@ -103,12 +98,7 @@ public class Project3 {
 		}
 
 		if(OPTIONS.get("Pretty") == 1){
-			PrettyPrinter printer = new PrettyPrinter(new FileWriter(PRINTER));
-			printer.dump(newBook);
-		}
-
-		if(OPTIONS.get("Pretty") == 2){
-			PrettyPrinter printer = new PrettyPrinter(new PrintWriter(System.out));
+			PrettyPrinter printer = new PrettyPrinter(WRITER);
 			printer.dump(newBook);
 		}
 
@@ -158,12 +148,12 @@ public class Project3 {
 				}
 				else if (arg.equalsIgnoreCase(("-PRETTY"))){
 					FLAGS = FLAGS + 2;
-					OPTIONS.put("Pretty", 2);
+					OPTIONS.put("Pretty", 1);
 
 					int i = Arrays.asList(args).indexOf(arg);
-					PRINTER = args[i+1];
-					if(PRINTER.equals("-"))
-						PRINTER = "System.out";
+					WRITER = new FileWriter(args[i+1]);
+					if(args[i+1].equals("-"))
+						WRITER = new PrintWriter(System.out);
 				}
 			}
 
@@ -243,17 +233,10 @@ public class Project3 {
 				System.exit(1);
 			} else {
 				// Combining the appointments.
-
-				//ArrayList<Appointment> apps = tempBook.getAppointments();
-				//System.out.println("Combining with text file.");
-
 				ArrayList<Appointment> app = appBook.getAppointments();
 
 				for (Appointment a: app)
 					tempBook.addAppointment(a);
-
-				//System.out.println("Combining DONE.");
-				//System.out.println(tempBook.getAppointments());
 
 				return tempBook;
 
