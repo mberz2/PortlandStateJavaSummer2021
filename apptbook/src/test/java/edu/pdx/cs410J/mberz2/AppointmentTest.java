@@ -1,7 +1,6 @@
 package edu.pdx.cs410J.mberz2;
 import edu.pdx.cs410J.ParserException;
 import org.junit.jupiter.api.Test;
-import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,24 +12,20 @@ public class AppointmentTest {
 	//Appointment Tests
 	@Test
 	void nullBeginTimeCannotBeParsed() {
-
-		assertThrows(
-				NullPointerException.class, () ->{
-					new Appointment("Desc",
-							null,
-							"10/10/2020 10:10 AM");
-				});
+		assertThrows(NullPointerException.class, () ->
+						new Appointment("Desc",
+						null,
+						"10/10/2020 10:10 AM"));
 	}
 
 	@Test
 	void malFormedBeginTimeCannotBeParsed() {
 
 		assertThrows(
-				ParserException.class, () ->{
-					new Appointment("Desc",
-							"10/10/2020",
-							"10/10/2020 10:10 AM");
-				});
+				ParserException.class, () ->
+						new Appointment("Desc",
+						"10/10/2020",
+						"10/10/2020 10:10 AM"));
 	}
 
 
@@ -38,33 +33,30 @@ public class AppointmentTest {
 	void nullEndTimeCannotBeParsed() {
 
 		assertThrows(
-				NullPointerException.class, () ->{
-					new Appointment("Desc",
-							"10/10/2020 10:10 AM",
-							null);
-				});
+				NullPointerException.class, () ->
+						new Appointment("Desc",
+						"10/10/2020 10:10 AM",
+						null));
 	}
 
 	@Test
 	void malFormedEndTimeCannotBeParsed() {
 
 		assertThrows(
-				ParserException.class, () ->{
-					new Appointment("Desc",
-							"10/10/2020 10:10 AM",
-							"10/10/2020");
-				});
+				ParserException.class, () ->
+						new Appointment("Desc",
+						"10/10/2020 10:10 AM",
+						"10/10/2020"));
 	}
 
 	@Test
 	void cannotEndBeforeBeginTime() {
 
 		assertThrows(
-				UnsupportedOperationException.class, () ->{
-					new Appointment("Desc",
-							"10/10/2020 10:10 AM",
-							"10/09/2020 10:10 AM");
-				});
+				UnsupportedOperationException.class, () ->
+						new Appointment("Desc",
+						"10/10/2020 10:10 AM",
+						"10/09/2020 10:10 AM"));
 	}
 
 	@Test
@@ -148,7 +140,7 @@ public class AppointmentTest {
 	}
 
 	@Test
-	void nullGetDescriptionThrowsException () throws ParserException {
+	void nullGetDescriptionThrowsException () {
 		assertThrows(UnsupportedOperationException.class, () ->{
 			Appointment app = new Appointment(null,
 					"10/15/2020 10:10 AM",
