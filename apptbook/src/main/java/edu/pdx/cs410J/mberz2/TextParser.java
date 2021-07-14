@@ -51,8 +51,6 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 
 		try {
 
-			System.out.println("Reading in an appointment from file.");
-
 			AppointmentBook tempBook = new AppointmentBook();
 			String line;
 

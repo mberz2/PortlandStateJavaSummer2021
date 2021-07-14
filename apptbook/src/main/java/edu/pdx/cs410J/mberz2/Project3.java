@@ -77,29 +77,45 @@ public class Project3 {
 		// Create a new appointmentBook by parsing the input args.
 		AppointmentBook newBook = parseInput(args);
 
+		// If the print option is enabled, call to the print function for the
+		// newly created appointment (from the command line).
+		if(OPTIONS.get("Print") == 1)
+			printAppt(newBook);
+
 		// If a textFile option is enabled, load the appointments from the file
 		// Add the appointment from the command line, and write it all back.
 		if(OPTIONS.get("TextFile") == 1){
 			AppointmentBook tempBook = loadFile(newBook);
 			writeFile(tempBook);
-		}
 
-		// If the print option is enabled, call to the print function for the
-		// newly created appointment (from the command line).
-		if(OPTIONS.get("Print") == 1)
-			printAppt(newBook);
+			if(OPTIONS.get("Pretty") == 1){
+				PrettyPrinter printer = new PrettyPrinter(new FileWriter(PRINTER));
+				printer.dump(tempBook);
+			}
+
+			if(OPTIONS.get("Pretty") == 2){
+				PrettyPrinter printer = new PrettyPrinter(new PrintWriter(System.out));
+				printer.dump(tempBook);
+			}
+
+			// Exit successfully.
+			System.exit(0);
+		}
 
 		if(OPTIONS.get("Pretty") == 1){
 			PrettyPrinter printer = new PrettyPrinter(new FileWriter(PRINTER));
 			printer.dump(newBook);
 		}
 
-
+		if(OPTIONS.get("Pretty") == 2){
+			PrettyPrinter printer = new PrettyPrinter(new PrintWriter(System.out));
+			printer.dump(newBook);
+		}
 
 		// Exit successfully.
 		System.exit(0);
-
 	}
+
 
 	/**
 	 * Method parses/validates the input String array. The method checks for
@@ -142,10 +158,12 @@ public class Project3 {
 				}
 				else if (arg.equalsIgnoreCase(("-PRETTY"))){
 					FLAGS = FLAGS + 2;
-					OPTIONS.put("Pretty", 1);
+					OPTIONS.put("Pretty", 2);
 
 					int i = Arrays.asList(args).indexOf(arg);
 					PRINTER = args[i+1];
+					if(PRINTER.equals("-"))
+						PRINTER = "System.out";
 				}
 			}
 
@@ -162,7 +180,7 @@ public class Project3 {
 
 		/* If textFile is enabled, can only have 10, 11, 13, 14 args */
 		else {
-			final var b = args.length != 10 && args.length != 11
+			final var b = args.length != 10 && args.length != 12
 					&& args.length != 13 && args.length != 14;
 			if(fileEnabled() && b)
 				printErrorUsage("Error: Invalid number of arguments " +
@@ -225,17 +243,17 @@ public class Project3 {
 				System.exit(1);
 			} else {
 				// Combining the appointments.
+
 				//ArrayList<Appointment> apps = tempBook.getAppointments();
-				System.out.println("Combining with text file.");
+				//System.out.println("Combining with text file.");
 
 				ArrayList<Appointment> app = appBook.getAppointments();
 
 				for (Appointment a: app)
 					tempBook.addAppointment(a);
 
-				System.out.println("Combining DONE.");
-
-				System.out.println(tempBook.getAppointments());
+				//System.out.println("Combining DONE.");
+				//System.out.println(tempBook.getAppointments());
 
 				return tempBook;
 

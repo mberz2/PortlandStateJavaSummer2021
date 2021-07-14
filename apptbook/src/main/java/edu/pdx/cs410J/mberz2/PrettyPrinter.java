@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.TimeUnit;
 
 public class PrettyPrinter implements AppointmentBookDumper<AppointmentBook> {
 
@@ -21,29 +22,30 @@ public class PrettyPrinter implements AppointmentBookDumper<AppointmentBook> {
 	public void dump(AppointmentBook appBook)
 			throws IOException {
 
-		System.out.println(appBook);
+		writer.write("\n===============================================================================");
+		writer.write("\n| Appointment Book for "+appBook.getOwnerName());
 
 		try {
 			ArrayList<Appointment> apps = appBook.getAppointments();
 
-			for (Appointment a: apps) {
-				System.out.println(a);
-			}
 
 			for (Appointment a: apps) {
-
-				System.out.println(a.getBeginTimeString());
+				writer.write("\n-------------------------------------------------------------------------------");
 
 				String[] btSplit = a.getBeginTimeString().split("\\s");
 				String[] etSplit = a.getEndTimeString().split("\\s");
 
-				writer.write(appBook.getOwnerName() + "|"
-						+ a.getDescription()
-						+ "|" + btSplit[0] + "|" + btSplit[1] + "|" + btSplit[2]
-						+ "|" + etSplit[0] + "|" + etSplit[1] + "|" + etSplit[2]
-						+ "\n");
+				writer.write("\n|--------- Begin Time ----------------- End Time ------------- Duration ------|");
+				writer.write("\n|\t\t"+btSplit[0] + " " + btSplit[1] + " " + btSplit[2]+"\t\t\t"
+						+ etSplit[0] + " " + etSplit[1] + " " + etSplit[2]+"\t\t\t"
+						+ TimeUnit.MILLISECONDS.toMinutes(a.getEndTime().getTime() - a.getBeginTime().getTime())
+						+ " mins");
+				writer.write("\n| "+a.getDescription());
+
+				writer.write("\n-------------------------------------------------------------------------------");
 			}
 
+			writer.write("\n===============================================================================");
 			writer.flush();
 			writer.close();
 
