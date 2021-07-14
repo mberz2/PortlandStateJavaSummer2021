@@ -4,7 +4,8 @@ Course: CS410P, Advanced Programming with Java
 Portland State University, Summer 2021
 
 This program expands on the simple command line appointment book implemented
-in Program 1 and 2, and adds support for dates and sorting.
+in Program 1 and 2, and adds support for dates and sorting as well as the
+ability to output a prettier format to either the standard out, or a file.
 
 Provided a text document argument, the given appointment will be added. If the
 file contains appointments, they will also be read in, creating continuity.
@@ -15,6 +16,8 @@ Options are (options may appear in any order");
     -PRINT            - Prints a description of the new appointment
     -README           - Prints a README for this project and exits
     -textFile file    - Where to read/write the appointment book
+    -pretty file      - Where to write the pretty output.
+                        Note: Use (-pretty -) for printing to standard out.
 
 args are (in this order):
     owner             - The person whose owns the appt book
