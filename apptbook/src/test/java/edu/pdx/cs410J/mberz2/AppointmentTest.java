@@ -21,19 +21,34 @@ public class AppointmentTest {
 		Appointment sameAll = new Appointment("a", "7/13/2021 2:00 pm",
 				"7/13/2021 2:05 pm");
 
+		String [] first = {"-textfile", "TEST", "Owner",
+				"Description", "7/13/2021", "10:00", "am", "7/13/2021", "10:05", "am"};
+
+		String [] mid = {"-textfile", "TEST", "Owner",
+				"Description", "7/13/2021", "10:10", "am", "7/13/2021", "11:00", "am"};
+
+		String [] last = {"-textfile", "TEST", "Owner",
+				"Description", "7/13/2021", "11:00", "am", "7/13/2021", "11:05", "am"};
+
 
 		/* 0 if the argument Date is equal to this Date; a value less than 0 if
 		this Date is before the Date argument; and a value greater than 0 if
 		this Date is after the Date argument. */
 
-		int x = app.compareTo(sameBegin);
-		System.out.println(x);
+		Appointment app1 = new Appointment("EARLIEST", "7/13/2021 10:00 am", "7/13/2021 10:05 am");
+		Appointment app2 = new Appointment("MIDDLEST", "7/13/2021 10:05 am", "7/13/2021 10:10 am");
+		Appointment app3 = new Appointment("LATEST", "7/13/2021 10:10 am", "7/13/2021 10:15 am");
 
-		x = app.compareTo(sameBeginEnd);
-		System.out.println(x);
+		System.out.println(app1.compareTo(app2));
+		System.out.println(app1.compareTo(app3));
 
-		x = app.compareTo(sameAll);
-		System.out.println(x);
+		AppointmentBook appBook = new AppointmentBook("Owner", app3);
+		System.out.println(appBook.getAppointments());
+		appBook.addAppointment(app2);
+		System.out.println(appBook.getAppointments());
+		appBook.addAppointment(app1);
+		System.out.println(appBook.getAppointments());
+
 	}
 
 

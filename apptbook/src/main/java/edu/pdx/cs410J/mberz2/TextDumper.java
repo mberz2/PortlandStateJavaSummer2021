@@ -2,6 +2,7 @@ package edu.pdx.cs410J.mberz2;
 
 import edu.pdx.cs410J.AppointmentBookDumper;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -38,7 +39,12 @@ public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
 	public void dump(AppointmentBook appBook) {
 
 		try {
-			Collection<Appointment> apps = appBook.getAppointments();
+			ArrayList<Appointment> apps = appBook.getAppointments();
+
+			for (Appointment a: apps) {
+				System.out.println(a);
+			}
+
 			for (Appointment a: apps) {
 
 				String[] btSplit = a.getBeginTimeString().split("\\s");

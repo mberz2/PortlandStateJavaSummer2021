@@ -23,7 +23,7 @@ public class AppointmentBook extends AbstractAppointmentBook<Appointment> {
 	private String owner;
 
 	/* Collection containing an arrayList of appointment objects. */
-	private Collection<Appointment> appList = new ArrayList<>();
+	private ArrayList<Appointment> appList = new ArrayList<>();
 
 	/**
 	 * Default constructor for an AppointmentBook Object.
@@ -71,7 +71,7 @@ public class AppointmentBook extends AbstractAppointmentBook<Appointment> {
 	 * @return String containing owner.
 	 */
 	@Override
-	public Collection<Appointment> getAppointments() {
+	public ArrayList<Appointment> getAppointments() {
 		if (this.appList == null || this.appList.isEmpty())
 			throw new UnsupportedOperationException("Appointment is empty.");
 		return appList; }
@@ -86,7 +86,13 @@ public class AppointmentBook extends AbstractAppointmentBook<Appointment> {
 	public void addAppointment(Appointment app) {
 		if (app == null)
 			throw new UnsupportedOperationException("Appointment is empty.");
+
+		//appList.sort(Appointment::compareTo);
+		System.out.println("B: "+ appList);
 		appList.add(app);
+		Collections.sort(appList);
+
+		System.out.println("A: "+ appList);
 	}
 
 }

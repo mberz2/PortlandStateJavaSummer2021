@@ -163,8 +163,9 @@ public class Project3 {
 			printErrorUsage("Error: Invalid number of arguments " +
 					"(for -print enabled).", 1);
 
-			/* If textFile is enabled, can only have 11, 13 or 14 args */
-		else if(fileEnabled() && (args.length != 11 && args.length != 13))
+		/* If textFile is enabled, can only have 10, 11, 13, 14 args */
+		else if(fileEnabled() && (args.length != 10 && args.length != 11
+		&& args.length != 13 && args.length != 14))
 			printErrorUsage("Error: Invalid number of arguments " +
 					"(for -textFile enabled).", 1);
 	}
@@ -219,9 +220,20 @@ public class Project3 {
 				System.exit(1);
 			} else {
 				// Combining the appointments.
-				Collection<Appointment> apps = tempBook.getAppointments();
-				for (Appointment a: apps)
-					appBook.addAppointment(a);
+				//ArrayList<Appointment> apps = tempBook.getAppointments();
+				System.out.println("Combining with text file.");
+
+				ArrayList<Appointment> app = appBook.getAppointments();
+
+				for (Appointment a: app)
+					tempBook.addAppointment(a);
+
+				System.out.println("Combining DONE.");
+
+				System.out.println(tempBook.getAppointments());
+
+				return tempBook;
+
 			}
 
 
