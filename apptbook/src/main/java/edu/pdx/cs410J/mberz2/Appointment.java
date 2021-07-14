@@ -56,10 +56,9 @@ public class Appointment extends AbstractAppointment
 			throw (new ParserException("Error: Unable to parse begin date."));
 		}
 
-		if (this.getBeginTime().getTime() > this.getEndTime().getTime()){
+		if (this.getBeginTime().getTime() > this.getEndTime().getTime())
 			throw (new UnsupportedOperationException("Error: " +
 					"End time is before begin time of the appointment."));
-		}
 	}
 
 	/**
@@ -84,7 +83,6 @@ public class Appointment extends AbstractAppointment
 		return DateFormat.getDateInstance(DateFormat.SHORT).format(beginTime)
 				+ " "
 				+ DateFormat.getTimeInstance(DateFormat.SHORT).format(beginTime);
-
 	}
 
 	/**
@@ -93,9 +91,7 @@ public class Appointment extends AbstractAppointment
 	 * @return Date object containing the full date.
 	 */
 	@Override
-	public Date getEndTime() {
-		return endTime;
-	}
+	public Date getEndTime() { return endTime; }
 
 	/**
 	 * Method to return the appointment's end time as a formatted string.
@@ -104,11 +100,9 @@ public class Appointment extends AbstractAppointment
 	 * @throws UnsupportedOperationException if endTime is null.
 	 */
 	@Override
-	public String getEndTimeString() {
-		return DateFormat.getDateInstance(DateFormat.SHORT).format(endTime)
-				+ " "
-				+ DateFormat.getTimeInstance(DateFormat.SHORT).format(endTime);
-	}
+	public String getEndTimeString() {return DateFormat.
+			getDateInstance(DateFormat.SHORT).format(endTime) + " "
+				+ DateFormat.getTimeInstance(DateFormat.SHORT).format(endTime);}
 
 	/**
 	 * Method to return the appointment's description.
@@ -119,8 +113,8 @@ public class Appointment extends AbstractAppointment
 	@Override
 	public String getDescription() {
 		if (desc == null)
-		    throw new UnsupportedOperationException
-				    ("Appointment not implemented.");
+		    throw new
+				    UnsupportedOperationException ("Appointment not implemented.");
 		return this.desc;
 	}
 
@@ -136,26 +130,16 @@ public class Appointment extends AbstractAppointment
 	@Override
 	public int compareTo(Appointment app) {
 
-		/* If any of the argument values are null, throw exception */
-		if (app.getBeginTime() == null
-				|| app.getEndTime() == null
-				|| app.getDescription() == null)
-			throw (new NullPointerException("Error: Missing date/time."));
-
 		/* Get initial difference value */
 		int diff = this.getBeginTime().compareTo(app.getBeginTime());
 
 		/* Same beginning date/time. */
 		if (diff == 0)
-
 			/* Check ending time. */
 			diff = this.getEndTime().compareTo(app.getEndTime());
-
 			if (diff == 0)
-
 				/* Same beginning and end times. Compare desc. */
 				return this.getDescription().compareTo(app.getDescription());
-
 		return diff;
 	}
 }

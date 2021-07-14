@@ -89,4 +89,71 @@ public class AppointmentTest {
 		assertEquals(e, app.getEndTimeString());
 	}
 
+	@Test
+	void compareLessThan () throws ParserException {
+		Appointment app = new Appointment("Desc",
+				"10/09/2020 10:10 AM",
+				"10/11/2020 10:10 AM");
+
+
+		Appointment app2 = new Appointment("Desc",
+				"10/10/2021 10:10 AM",
+				"10/11/2021 10:10 AM");
+
+		int e = app.compareTo(app2);
+
+		assertEquals(e, -1);
+	}
+
+	@Test
+	void compareEqual () throws ParserException {
+		Appointment app = new Appointment("Desc",
+				"10/10/2020 10:10 AM",
+				"10/11/2020 10:10 AM");
+
+
+		Appointment app2 = new Appointment("Desc",
+				"10/10/2020 10:10 AM",
+				"10/11/2020 10:10 AM");
+
+		int e = app.compareTo(app2);
+		System.out.println(e);
+
+		assertEquals(e, 0);
+	}
+
+	@Test
+	void compareGreater () throws ParserException {
+		Appointment app = new Appointment("Desc",
+				"10/15/2020 10:10 AM",
+				"10/16/2020 10:10 AM");
+
+
+		Appointment app2 = new Appointment("Desc",
+				"10/12/2020 10:10 AM",
+				"10/12/2020 10:10 AM");
+
+		int e = app.compareTo(app2);
+		System.out.println(e);
+
+		assertEquals(e, 1);
+	}
+
+	@Test
+	void getDescriptionReturnsString () throws ParserException {
+		Appointment app = new Appointment("Desc",
+				"10/15/2020 10:10 AM",
+				"10/16/2020 10:10 AM");
+		assertEquals(app.getDescription(), "Desc");
+	}
+
+	@Test
+	void nullGetDescriptionThrowsException () throws ParserException {
+		assertThrows(UnsupportedOperationException.class, () ->{
+			Appointment app = new Appointment(null,
+					"10/15/2020 10:10 AM",
+					"10/16/2020 10:10 AM");
+			app.getDescription();
+		});
+	}
 }
