@@ -1,7 +1,6 @@
 package edu.pdx.cs410J.mberz2;
 
 import org.junit.jupiter.api.Test;
-
 import java.io.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
