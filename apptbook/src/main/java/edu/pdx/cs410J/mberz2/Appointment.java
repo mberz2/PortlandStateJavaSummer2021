@@ -23,18 +23,15 @@ import java.util.Locale;
 public class Appointment extends AbstractAppointment
 		implements Comparable<Appointment>{
 
-    // Suppresses default constructor, ensuring non-instatiability.
-	//private Appointment(){}
-
 	/* String containing the appointment description. */
 	private final String desc;
-	/* String containing the begin time in MM/DD/YYY HH:MM format */
+	/* String containing the begin time in MM/DD/YYYY HH:MM format */
 	private final Date beginTime;
-	/* String containing the end time in MM/DD/YYY HH:MM format */
+	/* String containing the end time in MM/DD/YYYY HH:MM format */
 	private final Date endTime;
 	/* DateFormat object containing the date format */
 	DateFormat dateFormat =
-			new SimpleDateFormat("MM/dd/yyyy hh:mm a", Locale.ENGLISH);
+			new SimpleDateFormat("MM/dd/yy hh:mm a", Locale.ENGLISH);
 
 	/**
 	 * Parameterized constructor for an appointment object. Sets the private
@@ -46,7 +43,6 @@ public class Appointment extends AbstractAppointment
 	 */
 	Appointment (String d, String bt, String et) throws ParserException {
 		this.desc = d;
-
 
 		try {
 			this.beginTime = dateFormat.parse(bt.trim());
@@ -62,7 +58,19 @@ public class Appointment extends AbstractAppointment
 	}
 
 	/**
-	 * Method to return the appointment's begin time.
+	 * Method to get the raw date object for beginTime, for comparable.
+	 *
+	 * @return Date object containing the full date.
+	 */
+	@Override
+	public Date getBeginTime() {
+		return beginTime;
+	}
+
+
+	/**
+	 * Method to return the appointment's begin time as a formatted string.
+	 *
 	 * @return String containing begin time. {@code MM/DD/YYYY HH:MM am/pm}
 	 * @throws UnsupportedOperationException if beginTime is null.
 	 */
@@ -79,7 +87,18 @@ public class Appointment extends AbstractAppointment
 	}
 
 	/**
-	 * Method to return the appointment's begin time.
+	 * Method to get the raw date object for endTime, for comparable.
+	 *
+	 * @return Date object containing the full date.
+	 */
+	@Override
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	/**
+	 * Method to return the appointment's end time as a formatted string.
+	 *
 	 * @return String containing end time. {@code MM/DD/YYYY HH:MM am/pm}
 	 * @throws UnsupportedOperationException if endTime is null.
 	 */
@@ -96,6 +115,7 @@ public class Appointment extends AbstractAppointment
 
 	/**
 	 * Method to return the appointment's description.
+	 *
 	 * @return String containing the description.
 	 * @throws UnsupportedOperationException if desc is null.
 	 */
@@ -107,40 +127,37 @@ public class Appointment extends AbstractAppointment
 		return this.desc;
 	}
 
+	/**
+	 * Method to enforce implementation of {@link Comparable}. Checks two
+	 * appointment objects for relative ordering based first on start time, then
+	 * on ending time if the their start times are the same, then on the lexi-
+	 * graphical value of their descriptions if both start/end time are same.
+	 *
+	 * @param app Appointment to compare against this instance.
+	 * @return Value based on comparability.
+	 */
 	@Override
-	public Date getEndTime() {
-		return endTime;
-	}
+	public int compareTo(Appointment app) {
 
-	@Override
-	public Date getBeginTime() {
-		return beginTime;
-	}
-
-
-	@Override
-	public int compareTo(Appointment a) {
-
-		if (a.getBeginTime() == null
-				|| a.getEndTime() == null
-				|| a.getDescription() == null)
+		/* If any of the argument values are null, throw exception */
+		if (app.getBeginTime() == null
+				|| app.getEndTime() == null
+				|| app.getDescription() == null)
 			throw (new NullPointerException("Error: Missing date/time."));
 
-		int diff = this.beginTime.compareTo(a.getBeginTime());
+		/* Get initial difference value */
+		int diff = this.getBeginTime().compareTo(app.getBeginTime());
 
 		/* Same beginning date/time. */
-		if (diff == 0) {
+		if (diff == 0)
 
 			/* Check ending time. */
-			diff = this.endTime.compareTo(a.getEndTime());
+			diff = this.getEndTime().compareTo(app.getEndTime());
 
-			if (diff == 0) {
+			if (diff == 0)
 
 				/* Same beginning and end times. Compare desc. */
-				return this.desc.compareTo(a.getDescription());
-			}
-
-		}
+				return this.getDescription().compareTo(app.getDescription());
 
 		return diff;
 	}
