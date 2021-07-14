@@ -162,12 +162,3 @@ public class Appointment extends AbstractAppointment
 		return diff;
 	}
 }
-
-
-
-/*
-		return DateFormat.
-				getTimeInstance(DateFormat.SHORT).format(this.beginTime).
-				compareTo(DateFormat.getTimeInstance(DateFormat.SHORT).
-						format(a.beginTime));
-*/
