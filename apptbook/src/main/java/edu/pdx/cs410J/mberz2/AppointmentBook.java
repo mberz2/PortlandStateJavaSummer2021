@@ -16,9 +16,6 @@ import java.util.*;
  */
 public class AppointmentBook extends AbstractAppointmentBook<Appointment> {
 
-	// Suppresses default constructor, ensuring non-instatiability.
-	// private AppointmentBook(){}
-
 	/* String containing the appointment book owner */
 	private String owner;
 
@@ -47,6 +44,7 @@ public class AppointmentBook extends AbstractAppointmentBook<Appointment> {
 
 	/**
 	 * Returns the appointment book's owner
+	 *
 	 * @return String containing owner.
 	 * @throws UnsupportedOperationException if owner is null.
 	 */
@@ -68,6 +66,7 @@ public class AppointmentBook extends AbstractAppointmentBook<Appointment> {
 
 	/**
 	 * Returns the collection containing all appointments.
+	 *
 	 * @return String containing owner.
 	 */
 	@Override
@@ -77,7 +76,9 @@ public class AppointmentBook extends AbstractAppointmentBook<Appointment> {
 		return appList; }
 
 	/**
-	 * Adds an appointment to the give appointment book.
+	 * Adds an appointment to the give appointment book. Uses sorting from
+	 * {@link java.lang.reflect.Array}, implemented in Appointment.
+	 *
 	 * @param app Appointment object to be added to the boo.
 	 * @throws UnsupportedOperationException if appointment is null.
 	 * @see Appointment
@@ -87,12 +88,8 @@ public class AppointmentBook extends AbstractAppointmentBook<Appointment> {
 		if (app == null)
 			throw new UnsupportedOperationException("Appointment is empty.");
 
-		//appList.sort(Appointment::compareTo);
-		System.out.println("B: "+ appList);
 		appList.add(app);
 		Collections.sort(appList);
-
-		System.out.println("A: "+ appList);
 	}
 
 }
