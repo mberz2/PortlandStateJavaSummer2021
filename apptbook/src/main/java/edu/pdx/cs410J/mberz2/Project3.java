@@ -119,6 +119,9 @@ public class Project3 {
 	 */
 	public static void checkInput(String [] args) throws IOException {
 
+		final var b = args.length != 10 && args.length != 12
+				&& args.length != 13 && args.length != 14;
+
 		/* Base cases, ZERO or TOO MANY (over total acceptable, MAX) */
 		if (args.length == 0) {
 			System.err.println("Error: Missing command line arguments");
@@ -148,17 +151,32 @@ public class Project3 {
 				} else if (arg.equalsIgnoreCase(("-PRINT"))) {
 					FLAGS++;
 					OPTIONS.put("Print", 1);
+
+					/* If print is enabled, can only have 9, 11, or 14 args. */
+					if(printEnabled() && (args.length != 9 && args.length != 11))
+						printErrorUsage("Error: Invalid number of " +
+								"arguments (for -print enabled).", 1);
+
 				} else if (arg.equalsIgnoreCase(("-TEXTFILE"))) {
 					FLAGS = FLAGS + 2;
 					OPTIONS.put("TextFile", 1);
+
+					/* If textFile enabled, can only have 10, 11, 13, 14 args */
+					if(fileEnabled() && b)
+						printErrorUsage("Error: Invalid number of " +
+								"arguments (for -textFile enabled).", 1);
 
 					int i = Arrays.asList(args).indexOf(arg);
 					FILE = args[i + 1];
 				} else if (arg.equalsIgnoreCase(("-PRETTY"))) {
 					FLAGS = FLAGS + 2;
 					OPTIONS.put("Pretty", 1);
-
 					int i = Arrays.asList(args).indexOf(arg);
+
+					/* If printerEnabled, can only have 10, 11, 13, 14 args */
+					if(b)
+						printErrorUsage("Error: Invalid number of " +
+								"arguments (for -pretty enabled).", 1);
 
 					if (args[i + 1].equals("-"))
 						WRITER = new PrintWriter(System.out);
@@ -166,33 +184,11 @@ public class Project3 {
 						WRITER = new FileWriter(args[i + 1]);
 				}
 			}
-
 		}
 
 		/* Check for FLAGS, will determine next set of allowable numbers */
-		if((args.length - FLAGS) > 8)
-			printErrorUsage("Error: Too MANY command line arguments", 1);
-		else if (args.length < 8)
+		 if (args.length < 8)
 			printErrorUsage("Error: Too FEW command line arguments", 1);
-
-		/* If print is enabled, can only have 9, 11, or 14 args. */
-		if(printEnabled() && (args.length != 9 && args.length != 11))
-			printErrorUsage("Error: Invalid number of arguments " +
-					"(for -print enabled).", 1);
-
-		/* If textFile is enabled, can only have 10, 11, 13, 14 args */
-		else {
-			final var b = args.length != 10 && args.length != 12
-					&& args.length != 13 && args.length != 14;
-			if(fileEnabled() && b)
-				printErrorUsage("Error: Invalid number of arguments " +
-						"(for -textFile enabled).", 1);
-
-			/* If printer is enabled, can only have 10, 11, 13, 14 args */
-			else if(printerEnabled() && b)
-				printErrorUsage("Error: Invalid number of arguments " +
-						"(for -printer enabled).", 1);
-		}
 	}
 
 	/**

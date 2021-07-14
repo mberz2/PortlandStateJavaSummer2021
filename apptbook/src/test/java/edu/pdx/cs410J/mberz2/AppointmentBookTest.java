@@ -7,48 +7,6 @@ import org.junit.jupiter.api.Test;
 */
 public class AppointmentBookTest {
 
-	@Test
-	void compareDateAndTimes () throws ParserException {
-		Appointment app = new Appointment("test", "7/13/2021 2:00 pm",
-				"7/13/2021 2:05 pm");
-		Appointment sameBegin = new Appointment("test2", "7/13/2021 2:00 pm",
-				"7/13/2021 2:15 pm");
-		Appointment sameBeginEnd = new Appointment("testttt", "7/13/2021 2:00 pm",
-				"7/13/2021 2:05 pm");
-		Appointment sameAll = new Appointment("a", "7/13/2021 2:00 pm",
-				"7/13/2021 2:05 pm");
-
-		String [] first = {"-textfile", "TEST", "Owner",
-				"Description", "7/13/2021", "10:00", "am", "7/13/2021", "10:05", "am"};
-
-		String [] mid = {"-textfile", "TEST", "Owner",
-				"Description", "7/13/2021", "10:10", "am", "7/13/2021", "11:00", "am"};
-
-		String [] last = {"-textfile", "TEST", "Owner",
-				"Description", "7/13/2021", "11:00", "am", "7/13/2021", "11:05", "am"};
-
-
-		/* 0 if the argument Date is equal to this Date; a value less than 0 if
-		this Date is before the Date argument; and a value greater than 0 if
-		this Date is after the Date argument. */
-
-		Appointment app1 = new Appointment("EARLIEST", "7/13/2021 10:00 am", "7/13/2021 10:05 am");
-		Appointment app2 = new Appointment("MIDDLEST", "7/13/2021 10:05 am", "7/13/2021 10:10 am");
-		Appointment app3 = new Appointment("LATEST", "7/13/2021 10:10 am", "7/13/2021 10:15 am");
-
-		System.out.println(app1.compareTo(app2));
-		System.out.println(app1.compareTo(app3));
-
-		AppointmentBook appBook = new AppointmentBook("Owner", app3);
-		System.out.println(appBook.getAppointments());
-		appBook.addAppointment(app2);
-		System.out.println(appBook.getAppointments());
-		appBook.addAppointment(app1);
-		System.out.println(appBook.getAppointments());
-
-	}
-
-
 	/*
 	//Appointment Tests
 	@Test

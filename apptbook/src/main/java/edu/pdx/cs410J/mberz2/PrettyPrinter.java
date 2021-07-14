@@ -26,7 +26,8 @@ public class PrettyPrinter implements AppointmentBookDumper<AppointmentBook> {
 		SimpleDateFormat ft = new SimpleDateFormat("hh:mm a, E, dd MMM yyyy");
 
 		writer.write("\n===============================================================================");
-		writer.write("\n|    Appointment Book for: "+appBook.getOwnerName());
+		writer.write("\n|\t\tAppointment Book for: "+appBook.getOwnerName()
+				+ "\t\tTotal Appointments: "+appBook.getAppointments().size());
 
 		try {
 			ArrayList<Appointment> apps = appBook.getAppointments();
@@ -40,7 +41,7 @@ public class PrettyPrinter implements AppointmentBookDumper<AppointmentBook> {
 
 				writer.write("\n-------------------------------------------------------------------------------");
 				writer.write("\n| "+a.getDescription());
-				writer.write("\n| Beginning " + bt + " until "+ et);
+				writer.write("\n| From " + bt + " until "+ et);
 				writer.write("\n| Duration: "+ TimeUnit.MILLISECONDS.toMinutes(a.getEndTime().getTime() - a.getBeginTime().getTime())
 						+ " mins");
 

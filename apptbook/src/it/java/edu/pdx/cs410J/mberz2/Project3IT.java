@@ -125,6 +125,23 @@ class Project3IT extends InvokeMainTestCase {
 				containsString("textFile"));
 	}
 
+	@Test
+	void tooManyWithOptionError (){
+		String [] args = {"-textFile", "Owner",
+				"Description", "7/13/2021", "10:00", "am",
+				"7/13/2021", "10:05"};
+
+		MainMethodResult result = invokeMain(args);
+
+		System.out.println(result.getTextWrittenToStandardError());
+		System.out.println(result.getTextWrittenToStandardOut());
+
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("Error: Invalid"));
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("textFile"));
+	}
+
 
 	@Test
 	void tooFewForPrinterOption (){
@@ -140,7 +157,7 @@ class Project3IT extends InvokeMainTestCase {
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("Error: Invalid"));
 		assertThat(result.getTextWrittenToStandardError(),
-				containsString("printer"));
+				containsString("pretty"));
 	}
 
 	@Test
@@ -171,5 +188,19 @@ class Project3IT extends InvokeMainTestCase {
 
 		assertThat(result.getTextWrittenToStandardOut(),
 				containsString("Description"));
+	}
+
+	@Test
+	void textFileWithValidArgsCreatesNewBook (){
+		assertDoesNotThrow(() -> {
+			String [] args = {"-textfile", "test", "Owner",
+					"Description", "7/13/2021", "10:00", "am",
+					"7/13/2021", "10:05", "am"};
+
+			MainMethodResult result = invokeMain(args);
+
+			System.out.println(result.getTextWrittenToStandardError());
+			System.out.println(result.getTextWrittenToStandardOut());
+		});
 	}
 }
