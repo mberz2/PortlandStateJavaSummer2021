@@ -23,26 +23,26 @@ public class PrettyPrinter implements AppointmentBookDumper<AppointmentBook> {
 			throws IOException {
 
 		writer.write("\n===============================================================================");
-		writer.write("\n| Appointment Book for "+appBook.getOwnerName());
+		writer.write("\n|    Appointment Book for: "+appBook.getOwnerName());
 
 		try {
 			ArrayList<Appointment> apps = appBook.getAppointments();
 
 
 			for (Appointment a: apps) {
-				writer.write("\n-------------------------------------------------------------------------------");
+
 
 				String[] btSplit = a.getBeginTimeString().split("\\s");
 				String[] etSplit = a.getEndTimeString().split("\\s");
 
-				writer.write("\n|--------- Begin Time ----------------- End Time ------------- Duration ------|");
-				writer.write("\n|\t\t"+btSplit[0] + " " + btSplit[1] + " " + btSplit[2]+"\t\t\t"
-						+ etSplit[0] + " " + etSplit[1] + " " + etSplit[2]+"\t\t\t"
-						+ TimeUnit.MILLISECONDS.toMinutes(a.getEndTime().getTime() - a.getBeginTime().getTime())
-						+ " mins");
-				writer.write("\n| "+a.getDescription());
-
 				writer.write("\n-------------------------------------------------------------------------------");
+				writer.write("\n| "+a.getDescription());
+				writer.write("\n|\tFrom: "+btSplit[0] + " " + btSplit[1] + " " + btSplit[2]+"\t\t"
+						+ " Until: " + etSplit[0] + " " + etSplit[1] + " " + etSplit[2]);
+				writer.write("\n| Duration: "+ TimeUnit.MILLISECONDS.toMinutes(a.getEndTime().getTime() - a.getBeginTime().getTime())
+						+ " mins");
+
+
 			}
 
 			writer.write("\n===============================================================================");
