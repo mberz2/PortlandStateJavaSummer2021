@@ -42,12 +42,6 @@ public class TextDumper implements AppointmentBookDumper<AppointmentBook> {
 			ArrayList<Appointment> apps = appBook.getAppointments();
 
 			for (Appointment a: apps) {
-				System.out.println(a);
-			}
-
-			for (Appointment a: apps) {
-
-				System.out.println(a.getBeginTimeString());
 
 				String[] btSplit = a.getBeginTimeString().split("\\s");
 				String[] etSplit = a.getEndTimeString().split("\\s");

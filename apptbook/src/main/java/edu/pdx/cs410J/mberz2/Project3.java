@@ -65,8 +65,6 @@ public class Project3 {
 	 */
 	public static void main(String[] args) throws IOException, ParserException {
 
-		System.exit(1);
-
 		FLAGS = 0;
 		OPTIONS.put("Print", 0);
 		OPTIONS.put("TextFile", 0);
@@ -91,6 +89,13 @@ public class Project3 {
 		if(OPTIONS.get("Print") == 1)
 			printAppt(newBook);
 
+		if(OPTIONS.get("Pretty") == 1){
+			PrettyPrinter printer = new PrettyPrinter(new FileWriter(PRINTER));
+			printer.dump(newBook);
+		}
+
+
+
 		// Exit successfully.
 		System.exit(0);
 
@@ -108,8 +113,6 @@ public class Project3 {
 	 */
 	public static void checkInput(String [] args) throws IOException {
 
-		System.out.println(args.length);
-
 		/* Base cases, ZERO or TOO MANY (over total acceptable, MAX) */
 		if (args.length == 0) {
 			System.err.println("Error: Missing command line arguments");
@@ -123,7 +126,6 @@ public class Project3 {
 		flags. If readme is detected, program exits immediately. If a textFile
 		is indicated, the next argument is extracted as the file. */
 		for (String arg : args) {
-			if (arg.startsWith("-")) {
 				if (arg.equalsIgnoreCase(("-README"))) {
 					printRes("README3.txt");
 				}
@@ -137,7 +139,6 @@ public class Project3 {
 
 					int i = Arrays.asList(args).indexOf(arg);
 					FILE = args[i+1];
-
 				}
 				else if (arg.equalsIgnoreCase(("-PRETTY"))){
 					FLAGS = FLAGS + 2;
@@ -145,14 +146,8 @@ public class Project3 {
 
 					int i = Arrays.asList(args).indexOf(arg);
 					PRINTER = args[i+1];
-
-				}
-				else {
-					System.err.println(arg + " is not a correct option");
-					printUsage(1);
 				}
 			}
-		}
 
 		/* Check for FLAGS, will determine next set of allowable numbers */
 		if((args.length - FLAGS) > 8)
@@ -166,10 +161,18 @@ public class Project3 {
 					"(for -print enabled).", 1);
 
 		/* If textFile is enabled, can only have 10, 11, 13, 14 args */
-		else if(fileEnabled() && (args.length != 10 && args.length != 11
-		&& args.length != 13 && args.length != 14))
-			printErrorUsage("Error: Invalid number of arguments " +
-					"(for -textFile enabled).", 1);
+		else {
+			final var b = args.length != 10 && args.length != 11
+					&& args.length != 13 && args.length != 14;
+			if(fileEnabled() && b)
+				printErrorUsage("Error: Invalid number of arguments " +
+						"(for -textFile enabled).", 1);
+
+			/* If printer is enabled, can only have 10, 11, 13, 14 args */
+			else if(printerEnabled() && b)
+				printErrorUsage("Error: Invalid number of arguments " +
+						"(for -printer enabled).", 1);
+		}
 	}
 
 	/**
@@ -340,6 +343,15 @@ public class Project3 {
 	 */
 	public static boolean fileEnabled(){
 		return OPTIONS.get("TextFile")==1;
+	}
+
+	/**
+	 * Method for checking if the {@code -pretty} option flag is enabled.
+	 *
+	 * @return Boolean for whether or not the option is enabled.
+	 */
+	public static boolean printerEnabled(){
+		return OPTIONS.get("Pretty")==1;
 	}
 
 }
