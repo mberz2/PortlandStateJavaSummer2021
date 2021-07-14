@@ -57,9 +57,8 @@ public class Appointment extends AbstractAppointment
 		}
 
 		if (this.getBeginTime().getTime() > this.getEndTime().getTime()){
-			System.err.println("Error: End time is before begin time of the" +
-					"appointment.");
-			System.exit(1);
+			throw (new UnsupportedOperationException("Error: " +
+					"End time is before begin time of the appointment."));
 		}
 	}
 
@@ -82,10 +81,6 @@ public class Appointment extends AbstractAppointment
 	 */
 	@Override
 	public String getBeginTimeString() {
-		if (beginTime == null)
-			throw new UnsupportedOperationException
-					("Appointment not implemented.");
-
 		return DateFormat.getDateInstance(DateFormat.SHORT).format(beginTime)
 				+ " "
 				+ DateFormat.getTimeInstance(DateFormat.SHORT).format(beginTime);
@@ -110,10 +105,6 @@ public class Appointment extends AbstractAppointment
 	 */
 	@Override
 	public String getEndTimeString() {
-		if (endTime == null)
-		    throw new UnsupportedOperationException
-				    ("Appointment not implemented.");
-
 		return DateFormat.getDateInstance(DateFormat.SHORT).format(endTime)
 				+ " "
 				+ DateFormat.getTimeInstance(DateFormat.SHORT).format(endTime);

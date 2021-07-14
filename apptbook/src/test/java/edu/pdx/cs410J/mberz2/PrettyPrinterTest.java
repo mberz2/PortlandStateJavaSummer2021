@@ -3,6 +3,7 @@ package edu.pdx.cs410J.mberz2;
 import edu.pdx.cs410J.ParserException;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.io.StringWriter;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -11,7 +12,7 @@ import static org.hamcrest.Matchers.containsString;
 public class PrettyPrinterTest {
 
 	@Test
-	void dumperDumpsAppointmentBookOwner() throws ParserException {
+	void dumperDumpsAppointmentBookOwner() throws ParserException, IOException {
 		String owner = "Owner";
 
 		Appointment app = new Appointment("Description",
@@ -20,8 +21,8 @@ public class PrettyPrinterTest {
 		AppointmentBook book = new AppointmentBook(owner, app);
 
 		StringWriter sw = new StringWriter();
-		TextDumper dumper = new TextDumper(sw);
-		dumper.dump(book);
+		PrettyPrinter pp = new PrettyPrinter(sw);
+		pp.dump(book);
 
 		sw.flush();
 
@@ -31,7 +32,7 @@ public class PrettyPrinterTest {
 	}
 
 	@Test
-	void dumperDumpsAppointmentBookDescription() throws ParserException {
+	void dumperDumpsAppointmentBookDescription() throws ParserException, IOException {
 		String desc = "Description";
 
 		Appointment app = new Appointment("Description",
@@ -40,8 +41,8 @@ public class PrettyPrinterTest {
 		AppointmentBook book = new AppointmentBook(desc, app);
 
 		StringWriter sw = new StringWriter();
-		TextDumper dumper = new TextDumper(sw);
-		dumper.dump(book);
+		PrettyPrinter pp = new PrettyPrinter(sw);
+		pp.dump(book);
 
 		sw.flush();
 
@@ -51,7 +52,7 @@ public class PrettyPrinterTest {
 	}
 
 	@Test
-	void dumperDumpsAppointmentBookDates() throws ParserException {
+	void printerPrintsAppointmentBookDates() throws ParserException, IOException {
 		String date = "1/1/1000 10:00";
 
 		Appointment app = new Appointment("Description",
@@ -60,8 +61,8 @@ public class PrettyPrinterTest {
 		AppointmentBook book = new AppointmentBook(date, app);
 
 		StringWriter sw = new StringWriter();
-		TextDumper dumper = new TextDumper(sw);
-		dumper.dump(book);
+		PrettyPrinter pp = new PrettyPrinter(sw);
+		pp.dump(book);
 
 		sw.flush();
 
