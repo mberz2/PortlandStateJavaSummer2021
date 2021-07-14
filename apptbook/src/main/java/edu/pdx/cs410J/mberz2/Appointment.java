@@ -113,8 +113,8 @@ public class Appointment extends AbstractAppointment
 	@Override
 	public String getDescription() {
 		if (desc == null)
-		    throw new
-				    UnsupportedOperationException ("Appointment not implemented.");
+		    throw new UnsupportedOperationException
+				    ("Error: Appointment not implemented.");
 		return this.desc;
 	}
 
