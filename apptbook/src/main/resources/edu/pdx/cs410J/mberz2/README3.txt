@@ -1,4 +1,4 @@
-README for Project 2
+README for Project 3
 Author: Matthew Berzinskas (mberz2)
 Course: CS410P, Advanced Programming with Java
 Portland State University, Summer 2021

@@ -132,30 +132,42 @@ public class Project3 {
 		flags. If readme is detected, program exits immediately. If a textFile
 		is indicated, the next argument is extracted as the file. */
 		for (String arg : args) {
+
+			if ((arg.startsWith("-")) && (
+							!arg.equalsIgnoreCase("-README")
+							&& !arg.equalsIgnoreCase("-TEXTFILE")
+							&& !arg.equalsIgnoreCase("-PRINT")
+							&& !arg.equalsIgnoreCase("-PRETTY")
+							&& !arg.equalsIgnoreCase("-")))
+				printErrorUsage("Error: "+arg+" is an invalid option.", 1);
+
+			if (arg.startsWith("-")) {
+
 				if (arg.equalsIgnoreCase(("-README"))) {
 					printRes("README3.txt");
-				}
-				else if (arg.equalsIgnoreCase(("-PRINT"))) {
+				} else if (arg.equalsIgnoreCase(("-PRINT"))) {
 					FLAGS++;
 					OPTIONS.put("Print", 1);
-				}
-				else if (arg.equalsIgnoreCase(("-TEXTFILE"))){
+				} else if (arg.equalsIgnoreCase(("-TEXTFILE"))) {
 					FLAGS = FLAGS + 2;
 					OPTIONS.put("TextFile", 1);
 
 					int i = Arrays.asList(args).indexOf(arg);
-					FILE = args[i+1];
-				}
-				else if (arg.equalsIgnoreCase(("-PRETTY"))){
+					FILE = args[i + 1];
+				} else if (arg.equalsIgnoreCase(("-PRETTY"))) {
 					FLAGS = FLAGS + 2;
 					OPTIONS.put("Pretty", 1);
 
 					int i = Arrays.asList(args).indexOf(arg);
-					WRITER = new FileWriter(args[i+1]);
-					if(args[i+1].equals("-"))
+
+					if (args[i + 1].equals("-"))
 						WRITER = new PrintWriter(System.out);
+					else
+						WRITER = new FileWriter(args[i + 1]);
 				}
 			}
+
+		}
 
 		/* Check for FLAGS, will determine next set of allowable numbers */
 		if((args.length - FLAGS) > 8)

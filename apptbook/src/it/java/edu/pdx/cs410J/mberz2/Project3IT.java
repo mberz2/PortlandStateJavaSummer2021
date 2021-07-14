@@ -20,49 +20,156 @@ class Project3IT extends InvokeMainTestCase {
 		return invokeMain( Project3.class, args );
 	}
 
-	private final String [] tooFew = {};
-	private final String [] tooMany = {"Owner", "Description",
-			"1/1/1000", "10:00", "1/1/1000", "10:30", "Owner", "Description",
-			"1/1/1000", "10:00", "1/1/1000", "10:30",};
+	@Test
+	void readmeOptionPrintsNewReadme() {
+		String [] readme = {"-readme"};
+		MainMethodResult result = invokeMain(readme);
 
-	private final String [] first = {"-textfile", "TEST", "Owner",
-			"Description", "7/13/2021", "10:00", "am", "7/13/2021", "10:05", "am"};
+		System.out.println(result.getTextWrittenToStandardError());
+		System.out.println(result.getTextWrittenToStandardOut());
 
-	private final String [] mid = {"-textfile", "TEST", "Owner",
-			"Description", "7/13/2021", "10:10", "am", "7/13/2021", "11:00", "am"};
-
-	private final String [] last = {"-textfile", "TEST", "Owner",
-			"Description", "7/13/2021", "11:00", "am", "7/13/2021", "11:05", "am"};
+		assertThat(result.getTextWrittenToStandardOut(),
+				containsString("README"));
+		assertThat(result.getTextWrittenToStandardOut(),
+				containsString("Project 3"));
+	}
 
 	@Test
-	void testNoCommandLineArguments() {
-		MainMethodResult result = invokeMain(tooFew);
+	void invalidOptionThrowsError() {
+		String [] invalidOption = {"-read", "Owner",
+				"Description", "7/13/2021", "10:00", "am",
+				"7/13/2021", "10:05"};
+		MainMethodResult result = invokeMain(invalidOption);
+
+		System.out.println(result.getTextWrittenToStandardError());
+		System.out.println(result.getTextWrittenToStandardOut());
+
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("Error"));
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("invalid option"));
+	}
+
+	@Test
+	void usageErrorWithNoCommandLineArguments() {
+		String [] none = {};
+		MainMethodResult result = invokeMain(none);
 		assertThat(result.getExitCode(), equalTo(1));
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("Missing command line arguments"));
 	}
 
 	@Test
-	void testTooManyCommandLineArguments(){
-		MainMethodResult result = invokeMain(tooMany);
+	void usageErrorWithTooFewCommandLineArguments() {
+		String [] tooFew = {"Owner",
+				"Description", "7/13/2021", "10:00", "am",
+				"7/13/2021", "10:05"};
+		MainMethodResult result = invokeMain(tooFew);
+
+		System.out.println(result.getTextWrittenToStandardError());
+		System.out.println(result.getTextWrittenToStandardOut());
+
 		assertThat(result.getExitCode(), equalTo(1));
 		assertThat(result.getTextWrittenToStandardError(),
-				containsString("Too MANY"));
+				containsString("Too FEW command line arguments"));
 	}
 
 	@Test
-	void sortingOrderofThreeAppointments(){
-		MainMethodResult result = invokeMain(mid);
-		System.out.println(result.getTextWrittenToStandardOut());
-		System.out.println(result.getTextWrittenToStandardError());
+	void usageErrorWithTooManyCommandLineArguments(){
+		String [] tooMany = {"Owner", "Description",
+				"1/1/1000", "10:00", "1/1/1000", "10:30", "Owner", "Description",
+				"1/1/1000", "10:00", "1/1/1000", "10:30",
+				"1/1/1000", "10:00", "1/1/1000", "10:30",};
 
-		result = invokeMain(last);
-		System.out.println(result.getTextWrittenToStandardOut());
-		System.out.println(result.getTextWrittenToStandardError());
+		MainMethodResult result = invokeMain(tooMany);
 
-		result = invokeMain(first);
-		System.out.println(result.getTextWrittenToStandardOut());
 		System.out.println(result.getTextWrittenToStandardError());
+		System.out.println(result.getTextWrittenToStandardOut());
+
+		assertThat(result.getExitCode(), equalTo(1));
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("Too many"));
 	}
 
+	@Test
+	void tooFewForPrintOption (){
+		String [] args = {"-print", "Owner",
+				"Description", "7/13/2021", "10:00", "am",
+				"7/13/2021", "10:05"};
+
+		MainMethodResult result = invokeMain(args);
+
+		System.out.println(result.getTextWrittenToStandardError());
+		System.out.println(result.getTextWrittenToStandardOut());
+
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("Error: Invalid"));
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("print"));
+	}
+
+	@Test
+	void tooFewForTextFileOption (){
+		String [] args = {"-textFile", "Owner",
+				"Description", "7/13/2021", "10:00", "am",
+				"7/13/2021", "10:05"};
+
+		MainMethodResult result = invokeMain(args);
+
+		System.out.println(result.getTextWrittenToStandardError());
+		System.out.println(result.getTextWrittenToStandardOut());
+
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("Error: Invalid"));
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("textFile"));
+	}
+
+
+	@Test
+	void tooFewForPrinterOption (){
+		String [] args = {"-pretty", "Owner",
+				"Description", "7/13/2021", "10:00", "am",
+				"7/13/2021", "10:05"};
+
+		MainMethodResult result = invokeMain(args);
+
+		System.out.println(result.getTextWrittenToStandardError());
+		System.out.println(result.getTextWrittenToStandardOut());
+
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("Error: Invalid"));
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("printer"));
+	}
+
+	@Test
+	void printWithValidArgsPrintsToOut (){
+		String [] args = {"-print", "Owner",
+				"Description", "7/13/2021", "10:00", "am",
+				"7/13/2021", "10:05", "am"};
+
+		MainMethodResult result = invokeMain(args);
+
+		System.out.println(result.getTextWrittenToStandardError());
+		System.out.println(result.getTextWrittenToStandardOut());
+
+		assertThat(result.getTextWrittenToStandardOut(),
+				containsString("Owner's appointment book"));
+	}
+
+	@Test
+	void prettyWithValidArgsPrintsToOut (){
+		String [] args = {"-pretty", "-", "Owner",
+				"Description", "7/13/2021", "10:00", "am",
+				"7/13/2021", "10:05", "am"};
+
+		MainMethodResult result = invokeMain(args);
+
+		System.out.println(result.getTextWrittenToStandardError());
+		System.out.println(result.getTextWrittenToStandardOut());
+
+		assertThat(result.getTextWrittenToStandardOut(),
+				containsString("Description"));
+	}
 }
