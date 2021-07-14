@@ -59,6 +59,8 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 				// Parse line based on comma to the end of the line.
 				String [] newArgs = line.split("\\|");
 
+				if(newArgs[0].equals("\n") || newArgs[0].equals(""))
+					throw (new ParserException("Error: Malformed file."));
 
 				// Create a temporary appointment.
 				Appointment app = new Appointment(newArgs[1],
