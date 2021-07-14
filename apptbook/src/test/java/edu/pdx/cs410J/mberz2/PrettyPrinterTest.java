@@ -2,11 +2,13 @@ package edu.pdx.cs410J.mberz2;
 
 import edu.pdx.cs410J.ParserException;
 import org.junit.jupiter.api.Test;
-import java.io.*;
+
+import java.io.StringWriter;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 
-public class TextDumperTest {
+public class PrettyPrinterTest {
 
 	@Test
 	void dumperDumpsAppointmentBookOwner() throws ParserException {
