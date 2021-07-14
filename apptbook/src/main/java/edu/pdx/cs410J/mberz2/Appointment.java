@@ -55,6 +55,12 @@ public class Appointment extends AbstractAppointment
 		} catch (ParseException e){
 			throw (new ParserException("Error: Unable to parse begin date."));
 		}
+
+		if (this.getBeginTime().getTime() > this.getEndTime().getTime()){
+			System.err.println("Error: End time is before begin time of the" +
+					"appointment.");
+			System.exit(1);
+		}
 	}
 
 	/**
