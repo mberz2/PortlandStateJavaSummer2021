@@ -65,6 +65,8 @@ public class Project3 {
 	 */
 	public static void main(String[] args) throws IOException, ParserException {
 
+		System.exit(1);
+
 		FLAGS = 0;
 		OPTIONS.put("Print", 0);
 		OPTIONS.put("TextFile", 0);
