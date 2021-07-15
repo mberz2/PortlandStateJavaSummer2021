@@ -4,7 +4,6 @@ import edu.pdx.cs410J.AbstractAppointment;
 import edu.pdx.cs410J.ParserException;
 import java.io.*;
 import java.util.*;
-import java.util.stream.IntStream;
 
 /**
  * This is the main class method for the CS410J Appointment Book Project.
@@ -66,8 +65,8 @@ public class Project3 {
 		}
 	}
 
-	public static boolean contains(final int[] arr, final int key) {
-		return Arrays.stream(arr).anyMatch(i -> i == key);
+	public static boolean doesNotContain(final int[] arr, final int key) {
+		return Arrays.stream(arr).noneMatch(i -> i == key);
 	}
 
 	/**
@@ -202,11 +201,11 @@ public class Project3 {
 
 		// Error check for options
 		if(printEnabled())
-			if (!contains(VALIDPRINT, args.length))
+			if (doesNotContain(VALIDPRINT, args.length))
 				printErrorUsage("Error: Invalid amount of arguments", 1);
 
 		if(printerEnabled() || fileEnabled()) {
-			if (!contains(VALIDDUMP, args.length))
+			if (doesNotContain(VALIDDUMP, args.length))
 				printErrorUsage("Error: Invalid amount of arguments", 1);
 			else if (FILE.equals(PRETTYFILE))
 				printErrorUsage("\"Error: Cannot have both printer and " +
