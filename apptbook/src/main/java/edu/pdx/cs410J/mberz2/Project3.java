@@ -4,6 +4,7 @@ import edu.pdx.cs410J.AbstractAppointment;
 import edu.pdx.cs410J.ParserException;
 import java.io.*;
 import java.util.*;
+import java.util.stream.IntStream;
 
 /**
  * This is the main class method for the CS410J Appointment Book Project.
@@ -31,8 +32,15 @@ public class Project3 {
 	/* Total number of enabled options flags, used to find first appt. arg */
 	private static int FLAGS;
 
+	private static final int [] VALIDPRINT = {MAX-5, MAX-3, MAX-1, MAX};
+
+	private static final int [] VALIDDUMP = {MAX-4, MAX-2, MAX-1, MAX};
+
 	/* Contains the file name, if textFile is enabled. */
 	private static String FILE;
+
+	/* Contains the file name, if textFile is enabled. */
+	private static String PRETTYFILE;
 
 	/* Contains the file name, if pretty printer is enabled. */
 	private static Writer WRITER;
@@ -49,6 +57,19 @@ public class Project3 {
 	public static final String README =
 			"java -jar /apptbook/target/apptbook-2021.0.0.jar -README";
 
+
+	public static void setWriteStream () throws IOException {
+		if (PRETTYFILE.equals("-")){
+			WRITER = new PrintWriter(System.out);
+		} else {
+			WRITER = new FileWriter(PRETTYFILE);
+		}
+	}
+
+	public static boolean contains(final int[] arr, final int key) {
+		return Arrays.stream(arr).anyMatch(i -> i == key);
+	}
+
 	/**
 	 * Main class. Entry point into the program. Creates an appointment object
 	 * as specified by the user and adds it to an appointmentBook object.
@@ -64,12 +85,6 @@ public class Project3 {
 	 * @throws ParserException Exception handling for improper parsing.
 	 */
 	public static void main(String[] args) throws IOException, ParserException {
-
-		FLAGS = 0;
-		OPTIONS.put("Print", 0);
-		OPTIONS.put("TextFile", 0);
-		OPTIONS.put("Parsed", 0);
-		OPTIONS.put("Pretty", 0);
 
 		// Check arguments for valid inputs.
 		checkInput(args);
@@ -89,6 +104,7 @@ public class Project3 {
 			writeFile(tempBook);
 
 			if(OPTIONS.get("Pretty") == 1){
+				setWriteStream();
 				PrettyPrinter printer = new PrettyPrinter(WRITER);
 				printer.dump(tempBook);
 			}
@@ -98,6 +114,7 @@ public class Project3 {
 		}
 
 		if(OPTIONS.get("Pretty") == 1){
+			setWriteStream();
 			PrettyPrinter printer = new PrettyPrinter(WRITER);
 			printer.dump(newBook);
 		}
@@ -105,7 +122,6 @@ public class Project3 {
 		// Exit successfully.
 		System.exit(0);
 	}
-
 
 	/**
 	 * Method parses/validates the input String array. The method checks for
@@ -119,76 +135,83 @@ public class Project3 {
 	 */
 	public static void checkInput(String [] args) throws IOException {
 
-		final var b = args.length != 10 && args.length != 12
-				&& args.length != 13 && args.length != 14;
+		FLAGS = 0;
+		OPTIONS.put("Print", 0);
+		OPTIONS.put("TextFile", 0);
+		OPTIONS.put("Pretty", 0);
+
 
 		/* Base cases, ZERO or TOO MANY (over total acceptable, MAX) */
 		if (args.length == 0) {
-			System.err.println("Error: Missing command line arguments");
+			System.err.println("Error: No command line arguments.");
 			printUsage(1);
 		} else if (args.length > MAX) {
-			System.err.println("Error: Too many command line arguments");
+			System.err.println("Error: Too many command line arguments.\n" +
+					"Total number cannot exceed: "+MAX);
 			printUsage(1);
 		}
 
-		/* If there are an acceptable range of arguments, check for options
-		flags. If readme is detected, program exits immediately. If a textFile
-		is indicated, the next argument is extracted as the file. */
-		for (String arg : args) {
+		System.out.println("Totals args: "+args.length);
 
-			if ((arg.startsWith("-")) && (
-							!arg.equalsIgnoreCase("-README")
-							&& !arg.equalsIgnoreCase("-TEXTFILE")
-							&& !arg.equalsIgnoreCase("-PRINT")
-							&& !arg.equalsIgnoreCase("-PRETTY")
-							&& !arg.equalsIgnoreCase("-")))
-				printErrorUsage("Error: "+arg+" is an invalid option.", 1);
+		for (int i = 0; i < args.length; i++) {
 
-			if (arg.startsWith("-")) {
+			System.out.println(args[i]);
 
-				if (arg.equalsIgnoreCase(("-README"))) {
+			if (args[i].charAt(0) == '-') {
+
+				if (args[i].equalsIgnoreCase("-README")) {
 					printRes("README3.txt");
-				} else if (arg.equalsIgnoreCase(("-PRINT"))) {
-					FLAGS++;
+
+				} else if (args[i].equalsIgnoreCase("-PRINT")) {
 					OPTIONS.put("Print", 1);
+					++FLAGS;
 
-					/* If print is enabled, can only have 9, 11, or 14 args. */
-					if(printEnabled() && (args.length != 9 && args.length != 11))
-						printErrorUsage("Error: Invalid number of " +
-								"arguments (for -print enabled).", 1);
+				} else if (args[i].equalsIgnoreCase("-TEXTFILE")) {
 
-				} else if (arg.equalsIgnoreCase(("-TEXTFILE"))) {
 					FLAGS = FLAGS + 2;
 					OPTIONS.put("TextFile", 1);
+					try {
+						FILE = args[i + 1];
+					} catch (ArrayIndexOutOfBoundsException e) {
+						printErrorUsage("Error: Too few command " +
+								"line arguments.", 1);
+					}
 
-					/* If textFile enabled, can only have 10, 11, 13, 14 args */
-					if(fileEnabled() && b)
-						printErrorUsage("Error: Invalid number of " +
-								"arguments (for -textFile enabled).", 1);
+				} else if (args[i].equalsIgnoreCase("-PRETTY")) {
 
-					int i = Arrays.asList(args).indexOf(arg);
-					FILE = args[i + 1];
-				} else if (arg.equalsIgnoreCase(("-PRETTY"))) {
 					FLAGS = FLAGS + 2;
 					OPTIONS.put("Pretty", 1);
-					int i = Arrays.asList(args).indexOf(arg);
+					try {
+						PRETTYFILE = args[i+1];
+					} catch (ArrayIndexOutOfBoundsException e) {
+						printErrorUsage("Error: Too few command " +
+								"line arguments.", 1);
+					}
 
-					/* If printerEnabled, can only have 10, 11, 13, 14 args */
-					if(b)
-						printErrorUsage("Error: Invalid number of " +
-								"arguments (for -pretty enabled).", 1);
+				} else if (args[i].equals("-")) {
+					// Ignore cases of a single hyphen.
+					break;
+				} else {
 
-					if (args[i + 1].equals("-"))
-						WRITER = new PrintWriter(System.out);
-					else
-						WRITER = new FileWriter(args[i + 1]);
+					// Error on all other hyphen combinations.
+					printErrorUsage("Error: " + args[i] + " is not a " +
+							"valid option.", 1);
 				}
 			}
 		}
 
-		/* Check for FLAGS, will determine next set of allowable numbers */
-		 if (args.length < 8)
-			printErrorUsage("Error: Too FEW command line arguments", 1);
+		// Error check for options
+		if(printEnabled())
+			if (!contains(VALIDPRINT, args.length))
+				printErrorUsage("Error: Invalid amount of arguments", 1);
+
+		if(printerEnabled() || fileEnabled()) {
+			if (!contains(VALIDDUMP, args.length))
+				printErrorUsage("Error: Invalid amount of arguments", 1);
+			else if (FILE.equals(PRETTYFILE))
+				printErrorUsage("\"Error: Cannot have both printer and " +
+						"textfile paths as the same location.", 1);
+		}
 	}
 
 	/**

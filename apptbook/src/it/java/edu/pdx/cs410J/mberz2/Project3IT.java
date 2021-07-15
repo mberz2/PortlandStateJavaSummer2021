@@ -21,6 +21,19 @@ class Project3IT extends InvokeMainTestCase {
 	}
 
 	@Test
+	void CommandLineParserTest () {
+
+		String [] readme = {"-print", "-textfile", "test.txt",
+		"-pretty", "test"};
+		MainMethodResult result = invokeMain(readme);
+
+		System.out.println(result.getTextWrittenToStandardError());
+		System.out.println(result.getTextWrittenToStandardOut());
+
+
+	}
+
+	@Test
 	void readmeOptionPrintsNewReadme() {
 		String [] readme = {"-readme"};
 		MainMethodResult result = invokeMain(readme);
