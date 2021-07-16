@@ -69,7 +69,7 @@ class Project3IT extends InvokeMainTestCase {
 		MainMethodResult result = invokeMain(none);
 		assertThat(result.getExitCode(), equalTo(1));
 		assertThat(result.getTextWrittenToStandardError(),
-				containsString("Missing command line arguments"));
+				containsString("Error: No command line arguments"));
 	}
 
 	@Test
@@ -117,8 +117,6 @@ class Project3IT extends InvokeMainTestCase {
 
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("Error: Invalid"));
-		assertThat(result.getTextWrittenToStandardError(),
-				containsString("print"));
 	}
 
 	@Test
@@ -134,8 +132,6 @@ class Project3IT extends InvokeMainTestCase {
 
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("Error: Invalid"));
-		assertThat(result.getTextWrittenToStandardError(),
-				containsString("textFile"));
 	}
 
 	@Test
@@ -151,8 +147,6 @@ class Project3IT extends InvokeMainTestCase {
 
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("Error: Invalid"));
-		assertThat(result.getTextWrittenToStandardError(),
-				containsString("textFile"));
 	}
 
 
@@ -169,8 +163,6 @@ class Project3IT extends InvokeMainTestCase {
 
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("Error: Invalid"));
-		assertThat(result.getTextWrittenToStandardError(),
-				containsString("pretty"));
 	}
 
 	@Test
@@ -214,6 +206,75 @@ class Project3IT extends InvokeMainTestCase {
 
 			System.out.println(result.getTextWrittenToStandardError());
 			System.out.println(result.getTextWrittenToStandardOut());
+		});
+	}
+
+	@Test
+	void loadAndCombineWithNewBook (){
+		assertDoesNotThrow(() -> {
+			String [] args = {"-textfile", "test", "Owner",
+					"Description", "7/13/2021", "10:00", "am",
+					"7/13/2021", "10:05", "am"};
+
+			String [] args2 = {"-textfile", "test", "Owner",
+					"Description", "7/13/2021", "10:00", "am",
+					"7/13/2021", "10:05", "am"};
+
+			MainMethodResult result = invokeMain(args);
+			result = invokeMain(args2);
+
+			System.out.println(result.getTextWrittenToStandardError());
+			System.out.println(result.getTextWrittenToStandardOut());
+		});
+	}
+
+	@Test
+	void cannotCombineWithDifferentOwner (){
+		assertDoesNotThrow(() -> {
+			String [] args = {"-textfile", "test2", "Owner",
+					"Description", "7/13/2021", "10:00", "am",
+					"7/13/2021", "10:05", "am"};
+
+			String [] args2 = {"-textfile", "test2", "Owner2",
+					"Description", "7/13/2021", "10:00", "am",
+					"7/13/2021", "10:05", "am"};
+
+			MainMethodResult result = invokeMain(args);
+			result = invokeMain(args2);
+
+			System.out.println(result.getTextWrittenToStandardError());
+			System.out.println(result.getTextWrittenToStandardOut());
+
+			assertThat(result.getTextWrittenToStandardError(),
+					containsString("Error: Incompatible"));
+			assertThat(result.getTextWrittenToStandardError(),
+					containsString("loaded file"));
+			assertThat(result.getExitCode(), equalTo(1));
+		});
+	}
+
+	@Test
+	void cannotFindIncorrectDirectory (){
+		assertDoesNotThrow(() -> {
+			String [] args = {"-textfile", "/foo/test2", "Owner",
+					"Description", "7/13/2021", "10:00", "am",
+					"7/13/2021", "10:05", "am"};
+
+			String [] args2 = {"-textfile", "test2", "Owner2",
+					"Description", "7/13/2021", "10:00", "am",
+					"7/13/2021", "10:05", "am"};
+
+			MainMethodResult result = invokeMain(args);
+			//result = invokeMain(args2);
+
+			System.out.println(result.getTextWrittenToStandardError());
+			//System.out.println(result.getTextWrittenToStandardOut());
+
+			assertThat(result.getTextWrittenToStandardError(),
+					containsString("Error: Incompatible"));
+			assertThat(result.getTextWrittenToStandardError(),
+					containsString("loaded file"));
+			assertThat(result.getExitCode(), equalTo(1));
 		});
 	}
 }

@@ -193,8 +193,8 @@ public class Project3 {
 				} else {
 
 					// Error on all other hyphen combinations.
-					printErrorUsage("Error: " + args[i] + " is not a " +
-							"valid option.", 1);
+					printErrorUsage("Error: " + args[i] + " is an " +
+							"invalid option.", 1);
 				}
 			}
 		}
@@ -202,13 +202,16 @@ public class Project3 {
 		// Error check for options
 		if(printEnabled())
 			if (doesNotContain(VALIDPRINT, args.length))
-				printErrorUsage("Error: Invalid amount of arguments", 1);
+				printErrorUsage("Error: Invalid amount " +
+						"of arguments", 1);
 
 		if(printerEnabled() || fileEnabled()) {
 			if (doesNotContain(VALIDDUMP, args.length))
-				printErrorUsage("Error: Invalid amount of arguments", 1);
-			else if (FILE.equals(PRETTYFILE))
-				printErrorUsage("\"Error: Cannot have both printer and " +
+				printErrorUsage("Error: Invalid amount " +
+						"of arguments", 1);
+			else if ((printerEnabled() && fileEnabled())
+					&& FILE.equals(PRETTYFILE))
+				printErrorUsage("Error: Cannot have both printer and " +
 						"textfile paths as the same location.", 1);
 		}
 	}
@@ -228,6 +231,10 @@ public class Project3 {
 
 		// New array for holding parsed arguments.
 		String[] newArgs = Arrays.copyOfRange(args, FLAGS, args.length);
+
+		if (newArgs.length < 8) {
+			printErrorUsage("Error: Too FEW command line arguments.", 1);
+		}
 
 		// Create a new appointment from parsed input.
 		Appointment app = new Appointment(newArgs[1],
@@ -258,8 +265,9 @@ public class Project3 {
 
 			// If the owners of the new book and the parsed book don't match, exit
 			if(!tempBook.getOwnerName().equals(appBook.getOwnerName())){
-				System.err.println("Incompatible owners.\nPlease check that the" +
-						"new appointment owner is the same as the loaded file.");
+				System.err.println("Error: Incompatible owners.\nPlease check " +
+						"that the new appointment owner is the same as the " +
+						"loaded file.");
 				System.exit(1);
 			} else {
 				// Combining the appointments.
