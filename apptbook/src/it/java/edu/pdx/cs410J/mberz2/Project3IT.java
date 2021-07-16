@@ -263,19 +263,38 @@ class Project3IT extends InvokeMainTestCase {
 			MainMethodResult result = invokeMain(args);
 			result = invokeMain(args2);
 
-			System.out.println(result.getTextWrittenToStandardError());
-			System.out.println(result.getTextWrittenToStandardOut());
-
 			assertThat(result.getTextWrittenToStandardError(),
 					containsString("Error: Incompatible"));
-			assertThat(result.getTextWrittenToStandardError(),
-					containsString("loaded file"));
 			assertThat(result.getExitCode(), equalTo(1));
 		});
 	}
 
 	@Test
 	void cannotFindIncorrectDirectory (){
+		assertDoesNotThrow(() -> {
+			String [] args = {"-textfile", "/foo/test2", "Owner",
+					"Description", "7/13/2021", "10:00", "am",
+					"7/13/2021", "10:05", "am"};
+
+			String [] args2 = {"-textfile", "test2", "Owner2",
+					"Description", "7/13/2021", "10:00", "am",
+					"7/13/2021", "10:05", "am"};
+
+			MainMethodResult result = invokeMain(args);
+			//result = invokeMain(args2);
+
+			System.out.println(result.getTextWrittenToStandardError());
+			//System.out.println(result.getTextWrittenToStandardOut());
+
+			assertThat(result.getTextWrittenToStandardError(),
+					containsString("Error: No such file"));
+			assertThat(result.getExitCode(), equalTo(1));
+		});
+	}
+
+
+	@Test
+	void CannotFindIncorrectDirectory (){
 		assertDoesNotThrow(() -> {
 			String [] args = {"-textfile", "/foo/test2", "Owner",
 					"Description", "7/13/2021", "10:00", "am",

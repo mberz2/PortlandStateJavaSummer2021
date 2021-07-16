@@ -4,12 +4,7 @@ import edu.pdx.cs410J.ParserException;
 import org.junit.jupiter.api.*;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.*;
 
