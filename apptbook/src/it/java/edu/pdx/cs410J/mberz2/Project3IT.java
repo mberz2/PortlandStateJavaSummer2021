@@ -20,7 +20,6 @@ class Project3IT extends InvokeMainTestCase {
 		return invokeMain( Project3.class, args );
 	}
 
-	@Test
 	void CommandLineParserTest () {
 
 		String [] readme = {"-print", "-textfile", "test.txt",
@@ -29,8 +28,30 @@ class Project3IT extends InvokeMainTestCase {
 
 		System.out.println(result.getTextWrittenToStandardError());
 		System.out.println(result.getTextWrittenToStandardOut());
+	}
 
+	@Test
+	void noTextfileArgumentFails (){
+		String [] args = {"-textfile"};
+		MainMethodResult result = invokeMain(args);
 
+		System.out.println(result.getTextWrittenToStandardError());
+		System.out.println(result.getTextWrittenToStandardOut());
+
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("Error"));
+	}
+
+	@Test
+	void noPrettyArgumentFails(){
+		String [] args = {"-pretty"};
+		MainMethodResult result = invokeMain(args);
+
+		System.out.println(result.getTextWrittenToStandardError());
+		System.out.println(result.getTextWrittenToStandardOut());
+
+		assertThat(result.getTextWrittenToStandardError(),
+				containsString("Error"));
 	}
 
 	@Test
@@ -271,9 +292,7 @@ class Project3IT extends InvokeMainTestCase {
 			//System.out.println(result.getTextWrittenToStandardOut());
 
 			assertThat(result.getTextWrittenToStandardError(),
-					containsString("Error: Incompatible"));
-			assertThat(result.getTextWrittenToStandardError(),
-					containsString("loaded file"));
+					containsString("Error: No such file"));
 			assertThat(result.getExitCode(), equalTo(1));
 		});
 	}
