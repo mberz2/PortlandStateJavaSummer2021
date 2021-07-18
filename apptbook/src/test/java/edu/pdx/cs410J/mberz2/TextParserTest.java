@@ -36,7 +36,7 @@ public class TextParserTest {
 	@Test
 	void malFormedFileCannotBeParsed() {
 		InputStream resource =
-				getClass().getResourceAsStream("malformed.txt");
+				getClass().getResourceAsStream("bogus.txt");
 		assertNotNull(resource);
 
 		TextParser parser = new TextParser(new InputStreamReader(resource));

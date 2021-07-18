@@ -33,7 +33,7 @@ public class Project3 {
 
 	private static final int [] VALIDPRINT = {MAX-5, MAX-3, MAX-1, MAX};
 
-	private static final int [] VALIDDUMP = {MAX-4, MAX-2, MAX-1, MAX};
+	private static final int [] VALIDDUMP = {MAX-4, MAX-3, MAX-2, MAX-1, MAX};
 
 	/* Contains the file name, if textFile is enabled. */
 	private static String FILE;
@@ -139,7 +139,6 @@ public class Project3 {
 		OPTIONS.put("TextFile", 0);
 		OPTIONS.put("Pretty", 0);
 
-
 		/* Base cases, ZERO or TOO MANY (over total acceptable, MAX) */
 		if (args.length == 0) {
 			System.err.println("Error: No command line arguments.");
@@ -201,9 +200,12 @@ public class Project3 {
 
 		// Error check for options
 		if(printEnabled())
-			if (doesNotContain(VALIDPRINT, args.length))
+			if (doesNotContain(VALIDPRINT, args.length)){
+				System.out.println("HERE1");
+				System.out.println(Arrays.toString(VALIDPRINT));
 				printErrorUsage("Error: Invalid amount " +
 						"of arguments", 1);
+			}
 
 		if(printerEnabled() || fileEnabled()) {
 			if (doesNotContain(VALIDDUMP, args.length))

@@ -294,25 +294,17 @@ class Project3IT extends InvokeMainTestCase {
 
 
 	@Test
-	void CannotFindIncorrectDirectory (){
+	void validInputDoesNotThrow (){
 		assertDoesNotThrow(() -> {
-			String [] args = {"-textfile", "/foo/test2", "Owner",
-					"Description", "7/13/2021", "10:00", "am",
-					"7/13/2021", "10:05", "am"};
-
-			String [] args2 = {"-textfile", "test2", "Owner2",
-					"Description", "7/13/2021", "10:00", "am",
-					"7/13/2021", "10:05", "am"};
+			String [] args = {"-print", "-textfile", "test.txt", "Owner",
+					"Description", "1/1/2021", "14:00", "am",
+					"1/2/2021", "1:05", "am"};
 
 			MainMethodResult result = invokeMain(args);
-			//result = invokeMain(args2);
 
 			System.out.println(result.getTextWrittenToStandardError());
-			//System.out.println(result.getTextWrittenToStandardOut());
+			System.out.println(result.getTextWrittenToStandardOut());
 
-			assertThat(result.getTextWrittenToStandardError(),
-					containsString("Error: No such file"));
-			assertThat(result.getExitCode(), equalTo(1));
 		});
 	}
 }
