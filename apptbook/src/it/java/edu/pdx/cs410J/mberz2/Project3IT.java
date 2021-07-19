@@ -25,9 +25,6 @@ class Project3IT extends InvokeMainTestCase {
 		String [] args = {"-README"};
 		MainMethodResult result = invokeMain(args);
 
-		System.out.println(result.getTextWrittenToStandardError());
-		System.out.println(result.getTextWrittenToStandardOut());
-
 		assertThat(result.getTextWrittenToStandardOut(),
 				containsString("Project 3"));
 	}
@@ -36,9 +33,6 @@ class Project3IT extends InvokeMainTestCase {
 	void noTextfileArgumentFails (){
 		String [] args = {"-textfile"};
 		MainMethodResult result = invokeMain(args);
-
-		System.out.println(result.getTextWrittenToStandardError());
-		System.out.println(result.getTextWrittenToStandardOut());
 
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("Error"));
@@ -49,9 +43,6 @@ class Project3IT extends InvokeMainTestCase {
 		String [] args = {"-pretty"};
 		MainMethodResult result = invokeMain(args);
 
-		System.out.println(result.getTextWrittenToStandardError());
-		System.out.println(result.getTextWrittenToStandardOut());
-
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("Error"));
 	}
@@ -60,9 +51,6 @@ class Project3IT extends InvokeMainTestCase {
 	void readmeOptionPrintsNewReadme() {
 		String [] readme = {"-readme"};
 		MainMethodResult result = invokeMain(readme);
-
-		System.out.println(result.getTextWrittenToStandardError());
-		System.out.println(result.getTextWrittenToStandardOut());
 
 		assertThat(result.getTextWrittenToStandardOut(),
 				containsString("README"));
@@ -76,9 +64,6 @@ class Project3IT extends InvokeMainTestCase {
 				"Description", "7/13/2021", "10:00", "am",
 				"7/13/2021", "10:05"};
 		MainMethodResult result = invokeMain(invalidOption);
-
-		System.out.println(result.getTextWrittenToStandardError());
-		System.out.println(result.getTextWrittenToStandardOut());
 
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("Error"));
@@ -102,9 +87,6 @@ class Project3IT extends InvokeMainTestCase {
 				"7/13/2021", "10:05"};
 		MainMethodResult result = invokeMain(tooFew);
 
-		System.out.println(result.getTextWrittenToStandardError());
-		System.out.println(result.getTextWrittenToStandardOut());
-
 		assertThat(result.getExitCode(), equalTo(1));
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("Too FEW command line arguments"));
@@ -119,9 +101,6 @@ class Project3IT extends InvokeMainTestCase {
 
 		MainMethodResult result = invokeMain(tooMany);
 
-		System.out.println(result.getTextWrittenToStandardError());
-		System.out.println(result.getTextWrittenToStandardOut());
-
 		assertThat(result.getExitCode(), equalTo(1));
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("Too many"));
@@ -135,9 +114,6 @@ class Project3IT extends InvokeMainTestCase {
 
 		MainMethodResult result = invokeMain(args);
 
-		System.out.println(result.getTextWrittenToStandardError());
-		System.out.println(result.getTextWrittenToStandardOut());
-
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("Error: Invalid"));
 	}
@@ -150,9 +126,6 @@ class Project3IT extends InvokeMainTestCase {
 
 		MainMethodResult result = invokeMain(args);
 
-		System.out.println(result.getTextWrittenToStandardError());
-		System.out.println(result.getTextWrittenToStandardOut());
-
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("Error: Invalid"));
 	}
@@ -164,9 +137,6 @@ class Project3IT extends InvokeMainTestCase {
 				"7/13/2021", "10:05"};
 
 		MainMethodResult result = invokeMain(args);
-
-		System.out.println(result.getTextWrittenToStandardError());
-		System.out.println(result.getTextWrittenToStandardOut());
 
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("Error: Invalid"));
@@ -181,9 +151,6 @@ class Project3IT extends InvokeMainTestCase {
 
 		MainMethodResult result = invokeMain(args);
 
-		System.out.println(result.getTextWrittenToStandardError());
-		System.out.println(result.getTextWrittenToStandardOut());
-
 		assertThat(result.getTextWrittenToStandardError(),
 				containsString("Error: Invalid"));
 	}
@@ -195,9 +162,6 @@ class Project3IT extends InvokeMainTestCase {
 				"7/13/2021", "10:05", "am"};
 
 		MainMethodResult result = invokeMain(args);
-
-		System.out.println(result.getTextWrittenToStandardError());
-		System.out.println(result.getTextWrittenToStandardOut());
 
 		assertThat(result.getTextWrittenToStandardOut(),
 				containsString("Owner's appointment book"));
@@ -211,9 +175,6 @@ class Project3IT extends InvokeMainTestCase {
 
 		MainMethodResult result = invokeMain(args);
 
-		System.out.println(result.getTextWrittenToStandardError());
-		System.out.println(result.getTextWrittenToStandardOut());
-
 		assertThat(result.getTextWrittenToStandardOut(),
 				containsString("Description"));
 	}
@@ -226,9 +187,6 @@ class Project3IT extends InvokeMainTestCase {
 					"7/13/2021", "10:05", "am"};
 
 			MainMethodResult result = invokeMain(args);
-
-			System.out.println(result.getTextWrittenToStandardError());
-			System.out.println(result.getTextWrittenToStandardOut());
 		});
 	}
 
@@ -245,9 +203,6 @@ class Project3IT extends InvokeMainTestCase {
 
 			MainMethodResult result = invokeMain(args);
 			result = invokeMain(args2);
-
-			System.out.println(result.getTextWrittenToStandardError());
-			System.out.println(result.getTextWrittenToStandardOut());
 		});
 	}
 
@@ -278,15 +233,7 @@ class Project3IT extends InvokeMainTestCase {
 					"Description", "7/13/2021", "10:00", "am",
 					"7/13/2021", "10:05", "am"};
 
-			String [] args2 = {"-textfile", "test2", "Owner2",
-					"Description", "7/13/2021", "10:00", "am",
-					"7/13/2021", "10:05", "am"};
-
 			MainMethodResult result = invokeMain(args);
-			//result = invokeMain(args2);
-
-			System.out.println(result.getTextWrittenToStandardError());
-			//System.out.println(result.getTextWrittenToStandardOut());
 
 			assertThat(result.getTextWrittenToStandardError(),
 					containsString("Error: No such file"));
@@ -304,9 +251,6 @@ class Project3IT extends InvokeMainTestCase {
 
 			MainMethodResult result = invokeMain(args);
 
-			System.out.println(result.getTextWrittenToStandardError());
-			System.out.println(result.getTextWrittenToStandardOut());
-
 		});
 	}
 
@@ -318,9 +262,6 @@ class Project3IT extends InvokeMainTestCase {
 					"1/2/2021", "1:05", "am"};
 
 			MainMethodResult result = invokeMain(args);
-
-			System.out.println(result.getTextWrittenToStandardError());
-			System.out.println(result.getTextWrittenToStandardOut());
 
 			assertThat(result.getTextWrittenToStandardError(),
 					containsString("same location."));
@@ -337,9 +278,6 @@ class Project3IT extends InvokeMainTestCase {
 
 			MainMethodResult result = invokeMain(args);
 
-			System.out.println(result.getTextWrittenToStandardError());
-			System.out.println(result.getTextWrittenToStandardOut());
-
 			assertThat(result.getTextWrittenToStandardOut(),
 					containsString(""));
 
@@ -355,9 +293,6 @@ class Project3IT extends InvokeMainTestCase {
 
 			MainMethodResult result = invokeMain(args);
 
-			System.out.println(result.getTextWrittenToStandardError());
-			System.out.println(result.getTextWrittenToStandardOut());
-
 			assertThat(result.getTextWrittenToStandardError(),
 					containsString("Error: No"));
 
@@ -372,10 +307,6 @@ class Project3IT extends InvokeMainTestCase {
 					"1/2/2021", "1:05", "am"};
 
 			MainMethodResult result = invokeMain(args);
-
-			System.out.println(result.getTextWrittenToStandardError());
-			System.out.println(result.getTextWrittenToStandardOut());
-
 			assertThat(result.getTextWrittenToStandardError(),
 					containsString("Error: No"));
 

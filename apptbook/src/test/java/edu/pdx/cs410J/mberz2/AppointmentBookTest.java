@@ -2,72 +2,61 @@ package edu.pdx.cs410J.mberz2;
 import edu.pdx.cs410J.ParserException;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 /**
 * Unit tests for the {@link Appointment} and {@link AppointmentBook} classes.
 */
 public class AppointmentBookTest {
 
-	/*
-	//Appointment Tests
+
 	@Test
-	void getBeginTimeStringNeedsToBeImplemented() {
-		Appointment appt = new Appointment(null, null, null);
-		assertThrows(UnsupportedOperationException.class,
-				appt::getBeginTimeString);
+	void getEndTimeStringNeedsToBeImplemented() throws ParserException {
+		assertThrows(NullPointerException.class, () ->{
+			Appointment appt =
+					new Appointment(null, null, null);
+		});
 	}
 
 	@Test
-	void getBeginTimeStringImplemented() {
+	void getEndTimeStringImplemented() throws ParserException {
 		Appointment appt =
-				new Appointment(null, "11:30", null);
-		assertNotNull(appt.getBeginTimeString());
-		assertEquals("11:30",appt.getBeginTimeString());
-	}
-
-	@Test
-	void getEndTimeStringNeedsToBeImplemented() {
-		Appointment appt =
-				new Appointment(null, null, null);
-		assertThrows(UnsupportedOperationException.class,
-				appt::getEndTimeString);
-	}
-
-	@Test
-	void getEndTimeStringImplemented() {
-		Appointment appt =
-		new Appointment(null, null, "11:30");
+				new Appointment("test", "1/1/2000 10:10 AM",
+						"1/1/2000 10:15 AM");
 		assertNotNull(appt.getEndTimeString());
-		assertEquals("11:30",appt.getEndTimeString());
+		assertThat(appt.getEndTimeString(),
+				containsString("10:15"));
+	}
+
+	private void assertNotNull(String endTimeString) {
 	}
 
 	@Test
-	void initiallyAllAppointmentsHaveTheSameDescription() {
-		Appointment appt = new Appointment(null, null, null);
-		assertThrows(UnsupportedOperationException.class, appt::getDescription);
+	void initiallyAllAppointmentsHaveTheSameDescription() throws ParserException {
+		assertThrows(NullPointerException.class, () -> {
+			Appointment appt = new Appointment(null, null, null);
+		});
 	}
 
 	@Test
-	void getDescriptionStringImplemented() {
+	void getDescriptionStringImplemented() throws ParserException {
 		Appointment appt =
-				new Appointment("test", null, null);
+				new Appointment("test", "1/1/2000 10:10 AM",
+						"1/1/2000 10:15 AM");
 		assertNotNull(appt.getDescription());
 		assertEquals("test",appt.getDescription());
 	}
 
-
-	//AppointmentBook Tests
 	@Test
-	void getApptBookOwnerNeedsToBeImplemented() {
-		Appointment appt = new Appointment(null, null, null);
-		AppointmentBook appBook =
-				new AppointmentBook(null, appt);
-		assertThrows(UnsupportedOperationException.class,
-				appBook::getOwnerName);
-	}
-
-	@Test
-	void getApptBookOwnerImplemented() {
-		Appointment appt = new Appointment(null, null, null);
+	void getApptBookOwnerImplemented() throws ParserException {
+		Appointment appt =
+				new Appointment("test", "1/1/2000 10:10 AM",
+						"1/1/2000 10:15 AM");
 		AppointmentBook appBook =
 				new AppointmentBook("test", appt);
 		assertEquals("test", appBook.getOwnerName());
@@ -83,26 +72,18 @@ public class AppointmentBookTest {
 	}
 
 	@Test
-	void NewAppointmentIsNotEmpty(){
-		Appointment appt = new Appointment(null, null, null);
+	void NewAppointmentIsNotEmpty() throws ParserException {
+		Appointment appt =
+				new Appointment("test", "1/1/2000 10:10 AM",
+						"1/1/2000 10:15 AM");
 		AppointmentBook appBook =
 				new AppointmentBook("test", appt);
 		appBook.getAppointments();
 	}
 
 	@Test
-	void AddAppointmentEmptyAppointment(){
-		Appointment appt = new Appointment(null, null, null);
-		AppointmentBook appBook =
-				new AppointmentBook("test", appt);
-
-		assertThrows(UnsupportedOperationException.class, ()
-				-> appBook.addAppointment(null));
-	}
-
-	@Test
 	void AddAppointmentIsNotEmpty(){
-		assertDoesNotThrow(()->{
+		assertThrows(NullPointerException.class, () ->{
 			Appointment appt = new Appointment(null, null, null);
 			AppointmentBook appBook =
 					new AppointmentBook("test", appt);
@@ -113,7 +94,7 @@ public class AppointmentBookTest {
 
 	@Test
 	void getAppointmentEmptyAppointment(){
-		assertThrows(UnsupportedOperationException.class, () -> {
+		assertThrows(ParserException.class, () -> {
 			Appointment appt =
 					new Appointment("Test", "12:00", "13:00");
 			AppointmentBook appBook =
@@ -125,15 +106,14 @@ public class AppointmentBookTest {
 	}
 
 	@Test
-	void getAppointmentIsNotEmpty(){
+	void getAppointmentIsNotEmpty() throws ParserException {
 		Appointment appt =
-				new Appointment("Test", "12:00", "13:00");
+				new Appointment("test", "1/1/2000 10:10 AM",
+						"1/1/2000 10:15 AM");
 		AppointmentBook appBook =
 				new AppointmentBook("test", appt);
 
 		Collection<Appointment> output = appBook.getAppointments();
 		assertFalse(output.isEmpty());
 	}
-
-	*/
 }

@@ -185,8 +185,6 @@ public class Project3 {
 		// Error check for options
 		if(printEnabled())
 			if (doesNotContain(VALIDPRINT, args.length)){
-				System.out.println("HERE1");
-				System.out.println(Arrays.toString(VALIDPRINT));
 				printErrorUsage("Error: Invalid amount " +
 						"of arguments", 1);
 			}

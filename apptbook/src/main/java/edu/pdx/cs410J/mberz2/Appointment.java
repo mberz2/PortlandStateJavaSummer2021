@@ -44,6 +44,10 @@ public class Appointment extends AbstractAppointment
 	Appointment (String d, String bt, String et) throws ParserException {
 		this.desc = d;
 
+		if (bt == null || et == null){
+			throw new NullPointerException("Error: Time is currently null.");
+		}
+
 		try {
 			this.beginTime = dateFormat.parse(bt.trim());
 		} catch (ParseException e){
