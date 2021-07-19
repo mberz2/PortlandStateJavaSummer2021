@@ -68,6 +68,24 @@ public class PrettyPrinterTest {
 
 		String dumpedText = sw.toString();
 		assertThat(dumpedText, containsString(date));
+	}
 
+	@Test
+	void printerPrintsAppointmentBookNumber() throws ParserException, IOException {
+		String date = "Total Appointments: 1";
+
+		Appointment app = new Appointment("Description",
+				"1/1/1000 10:00 AM", "1/1/1000 10:30 PM");
+
+		AppointmentBook book = new AppointmentBook(date, app);
+
+		StringWriter sw = new StringWriter();
+		PrettyPrinter pp = new PrettyPrinter(sw);
+		pp.dump(book);
+
+		sw.flush();
+
+		String dumpedText = sw.toString();
+		assertThat(dumpedText, containsString(date));
 	}
 }
