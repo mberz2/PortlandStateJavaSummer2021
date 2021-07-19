@@ -20,14 +20,16 @@ class Project3IT extends InvokeMainTestCase {
 		return invokeMain( Project3.class, args );
 	}
 
-	void CommandLineParserTest () {
-
-		String [] readme = {"-print", "-textfile", "test.txt",
-		"-pretty", "test"};
-		MainMethodResult result = invokeMain(readme);
+	@Test
+	void loadingReadmeWorks (){
+		String [] args = {"-README"};
+		MainMethodResult result = invokeMain(args);
 
 		System.out.println(result.getTextWrittenToStandardError());
 		System.out.println(result.getTextWrittenToStandardOut());
+
+		assertThat(result.getTextWrittenToStandardOut(),
+				containsString("Project 3"));
 	}
 
 	@Test
@@ -304,6 +306,78 @@ class Project3IT extends InvokeMainTestCase {
 
 			System.out.println(result.getTextWrittenToStandardError());
 			System.out.println(result.getTextWrittenToStandardOut());
+
+		});
+	}
+
+	@Test
+	void cannotPrettyPrintToSameTextFilePath (){
+		assertDoesNotThrow(() -> {
+			String [] args = {"-pretty", "same.txt", "-textfile", "same.txt",
+					"Owner", "Description", "1/1/2021", "14:00", "am",
+					"1/2/2021", "1:05", "am"};
+
+			MainMethodResult result = invokeMain(args);
+
+			System.out.println(result.getTextWrittenToStandardError());
+			System.out.println(result.getTextWrittenToStandardOut());
+
+			assertThat(result.getTextWrittenToStandardError(),
+					containsString("same location."));
+
+		});
+	}
+
+	@Test
+	void validFileForPrettyPrinting (){
+		assertDoesNotThrow(() -> {
+			String [] args = {"-pretty", "pretty.txt",
+					"Owner", "Description", "1/1/2021", "14:00", "am",
+					"1/2/2021", "1:05", "am"};
+
+			MainMethodResult result = invokeMain(args);
+
+			System.out.println(result.getTextWrittenToStandardError());
+			System.out.println(result.getTextWrittenToStandardOut());
+
+			assertThat(result.getTextWrittenToStandardOut(),
+					containsString(""));
+
+		});
+	}
+
+	@Test
+	void invalidTextfileFileThrowsError (){
+		assertDoesNotThrow(() -> {
+			String [] args = {"-print", "-textfile", "*/test.txt", "Owner",
+					"Description", "1/1/2021", "14:00", "am",
+					"1/2/2021", "1:05", "am"};
+
+			MainMethodResult result = invokeMain(args);
+
+			System.out.println(result.getTextWrittenToStandardError());
+			System.out.println(result.getTextWrittenToStandardOut());
+
+			assertThat(result.getTextWrittenToStandardError(),
+					containsString("Error: No"));
+
+		});
+	}
+
+	@Test
+	void invalidPrettyFileThrowsError () {
+		assertDoesNotThrow(() -> {
+			String[] args = {"-print", "-pretty", "*/test.txt", "Owner",
+					"Description", "1/1/2021", "14:00", "am",
+					"1/2/2021", "1:05", "am"};
+
+			MainMethodResult result = invokeMain(args);
+
+			System.out.println(result.getTextWrittenToStandardError());
+			System.out.println(result.getTextWrittenToStandardOut());
+
+			assertThat(result.getTextWrittenToStandardError(),
+					containsString("Error: No"));
 
 		});
 	}

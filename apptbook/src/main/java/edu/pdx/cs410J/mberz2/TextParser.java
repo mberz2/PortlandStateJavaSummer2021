@@ -70,7 +70,6 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 
 				tempBook.setOwnerName(newArgs[0]);
 				tempBook.addAppointment(app);
-
 			}
 
 			reader.close();

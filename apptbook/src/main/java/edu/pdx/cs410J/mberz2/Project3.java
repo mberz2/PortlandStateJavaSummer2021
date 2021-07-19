@@ -31,8 +31,10 @@ public class Project3 {
 	/* Total number of enabled options flags, used to find first appt. arg */
 	private static int FLAGS;
 
+	/* String array containing valid arguments when print is enabled */
 	private static final int [] VALIDPRINT = {MAX-5, MAX-3, MAX-1, MAX};
 
+	/* String array containing valid arguments when textFile is enabled */
 	private static final int [] VALIDDUMP = {MAX-4, MAX-3, MAX-2, MAX-1, MAX};
 
 	/* Contains the file name, if textFile is enabled. */
@@ -55,19 +57,6 @@ public class Project3 {
 	/* String containing syntax for how to display README */
 	public static final String README =
 			"java -jar /apptbook/target/apptbook-2021.0.0.jar -README";
-
-
-	public static void setWriteStream () throws IOException {
-		if (PRETTYFILE.equals("-")){
-			WRITER = new PrintWriter(System.out);
-		} else {
-			WRITER = new FileWriter(PRETTYFILE);
-		}
-	}
-
-	public static boolean doesNotContain(final int[] arr, final int key) {
-		return Arrays.stream(arr).noneMatch(i -> i == key);
-	}
 
 	/**
 	 * Main class. Entry point into the program. Creates an appointment object
@@ -149,11 +138,7 @@ public class Project3 {
 			printUsage(1);
 		}
 
-		System.out.println("Totals args: "+args.length);
-
 		for (int i = 0; i < args.length; i++) {
-
-			System.out.println(args[i]);
 
 			if (args[i].charAt(0) == '-') {
 
@@ -165,7 +150,6 @@ public class Project3 {
 					++FLAGS;
 
 				} else if (args[i].equalsIgnoreCase("-TEXTFILE")) {
-
 					FLAGS = FLAGS + 2;
 					OPTIONS.put("TextFile", 1);
 					try {
@@ -282,7 +266,6 @@ public class Project3 {
 
 			}
 
-
 		} catch (FileNotFoundException e){
 
 			//Nothing to merge, return original book.
@@ -310,6 +293,39 @@ public class Project3 {
 	}
 
 	/**
+	 * Method sets the text writer depending on what is in the argument
+	 * following the -pretty option. If the argument is "-" the method creates
+	 * a new PrintWriter to System.out, otherwise, it sets a new FileWriter to
+	 * whatever is contained in the PRETTYFILE datamember.
+	 *
+	 * @throws IOException Exception handling for problems in reading/writing.
+	 */
+	public static void setWriteStream () throws IOException {
+		if (PRETTYFILE.equals("-")){
+			WRITER = new PrintWriter(System.out);
+		} else {
+			try{
+				WRITER = new FileWriter(PRETTYFILE);
+			} catch (FileNotFoundException e){
+				System.err.println("Error: No such file/directory.");
+				System.exit(1);
+			}
+		}
+	}
+
+	/**
+	 * Helper method to check if an array does not contain a given key. Used
+	 * for checking whether or not the arguments on the command line are valid.
+	 *
+	 * @param arr Array to check.
+	 * @param key Key to find.
+	 * @return Returns whether or not there was a match.
+	 */
+	public static boolean doesNotContain(final int[] arr, final int key) {
+		return Arrays.stream(arr).noneMatch(i -> i == key);
+	}
+
+	/**
 	 * Method prints a file in the resource folder via a class loader.
 	 *
 	 * @param s String containing the file to load.
@@ -329,7 +345,7 @@ public class Project3 {
 		}
 
 		// Otherwise, throw an exception.
-		throw new NullPointerException ("File "+s+" not found.");
+		throw new NullPointerException ("Error: File "+s+" not found.");
 	}
 
 	/**
