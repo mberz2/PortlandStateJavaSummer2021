@@ -22,7 +22,7 @@ public class AboutDefaultMethods {
 
     @Koan
     public void interfaceStaticMethod() {
-        assertEquals(StringUtil.enclose("me"), __);
+        assertEquals(StringUtil.enclose("me"), "[me]");
     }
 
     interface StringUtil {
