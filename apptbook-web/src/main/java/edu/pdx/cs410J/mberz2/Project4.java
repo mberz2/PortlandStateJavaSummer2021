@@ -18,16 +18,25 @@ public class Project4 {
 	/* Total number of enabled options flags, used to find first appt. arg */
 	private static int FLAGS;
 
-	/* String array containing valid arguments when print is enabled */
-	private static final int [] VALIDPRINT = {MAX-5, MAX-3, MAX-1, MAX};
+	/* Int array containing valid argument counts when print is enabled */
+	private static final int [] VALIDPRINT = {11};
 
-	/* String array containing valid arguments when textFile is enabled */
-	private static final int [] VALIDDUMP = {MAX-4, MAX-3, MAX-2, MAX-1, MAX};
+	/* Int array containing valid argument counts when search is enabled */
+	private static final int [] VALIDSEARCH = {13};
 
-	private static String [] SEARCH = {"", "", ""};
+	/* Int array containing valid argument counts when owner dump is enabled */
+	private static final int [] VALIDOWNER = {5};
 
+	/* String containing the owner to search for. */
 	private static String OWNER;
+
+	/* String array containing the search parameters */
+	private static final String [] SEARCH = {"", "", ""};
+
+	/* String containing the HOST to connect to */
 	private static String HOST;
+
+	/* Int containing the port to connect to */
 	private static int PORT;
 
 	/* Map containing the different option fields, set all to 0 */
@@ -42,36 +51,49 @@ public class Project4 {
 	public static final String README =
 			"java -jar /apptbook/target/apptbook-2021.0.0.jar -README";
 
-	public static final String MISSING_ARGS = "Missing command line arguments";
-
+	/**
+	 * Main entry point for the program. Validates command line arguments, and
+	 * then based on a variety of different option conditions, performs a few
+	 * different operations. Can add an appointment, search, display all, or
+	 * output the readme.
+	 *
+	 * @param args String containing command line arguments.
+	 * @throws ParserException Exception handling for parsing an appointment.
+	 * @throws IOException Exception handling for input/out operations.
+	 */
 	public static void main(String... args) throws ParserException, IOException {
 
 		// Check arguments for valid inputs.
 		checkInput(args);
 
-		AppointmentBookRestClient client = new AppointmentBookRestClient(HOST, PORT);
-		HttpRequestHelper.Response response = null;
+		// Setup a REST client object and HTTP Response object
+		AppointmentBookRestClient client =
+				new AppointmentBookRestClient(HOST, PORT);
+		HttpRequestHelper.Response response;
 
+		/* If, after checking the input, a single owner argument is detected,
+		we immediately print out all associated appointments for that user. */
 		if(ownerEnabled()){
 			try {
 				response = client.getAllAppointments(OWNER);
 				System.out.println(response.getContent());
 				checkResponseCode( HttpURLConnection.HTTP_OK, response);
+				System.exit(0);
 			} catch (IOException ex) {
-				System.out.println("Issue with connection.");
+				printError("Issue with connecting to print.", 1);
 			}
-
-			System.exit(1);
 		} else if (searchEnabled()) {
 			try {
 				response = client.searchTime(SEARCH[0], SEARCH[1], SEARCH[2]);
 				System.out.println(response.getContent());
 				checkResponseCode(HttpURLConnection.HTTP_OK, response);
+				System.exit(0);
 			} catch (IOException ex) {
-				System.out.println("Issue with connection.");
+				printError("Issue with connecting to search.", 1);
 			}
 		} else {
 
+			// Parse a new array for appointment arguments.
 			String [] newArgs = parseInput(args);
 			String owner = newArgs[0];
 			String desc = newArgs[1];
@@ -79,14 +101,16 @@ public class Project4 {
 			String et = newArgs[5]+" "+newArgs[6]+" "+newArgs[7];
 
 			try {
+				// Try to add the new appointment.
 				response = client.addAppointment(owner, desc, bt, et);
 				System.out.println(response.getContent());
 				checkResponseCode( HttpURLConnection.HTTP_OK, response);
 			} catch (IOException ex) {
-				System.out.println("Issue with connection.");
+				printError("Issue with connecting to add.", 1);
 			}
 
-			if(OPTIONS.get("PRINT") == 1){
+			// If PRINT is enabled, print out the new appointment to the Cl.
+			if(printEnabled()){
 				Appointment app = new Appointment(desc, bt, et);
 				AppointmentBook appBook = new AppointmentBook(owner, app);
 				printAppt(appBook);
@@ -94,20 +118,6 @@ public class Project4 {
 		}
 
 		System.exit(0);
-	}
-
-
-	/**
-	 * Makes sure that the give response has the expected HTTP status code
-	 * @param code The expected status code
-	 * @param response The response from the server
-	 */
-	private static void checkResponseCode( int code, HttpRequestHelper.Response response )
-	{
-		if (response.getCode() != code) {
-			printError(String.format("Expected HTTP code %d, got code %d.\n\n%s", code,
-					response.getCode(), response.getContent()), 1);
-		}
 	}
 
 	/**
@@ -201,24 +211,38 @@ public class Project4 {
 			OWNER = args[4];
 		}
 
-		/*
 		// Error check for options
 		if(printEnabled())
 			if (doesNotContain(VALIDPRINT, args.length)){
-				printErrorUsage("Error: Invalid amount " +
-						"of arguments", 1);
+				printErrorUsage("Invalid amount " +
+						"of arguments for printing", 1);
 			}
 
-		if(printerEnabled() || fileEnabled()) {
-			if (doesNotContain(VALIDDUMP, args.length))
-				printErrorUsage("Error: Invalid amount " +
-						"of arguments", 1);
-			else if ((printerEnabled() && fileEnabled())
-					&& FILE.equals(PRETTYFILE))
-				printErrorUsage("Error: Cannot have both printer and " +
-						"textfile paths as the same location.", 1);
+		if(searchEnabled()) {
+			if (doesNotContain(VALIDSEARCH, args.length))
+				printErrorUsage("Invalid amount " +
+						"of arguments for searching", 1);
 		}
-		 */
+
+		if(ownerEnabled()) {
+			if (doesNotContain(VALIDOWNER, args.length))
+				printErrorUsage("Invalid amount " +
+						"of arguments for display-all", 1);
+		}
+	}
+
+	/**
+	 * Makes sure that the give response has the expected HTTP status code.
+	 *
+	 * @param code The expected status code
+	 * @param response The response from the server
+	 */
+	private static void checkResponseCode(
+			int code, HttpRequestHelper.Response response ) {
+		if (response.getCode() != code) {
+			printError(String.format("Expected HTTP code %d, got code %d.\n\n%s", code,
+					response.getCode(), response.getContent()), 1);
+		}
 	}
 
 	/**
@@ -231,8 +255,7 @@ public class Project4 {
 	 * @param args String array containing the command line arguments.
 	 * @return appointmentBook object containing the new appointment.
 	 */
-	public static String [] parseInput(String[] args)
-			throws ParserException {
+	public static String [] parseInput(String[] args) {
 
 		// New array for holding parsed arguments.
 		String[] newArgs = Arrays.copyOfRange(args, FLAGS, args.length);
@@ -302,7 +325,8 @@ public class Project4 {
 	 */
 	public static void printErrorUsage(String s, int status){
 		System.err.println("** Error: "+s);
-		printUsage(status);
+		System.err.println(USAGE);
+		System.exit(status);
 	}
 
 	/**
@@ -318,16 +342,6 @@ public class Project4 {
 	}
 
 	/**
-	 * Method for printing the program usage and setting the exit code.
-	 *
-	 * @param status Integer containing the exit status code.
-	 */
-	public static void printUsage(int status){
-		System.err.println(USAGE);
-		System.exit(status);
-	}
-
-	/**
 	 * Method for checking if the {@code -print} option flag is enabled.
 	 *
 	 * @return Boolean for whether or not the option is enabled.
@@ -336,22 +350,23 @@ public class Project4 {
 		return OPTIONS.get("PRINT")==1;
 	}
 
-
-	public static boolean hostEnabled(){
-		return OPTIONS.get("HOST")==1;
-	}
-
-
-	public static boolean portEnabled(){
-		return OPTIONS.get("PORT")==1;
-	}
-
-	public static boolean ownerEnabled(){
-		return OPTIONS.get("OWNER")==1;
-	}
-
+	/**
+	 * Method for checking if the {@code -search} option flag is enabled.
+	 *
+	 * @return Boolean for whether or not the option is enabled.
+	 */
 	public static boolean searchEnabled(){
 		return OPTIONS.get("SEARCH")==1;
+	}
+
+	/**
+	 * Method for checking if a single owner argument was passed. Indicating
+	 * that the program will print the entire appointment book for that owner.
+	 *
+	 * @return Boolean for whether or not the option is enabled.
+	 */
+	public static boolean ownerEnabled(){
+		return OPTIONS.get("OWNER")==1;
 	}
 
 }
