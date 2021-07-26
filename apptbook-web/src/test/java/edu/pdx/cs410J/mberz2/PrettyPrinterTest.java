@@ -13,6 +13,7 @@ public class PrettyPrinterTest {
 
 	@Test
 	void dumperDumpsAppointmentBookOwner() throws ParserException, IOException {
+
 		String owner = "Owner";
 
 		Appointment app = new Appointment("Description",

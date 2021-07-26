@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 */
 public class AppointmentBookTest {
 
-
 	@Test
 	void getEndTimeStringNeedsToBeImplemented() throws ParserException {
 		assertThrows(NullPointerException.class, () ->{
@@ -31,9 +30,6 @@ public class AppointmentBookTest {
 		assertNotNull(appt.getEndTimeString());
 		assertThat(appt.getEndTimeString(),
 				containsString("10:15"));
-	}
-
-	private void assertNotNull(String endTimeString) {
 	}
 
 	@Test
