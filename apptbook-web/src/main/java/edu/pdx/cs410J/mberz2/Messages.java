@@ -38,7 +38,11 @@ public class Messages
 		return "All mappings have been deleted.";
 	}
 
-	public  static String printAppointment (Appointment a) {
+	public static String printOwner (String o) {
+		return "Owner Name: "+o;
+	}
+
+	public static String printAppointment (Appointment a) {
 
 		SimpleDateFormat ft = new SimpleDateFormat("hh:mm a, E, dd MMM yyyy");
 		String bt = ft.format(a.getBeginTime());

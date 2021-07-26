@@ -13,7 +13,7 @@ import static org.hamcrest.Matchers.*;
 class MessagesTest {
   @Test
   void printOwnerReturnsString() {
-    assertThat(Messages.printOwner("blah"), equalTo("Owner Name: blah \n"));
+    assertThat(Messages.printOwner("Owner"), equalTo("Owner Name: Owner"));
   }
 
   /*

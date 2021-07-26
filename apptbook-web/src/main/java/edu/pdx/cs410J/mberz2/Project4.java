@@ -4,11 +4,7 @@ import edu.pdx.cs410J.web.HttpRequestHelper;
 
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * The main class that parses the command line and communicates with the
@@ -30,6 +26,7 @@ public class Project4 {
 
 	private static String [] SEARCH = {"", "", ""};
 
+	private static String OWNER;
 	private static String HOST;
 	private static int PORT;
 
@@ -45,7 +42,6 @@ public class Project4 {
 	public static final String README =
 			"java -jar /apptbook/target/apptbook-2021.0.0.jar -README";
 
-
 	public static final String MISSING_ARGS = "Missing command line arguments";
 
 	public static void main(String... args) throws ParserException, IOException {
@@ -53,43 +49,48 @@ public class Project4 {
 		// Check arguments for valid inputs.
 		checkInput(args);
 
-		String [] newArgs = parseInput(args);
-
-		String owner = newArgs[0];
-		String desc = newArgs[1];
-		String bt = newArgs[2]+" "+newArgs[3]+" "+newArgs[4];
-		String et = newArgs[5]+" "+newArgs[6]+" "+newArgs[7];
-
-		boolean serverFlag = true;
-
 		AppointmentBookRestClient client = new AppointmentBookRestClient(HOST, PORT);
 		HttpRequestHelper.Response response = null;
 
-		if (searchEnabled()) {
+		if(ownerEnabled()){
 			try {
-				response = client.searchTime(owner, bt, et);
+				response = client.getAllAppointments(OWNER);
+				System.out.println(response.getContent());
+				checkResponseCode( HttpURLConnection.HTTP_OK, response);
 			} catch (IOException ex) {
-				System.out.println("Web connection issue");
-				serverFlag = false;
+				System.out.println("Issue with connection.");
+			}
+
+			System.exit(1);
+		} else if (searchEnabled()) {
+			try {
+				response = client.searchTime(SEARCH[0], SEARCH[1], SEARCH[2]);
+				System.out.println(response.getContent());
+				checkResponseCode(HttpURLConnection.HTTP_OK, response);
+			} catch (IOException ex) {
+				System.out.println("Issue with connection.");
 			}
 		} else {
+
+			String [] newArgs = parseInput(args);
+			String owner = newArgs[0];
+			String desc = newArgs[1];
+			String bt = newArgs[2]+" "+newArgs[3]+" "+newArgs[4];
+			String et = newArgs[5]+" "+newArgs[6]+" "+newArgs[7];
+
 			try {
 				response = client.addAppointment(owner, desc, bt, et);
+				System.out.println(response.getContent());
+				checkResponseCode( HttpURLConnection.HTTP_OK, response);
 			} catch (IOException ex) {
-				System.out.println("Web connection issue");
-				serverFlag = false;
+				System.out.println("Issue with connection.");
 			}
-		}
 
-		if(serverFlag) {
-			checkResponseCode(HttpURLConnection.HTTP_OK, response);
-			System.out.println(response.getContent());
-		}
-
-		if(OPTIONS.get("PRINT") == 1){
-			Appointment app = new Appointment(desc, bt, et);
-			AppointmentBook appBook = new AppointmentBook(owner, app);
-			printAppt(appBook);
+			if(OPTIONS.get("PRINT") == 1){
+				Appointment app = new Appointment(desc, bt, et);
+				AppointmentBook appBook = new AppointmentBook(owner, app);
+				printAppt(appBook);
+			}
 		}
 
 		System.exit(0);
@@ -126,16 +127,14 @@ public class Project4 {
 		OPTIONS.put("PORT", 0);
 		OPTIONS.put("SEARCH", 0);
 		OPTIONS.put("PRINT", 0);
+		OPTIONS.put("OWNER", 0);
 
 		/* Base cases, ZERO or TOO MANY (over total acceptable, MAX) */
-		if (args.length == 0) {
-			System.err.println("Error: No command line arguments.");
-			printUsage(1);
-		} else if (args.length > MAX) {
-			System.err.println("Error: Too many command line arguments.\n" +
-					"Total number cannot exceed: "+MAX);
-			printUsage(1);
-		}
+		if (args.length == 0)
+			printErrorUsage("No command line arguments.", 1);
+		else if (args.length > MAX)
+			printErrorUsage("Error: Too many command line arguments.\n" +
+					"Total number cannot exceed: "+MAX, 1);
 
 		for (int i = 0; i < args.length; i++) {
 
@@ -154,8 +153,8 @@ public class Project4 {
 					try {
 						HOST = args[i + 1];
 					} catch (ArrayIndexOutOfBoundsException e) {
-						printErrorUsage("Error: Too few command " +
-								"line arguments.", 1);
+						printErrorUsage( "Too few command line arguments.",
+								1);
 					}
 
 				} else if (args[i].equalsIgnoreCase("-PORT")) {
@@ -165,8 +164,8 @@ public class Project4 {
 					try {
 						PORT = Integer.parseInt(args[i+1]);
 					} catch (ArrayIndexOutOfBoundsException e) {
-						printErrorUsage("Error: Too few command " +
-								"line arguments.", 1);
+						printErrorUsage("Too few command line arguments.",
+								1);
 					} catch (NumberFormatException ex) {
 					printErrorUsage("Port \"" + PORT + "\" must be an integer", 1);
 				}
@@ -180,14 +179,10 @@ public class Project4 {
 						SEARCH[1] = args[i + 2]+" "+args[i + 3]+" "+args[i + 4];
 						SEARCH[2] = args[i + 5]+" "+args[i + 6]+" "+args[i + 7];
 
-						System.out.println("Searching:");
-						System.out.println(SEARCH[0]+" from "+SEARCH[1]+" to "+SEARCH[2]);
 					} catch (ArrayIndexOutOfBoundsException e) {
-						System.out.println("ERROR?");
-						printErrorUsage("Error: Too few command " +
-								"line arguments.", 1);
+						printErrorUsage("Too few command line arguments.",
+								1);
 					}
-
 
 				} else if (args[i].equals("-")) {
 					// Ignore cases of a single hyphen.
@@ -195,12 +190,16 @@ public class Project4 {
 				} else {
 
 					// Error on all other hyphen combinations.
-					printErrorUsage("Error: " + args[i] + " is an " +
-							"invalid option.", 1);
+					printErrorUsage( args[i] + " is an " + "invalid option.",
+							1);
 				}
 			}
 		}
 
+		if (args.length == 5){
+			OPTIONS.put("OWNER", 1);
+			OWNER = args[4];
+		}
 
 		/*
 		// Error check for options
@@ -302,7 +301,7 @@ public class Project4 {
 	 * @param status Integer containing the exit status code.
 	 */
 	public static void printErrorUsage(String s, int status){
-		System.err.println(s);
+		System.err.println("** Error: "+s);
 		printUsage(status);
 	}
 
@@ -314,7 +313,7 @@ public class Project4 {
 	 * @param status Integer containing the exit status code.
 	 */
 	public static void printError(String s, int status){
-		System.err.println(s);
+		System.err.println("** Error: "+s);
 		System.exit(status);
 	}
 
@@ -345,6 +344,10 @@ public class Project4 {
 
 	public static boolean portEnabled(){
 		return OPTIONS.get("PORT")==1;
+	}
+
+	public static boolean ownerEnabled(){
+		return OPTIONS.get("OWNER")==1;
 	}
 
 	public static boolean searchEnabled(){

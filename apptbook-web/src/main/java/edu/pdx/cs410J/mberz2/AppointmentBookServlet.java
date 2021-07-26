@@ -1,6 +1,5 @@
 package edu.pdx.cs410J.mberz2;
 
-import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.ParserException;
 
 import javax.servlet.ServletException;
@@ -11,10 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This servlet ultimately provides a REST API for working with an
@@ -33,115 +29,77 @@ public class AppointmentBookServlet extends HttpServlet
 	 * HTTP response.
 	 */
 	@Override
-	protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
-	{
+	protected void doGet( HttpServletRequest request, HttpServletResponse response )
+			throws IOException {
+
 		response.setContentType( "text/plain" );
+		PrintWriter pw = response.getWriter();
 
 		String owner = getParameter("owner", request);
 		String beginTime = getParameter("beginTime", request);
 		String endTime = getParameter("endTime", request);
 
-		if(owner != null && beginTime != null && endTime != null) {
+		if(!data.containsKey(owner)) {
+			pw.println("Error: No appointment book for this owner.");
+		} else if(data.containsKey(owner) && beginTime != null && endTime != null ) {
 			try {
 				searchPrint(owner, beginTime, endTime, response);
 			} catch (ParseException e) {
 				System.out.println("Issue while searching.");
 			}
 		} else if(owner != null && beginTime == null && endTime == null) {
-			AppointmentBook aAppointmentBook = data.get(owner);
-			appointmentBookPrint(owner, aAppointmentBook, response);
-		} else {
-			writeAllMappings(response);
+
+			ArrayList<Appointment> appList = data.get(owner).getAppointments();
+			AppointmentBook temp = new AppointmentBook(owner, appList.get(0));
+			for(int i = 1; i < appList.size(); ++i)
+				temp.addAppointment(appList.get(i));
+
+			PrettyPrinter printer = new PrettyPrinter(new PrintWriter(pw));
+			printer.dump(temp);
+			pw.flush();
 		}
+
+		pw.flush();
+		response.setStatus( HttpServletResponse.SC_OK);
 	}
 
-	/**
-	 * Print the result of the search
-	 * @param owner
-	 * @param beginTime
-	 * @param endTime
-	 * @param response
-	 * @throws ParseException
-	 * @throws IOException
-	 */
-	private void searchPrint(String owner, String beginTime, String endTime, HttpServletResponse response) throws ParseException, IOException {
+	private void searchPrint(String owner, String beginTime, String endTime,
+	                         HttpServletResponse response)
+			throws ParseException, IOException {
 
 		PrintWriter pw = response.getWriter();
+
 		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
-		Date beginDateTime = format.parse(beginTime);
-		Date endDateTime = format.parse(endTime);
+		Date bt = format.parse(beginTime);
+		Date et = format.parse(endTime);
+		boolean found = false;
 
-		if(data.get(owner) != null) {
-			Collection<Appointment> appointmentList = data.get(owner).getAppointments();
-			boolean foundSomthing = false;
-			boolean printStatment = false;
+		AppointmentBook temp = new AppointmentBook();
+		ArrayList<Appointment> appList = data.get(owner).getAppointments();
+		for(Appointment app : appList) {
 
-			for(Appointment app : appointmentList) {
-				Date comparebegin = format.parse(app.getBeginTimeString());
-				Date compareend = format.parse(app.getEndTimeString());
-				if(comparebegin.compareTo(beginDateTime) >= 0 && compareend.compareTo(endDateTime) <= 0) {
-					if(!printStatment){
-						pw.println("\n- Appointment's Found -");
-						pw.println("--------------------------------------------");
-						printStatment = true;
-					}
-					foundSomthing = true;
-					pw.println(Messages.printAppointment(app));
-				}
+			if(bt.compareTo(app.getBeginTime()) >= 0 &&
+					et.compareTo(app.getEndTime()) <= 0) {
+				temp.setOwnerName(owner);
+				temp.addAppointment(app);
+				found = true;
 			}
-			if (!foundSomthing) {
-				pw.println("No Appointments found within " + owner + " AppointmentBook.");
-			}
+		}
+
+		if (found){
+			PrettyPrinter printer = new PrettyPrinter(new PrintWriter(pw));
+			printer.dump(temp);
 		} else {
-			pw.println("owner AppointmentBook not found.");
+			pw.println("Error: No appointments found between those dates.");
 		}
 
 		pw.flush();
-
 		response.setStatus( HttpServletResponse.SC_OK);
 	}
 
-
-	/**
-	 * Print the appointment Book
-	 * @param owner
-	 * @param aAppintmentBook
-	 * @param response
-	 * @throws IOException
-	 */
-	private void appointmentBookPrint (String owner, AppointmentBook aAppintmentBook, HttpServletResponse response) throws IOException {
-
-		PrintWriter pw = response.getWriter();
-
-		if(data.get(owner) != null) {
-			pw.println();
-			pw.println(Messages.printOwner(owner));
-			Collection<Appointment> appointmentList = data.get(owner).getAppointments();
-			boolean foundSomthing = false;
-			for(Appointment app : appointmentList) {
-				foundSomthing = true;
-				pw.println(Messages.printAppointment(app));
-			}
-			if (!foundSomthing) {
-				pw.println("No Appointments found within " + owner + " AppointmentBook." );
-			}
-		} else {
-			pw.println("This owner doesn't have a AppointmentBook currently.");
-		}
-
-		pw.flush();
-
-		response.setStatus( HttpServletResponse.SC_OK);
-	}
-
-
-	/**
-	 * Handles an HTTP POST request by storing the key/value pair specified by the
-	 * "key" and "value" request parameters.  It writes the key/value pair to the
-	 * HTTP response.
-	 */
 	@Override
-	protected void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
+	protected void doPost( HttpServletRequest request,
+	                       HttpServletResponse response ) throws IOException
 	{
 		response.setContentType("text/plain");
 
@@ -188,22 +146,18 @@ public class AppointmentBookServlet extends HttpServlet
 			System.exit(1);
 		}
 
-		pw.print("\nAdded the follow appointment to " + owner +"'s appointment book:");
+		pw.print("\nAdded the follow appointment to " +
+				owner +"'s appointment book:");
 		pw.println(Messages.printAppointment(app));
 		pw.println();
 
 		pw.flush();
-
 		response.setStatus( HttpServletResponse.SC_OK);
 	}
 
-	/**
-	 * Handles an HTTP DELETE request by removing all key/value pairs.  This
-	 * behavior is exposed for testing purposes only.  It's probably not
-	 * something that you'd want a real application to expose.
-	 */
 	@Override
-	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doDelete(HttpServletRequest request,
+	                        HttpServletResponse response) throws IOException {
 		response.setContentType("text/plain");
 
 		this.data.clear();
@@ -221,9 +175,9 @@ public class AppointmentBookServlet extends HttpServlet
 	 *
 	 * The text of the error message is created by {@link Messages#missingRequiredParameter(String)}
 	 */
-	private void missingRequiredParameter( HttpServletResponse response, String parameterName )
-			throws IOException
-	{
+	private void missingRequiredParameter( HttpServletResponse response,
+	                                       String parameterName )
+			throws IOException {
 		String message = Messages.missingRequiredParameter(parameterName);
 		response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, message);
 	}
@@ -234,17 +188,18 @@ public class AppointmentBookServlet extends HttpServlet
 	 * The text of the message is formatted with
 	 * {@link Messages#formatKeyValuePair(String, String)}
 	 */
-	private void writeAllMappings( HttpServletResponse response ) throws IOException
-	{
+	private void writeAllMappings( HttpServletResponse response )
+			throws IOException {
 		PrintWriter pw = response.getWriter();
 		pw.println(Messages.getMappingCount(data.size()));
 
-		for (Map.Entry<String, AppointmentBook> entry : this.data.entrySet()) {
-			pw.println(Messages.formatKeyValuePair(entry.getKey(), entry.getValue().toString()));
+		for (Map.Entry<String, AppointmentBook> entry :
+				this.data.entrySet()) {
+			pw.println(Messages.formatKeyValuePair(entry.getKey(),
+					entry.getValue().toString()));
 		}
 
 		pw.flush();
-
 		response.setStatus( HttpServletResponse.SC_OK );
 	}
 
