@@ -151,7 +151,7 @@ public class Project4 {
 			if (args[i].charAt(0) == '-') {
 
 				if (args[i].equalsIgnoreCase("-README")) {
-					printRes("README.txt");
+					printReadme();
 
 				} else if (args[i].equalsIgnoreCase("-PRINT")) {
 					OPTIONS.put("PRINT", 1);
@@ -280,26 +280,34 @@ public class Project4 {
 	}
 
 	/**
-	 * Method prints a file in the resource folder via a class loader.
+	 * Method prints a text README to the standard out..
 	 *
-	 * @param s String containing the file to load.
-	 * @throws IOException Exception handling for writing the input of file.
 	 */
-	public static void printRes(String s) throws IOException {
-		// Create an input stream from the file indicated at resource class.
-		InputStream file = Project4.class.getResourceAsStream(s);
+	public static void printReadme() {
+		System.out.println("\n\n");
+		System.out.println("Project 4 README");
+		System.out.println("Author: Matthew Berzinskas (mberz2)");
+		System.out.println("Course: CS410P, Advanced Programming with Java");
+		System.out.println("Portland State University, Summer 2021");
+		System.out.println("\nThis program implements an appointment book web " +
+						"\nserver. The user is able to add new appointments, " +
+						"\nsearch, display all, via a REST servlet. Similar " +
+						"\nand parsing exists as in past programs.");
+		System.out.println("\n\nUsage: java -jar /apptbook/target/apptbook-2021.0.0.jar [options] <args>");
+		System.out.println("args are (in this order):");
+		System.out.println("owner             - The person whose owns the appt book");
+		System.out.println("description       - A description of the appointment");
+		System.out.println("beginTime         - When the appt begins (12-hour time)");
+		System.out.println("endTime           - When the appt ends (12-hour time)");
+		System.out.println("Date and time should be in the format: mm/dd/yyyy hh:mm am/pm");
+		System.out.println("\n\nOptions are (options may appear in any order");
+		System.out.println("-host \t\thostname Host computer on which the server runs");
+		System.out.println("-port \t\tport Port on which the server is listening");
+		System.out.println("-search \t\tAppointments should be searched fort");
+		System.out.println("-print \t\tPrints a description of the new appointment");
+		System.out.println("-README \t\tPrints a README for this project and exits\n");
 
-		// If it is not null, start printing until there are no more lines.
-		if (file != null) {
-			BufferedReader br = new BufferedReader(new InputStreamReader(file));
-			String line;
-			while ((line = br.readLine()) != null)
-				System.out.println(line);
-			System.exit(0);
-		}
-
-		// Otherwise, throw an exception.
-		throw new NullPointerException ("Error: File "+s+" not found.");
+		System.exit(0);
 	}
 
 	/**

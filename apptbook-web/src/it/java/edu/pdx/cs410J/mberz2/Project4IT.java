@@ -3,6 +3,7 @@ package edu.pdx.cs410J.mberz2;
 import edu.pdx.cs410J.InvokeMainTestCase;
 import edu.pdx.cs410J.UncaughtExceptionInMain;
 import edu.pdx.cs410J.web.HttpRequestHelper.RestException;
+import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.MethodOrderer.MethodName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -29,28 +30,29 @@ class Project4IT extends InvokeMainTestCase {
 	    assertThat(result.getExitCode(), equalTo(1));
     }
 
-    /*
     @Test
     void test0RemoveAllMappings() throws IOException {
       AppointmentBookRestClient client = new AppointmentBookRestClient(HOSTNAME, Integer.parseInt(PORT));
-      client.removeAllMappings();
+      client.deleteAllAppointments();
     }
 
     @Test
     void test1NoCommandLineArguments() {
         MainMethodResult result = invokeMain( Project4.class );
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString(Project4.MISSING_ARGS));
+        assertThat(result.getTextWrittenToStandardError(), containsString("No command"));
     }
 
-    @Test
-    void test2EmptyServer() {
-        MainMethodResult result = invokeMain( Project4.class, HOSTNAME, PORT );
-        assertThat(result.getTextWrittenToStandardError(), result.getExitCode(), equalTo(0));
-        String out = result.getTextWrittenToStandardOut();
-        //assertThat(out, out, containsString(Messages.formatKeyValuePair(0)));
-    }
+	@Test
+	void noTextfileArgumentFails (){
+		String [] args = {"-textfile"};
+		MainMethodResult result = invokeMain(Project4.class, args);
 
+		assertThat(result.getTextWrittenToStandardError(),
+				CoreMatchers.containsString("Error"));
+	}
+
+	/*
     @Test
     void test3NoDefinitionsThrowsAppointmentBookRestException() {
         String word = "WORD";
@@ -82,6 +84,5 @@ class Project4IT extends InvokeMainTestCase {
         out = result.getTextWrittenToStandardOut();
         assertThat(out, out, containsString(Messages.formatDictionaryEntry(word, definition)));
     }
-
-     */
+    */
 }
