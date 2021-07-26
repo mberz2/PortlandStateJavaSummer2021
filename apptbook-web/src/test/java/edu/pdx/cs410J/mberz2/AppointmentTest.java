@@ -20,16 +20,6 @@ public class AppointmentTest {
 						"10/10/2020 10:10 AM"));
 	}
 
-	@Test
-	void malFormedBeginTimeCannotBeParsed() {
-
-		assertThrows(
-				ParserException.class, () ->
-						new Appointment("Desc",
-						"10/10/2020",
-						"10/10/2020 10:10 AM"));
-	}
-
 
 	@Test
 	void nullEndTimeCannotBeParsed() {
@@ -39,16 +29,6 @@ public class AppointmentTest {
 						new Appointment("Desc",
 						"10/10/2020 10:10 AM",
 						null));
-	}
-
-	@Test
-	void malFormedEndTimeCannotBeParsed() {
-
-		assertThrows(
-				ParserException.class, () ->
-						new Appointment("Desc",
-						"10/10/2020 10:10 AM",
-						"10/10/2020"));
 	}
 
 	@Test
