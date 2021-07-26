@@ -28,7 +28,7 @@ class AppointmentBookRestClientIT {
   }
 
   @Test
-  void test0RemoveAllDictionaryEntries() throws IOException {
+  void test0RemoveAllAppointments() throws IOException {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
     client.deleteAllAppointments();
   }
@@ -41,10 +41,68 @@ class AppointmentBookRestClientIT {
   }
 
   @Test
-  void test4MissingRequiredParameterReturnsPreconditionFailed() throws IOException {
+  void test2MissingRequiredParameterReturnsPreconditionFailed() throws IOException {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
     HttpRequestHelper.Response response = client.postToMyURL(Map.of());
-    assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("word")));
     assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
+    //assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("owner")));
   }
+
+	@Test
+	void test3AddAppointment() throws IOException {
+  	    String owner = "test owner";
+  	    String description = "test description";
+  	    String beginTime = "1/1/2020 09:00 AM";
+  	    String endTime = "1/1/2020 10:00 AM";
+
+		AppointmentBookRestClient client = newAppointmentBookRestClient();
+		HttpRequestHelper.Response response =
+				client.addAppointment(owner, description, beginTime, endTime);
+		assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_OK));
+		assertThat(response.getContent(), containsString(Messages.printOwner("test owner")));
+	}
+
+	@Test
+	void test3PostAppointment() throws IOException {
+		String owner = "test owner2";
+		String description = "test description";
+		String beginTime = "1/1/2020 09:00 AM";
+		String endTime = "1/1/2020 10:00 AM";
+
+		AppointmentBookRestClient client = newAppointmentBookRestClient();
+		HttpRequestHelper.Response response =
+				client.postToMyURL(Map.of("owner", owner,
+				"description", description,
+				"beginTime", beginTime,
+				"endTime", endTime));
+
+		assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_OK));
+		assertThat(response.getContent(), containsString(Messages.printOwner("test owner2")));
+	}
+
+	@Test
+	void test4SearchAppointment() throws IOException {
+		AppointmentBookRestClient client = newAppointmentBookRestClient();
+
+		String owner = "test owner";
+		String beginTime = "1/1/2020 07:00 AM";
+		String endTime = "1/1/2020 9:05 AM";
+
+		HttpRequestHelper.Response response =
+				client.searchTime(owner, beginTime, endTime);
+		assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_OK));
+		assertThat(response.getContent(), containsString(Messages.printOwner("test owner")));
+	}
+
+	@Test
+	void test5OwnerArgumentReturnsAppointments() throws IOException {
+		AppointmentBookRestClient client = newAppointmentBookRestClient();
+
+		String owner = "test owner";
+
+		HttpRequestHelper.Response response =
+				client.getAllAppointments(owner);
+		assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_OK));
+		assertThat(response.getContent(), containsString(Messages.printOwner("test owner")));
+	}
 }

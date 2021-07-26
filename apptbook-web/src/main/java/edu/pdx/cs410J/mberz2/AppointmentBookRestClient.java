@@ -32,7 +32,7 @@ public class AppointmentBookRestClient extends HttpRequestHelper
 	}
 
 	public Response addAppointment( String owner, String description, String beginTime, String endTime) throws IOException {
-		return post(this.url,  Map.of("owner", owner, "description", description, "beginTime", beginTime, "endTime", endTime));
+		return post(this.url, Map.of("owner", owner, "description", description, "beginTime", beginTime, "endTime", endTime));
 	}
 
 	public Response searchTime(String owner, String beginTime, String endTime) throws IOException {

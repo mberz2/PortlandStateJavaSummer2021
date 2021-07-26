@@ -42,7 +42,7 @@ public class Messages
 	}
 
 	public static String printOwner (String o) {
-		return "Owner Name: "+o;
+		return o;
 	}
 
 	public static String printAppointment (Appointment a) {

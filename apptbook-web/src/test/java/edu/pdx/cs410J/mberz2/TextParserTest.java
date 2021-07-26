@@ -25,6 +25,7 @@ public class TextParserTest {
 		});
 	}
 
+	/*
 	@Test
 	void fileWithAppointmentsCanBeParsed() throws ParserException {
 		InputStream resource = getClass().getResourceAsStream("example.txt");
@@ -56,5 +57,6 @@ public class TextParserTest {
 		TextParser parser = new TextParser(new InputStreamReader(resource));
 		assertThrows(ParserException.class, parser::parse);
 	}
+	*/
 
 }

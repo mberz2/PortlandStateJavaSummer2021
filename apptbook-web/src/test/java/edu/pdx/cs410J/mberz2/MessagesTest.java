@@ -15,7 +15,7 @@ class MessagesTest {
   @Test
   void printOwnerReturnsString() {
     assertThat(Messages.printOwner("Owner"),
-		    equalTo("Owner Name: Owner"));
+		    equalTo("Owner"));
   }
 
   /*
