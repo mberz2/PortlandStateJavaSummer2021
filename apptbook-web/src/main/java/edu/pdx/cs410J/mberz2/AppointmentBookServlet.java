@@ -39,25 +39,27 @@ public class AppointmentBookServlet extends HttpServlet
 		String beginTime = getParameter("beginTime", request);
 		String endTime = getParameter("endTime", request);
 
-		if(!data.containsKey(owner)) {
-			pw.println("Error: No appointment book for this owner.");
-		} else if(data.containsKey(owner) && beginTime != null && endTime != null ) {
-			try {
-				searchPrint(owner, beginTime, endTime, response);
-			} catch (ParseException e) {
-				System.out.println("Issue while searching.");
+		if (data.isEmpty()) {
+			pw.println(Messages.getMappingCount(0));
+		} else if(!data.containsKey(owner)) {
+				pw.println("Error: No appointment book for this owner.");
+			} else if(data.containsKey(owner) && beginTime != null && endTime != null ) {
+				try {
+					searchPrint(owner, beginTime, endTime, response);
+				} catch (ParseException e) {
+					System.out.println("Issue while searching.");
+				}
+			} else if(owner != null && beginTime == null && endTime == null) {
+
+				ArrayList<Appointment> appList = data.get(owner).getAppointments();
+				AppointmentBook temp = new AppointmentBook(owner, appList.get(0));
+				for(int i = 1; i < appList.size(); ++i)
+					temp.addAppointment(appList.get(i));
+
+				PrettyPrinter printer = new PrettyPrinter(new PrintWriter(pw));
+				printer.dump(temp);
+				pw.flush();
 			}
-		} else if(owner != null && beginTime == null && endTime == null) {
-
-			ArrayList<Appointment> appList = data.get(owner).getAppointments();
-			AppointmentBook temp = new AppointmentBook(owner, appList.get(0));
-			for(int i = 1; i < appList.size(); ++i)
-				temp.addAppointment(appList.get(i));
-
-			PrettyPrinter printer = new PrettyPrinter(new PrintWriter(pw));
-			printer.dump(temp);
-			pw.flush();
-		}
 
 		pw.flush();
 		response.setStatus( HttpServletResponse.SC_OK);
@@ -186,27 +188,6 @@ public class AppointmentBookServlet extends HttpServlet
 			throws IOException {
 		String message = Messages.missingRequiredParameter(parameterName);
 		response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, message);
-	}
-
-	/**
-	 * Writes all of the key/value pairs to the HTTP response.
-	 *
-	 * The text of the message is formatted with
-	 * {@link Messages#formatKeyValuePair(String, String)}
-	 */
-	private void writeAllMappings( HttpServletResponse response )
-			throws IOException {
-		PrintWriter pw = response.getWriter();
-		pw.println(Messages.getMappingCount(data.size()));
-
-		for (Map.Entry<String, AppointmentBook> entry :
-				this.data.entrySet()) {
-			pw.println(Messages.formatKeyValuePair(entry.getKey(),
-					entry.getValue().toString()));
-		}
-
-		pw.flush();
-		response.setStatus( HttpServletResponse.SC_OK );
 	}
 
 	/**

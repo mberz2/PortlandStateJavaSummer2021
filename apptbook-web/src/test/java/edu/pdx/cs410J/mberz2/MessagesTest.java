@@ -11,9 +11,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 class MessagesTest {
+
   @Test
   void printOwnerReturnsString() {
-    assertThat(Messages.printOwner("Owner"), equalTo("Owner Name: Owner"));
+    assertThat(Messages.printOwner("Owner"),
+		    equalTo("Owner Name: Owner"));
   }
 
   /*
@@ -21,8 +23,8 @@ class MessagesTest {
   void canParseFormattedDictionaryEntryPair() {
     String word = "testWord";
     String definition = "testDefinition";
-    String formatted = Messages.formatDictionaryEntry(word, definition);
-    Map.Entry<String, String> parsed = Messages.parseDictionaryEntry(formatted);
+    String formatted = Messages.formatKeyValuePair(word, definition);
+    Map.Entry<String, String> parsed = Messages.printAppointment(formatted);
     assertThat(parsed, notNullValue());
     assertThat(parsed.getKey(), equalTo(word));
     assertThat(parsed.getValue(), equalTo(definition));

@@ -36,4 +36,7 @@ public class AppointmentBookRestClient extends HttpRequestHelper
 	public Response searchTime(String owner, String beginTime, String endTime) throws IOException {
 		return get(this.url, Map.of("owner", owner, "beginTime", beginTime, "endTime", endTime));	}
 
+	public Response deleteAllAppointments() throws IOException {
+		return delete(this.url, Map.of());
+	}
 }

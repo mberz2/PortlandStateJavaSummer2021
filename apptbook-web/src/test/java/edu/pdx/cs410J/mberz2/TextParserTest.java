@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Objects;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -16,12 +17,12 @@ public class TextParserTest {
 
 	@Test
 	void emptyFileCannotBeParsed() {
-		InputStream resource =
-				getClass().getResourceAsStream("emptyFile.txt");
-		assertNotNull(resource);
-
-		TextParser parser = new TextParser(new InputStreamReader(resource));
-		assertThrows(ParserException.class, parser::parse);
+		assertThrows(NullPointerException.class, () -> {
+			TextParser parser = new TextParser(
+					new InputStreamReader(Objects.requireNonNull(
+							getClass().getResourceAsStream("emptyFile.txt"))));
+			parser.parse();
+		});
 	}
 
 	@Test
@@ -40,8 +41,8 @@ public class TextParserTest {
 	void malFormedFileCannotBeParsed() {
 		InputStream resource =
 				getClass().getResourceAsStream("bogus.txt");
-		assertNotNull(resource);
 
+		assert resource != null;
 		TextParser parser = new TextParser(new InputStreamReader(resource));
 		assertThrows(ParserException.class, parser::parse);
 	}
@@ -55,6 +56,5 @@ public class TextParserTest {
 		TextParser parser = new TextParser(new InputStreamReader(resource));
 		assertThrows(ParserException.class, parser::parse);
 	}
-
 
 }
