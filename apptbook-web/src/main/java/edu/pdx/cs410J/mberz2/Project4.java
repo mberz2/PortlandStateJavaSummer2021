@@ -1,10 +1,14 @@
 package edu.pdx.cs410J.mberz2;
+import edu.pdx.cs410J.ParserException;
+import edu.pdx.cs410J.web.HttpRequestHelper;
 
-import java.io.IOException;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.Map;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * The main class that parses the command line and communicates with the
@@ -12,109 +16,339 @@ import java.util.Map;
  */
 public class Project4 {
 
-    public static final String MISSING_ARGS = "Missing command line arguments";
+	/* MAX sets teh maximum number of input arguments. */
+	private static final int MAX = 14;
 
-    public static void main(String... args) {
-        String hostName = null;
-        String portString = null;
-        String word = null;
-        String definition = null;
+	/* Total number of enabled options flags, used to find first appt. arg */
+	private static int FLAGS;
 
-        for (String arg : args) {
-            if (hostName == null) {
-                hostName = arg;
+	/* String array containing valid arguments when print is enabled */
+	private static final int [] VALIDPRINT = {MAX-5, MAX-3, MAX-1, MAX};
 
-            } else if ( portString == null) {
-                portString = arg;
+	/* String array containing valid arguments when textFile is enabled */
+	private static final int [] VALIDDUMP = {MAX-4, MAX-3, MAX-2, MAX-1, MAX};
 
-            } else if (word == null) {
-                word = arg;
+	private static String [] SEARCH = {"", "", ""};
 
-            } else if (definition == null) {
-                definition = arg;
+	private static String HOST;
+	private static int PORT;
 
-            } else {
-                usage("Extraneous command line argument: " + arg);
-            }
-        }
+	/* Map containing the different option fields, set all to 0 */
+	private static final Map<String, Integer> OPTIONS = new HashMap<>();
 
-        if (hostName == null) {
-            usage( MISSING_ARGS );
+	/* String containing syntax for program usage. */
+	public static final String USAGE =
+			"Usage: java -jar /apptbook/target/apptbook-2021.0.0.jar " +
+					"[options] <args>";
 
-        } else if ( portString == null) {
-            usage( "Missing port" );
-        }
+	/* String containing syntax for how to display README */
+	public static final String README =
+			"java -jar /apptbook/target/apptbook-2021.0.0.jar -README";
 
-        int port;
-        try {
-            port = Integer.parseInt( portString );
 
-        } catch (NumberFormatException ex) {
-            usage("Port \"" + portString + "\" must be an integer");
-            return;
-        }
+	public static final String MISSING_ARGS = "Missing command line arguments";
 
-        AppointmentBookRestClient client = new AppointmentBookRestClient(hostName, port);
+	public static void main(String... args) throws ParserException, IOException {
 
-        String message;
-        try {
-            if (word == null) {
-                // Print all word/definition pairs
-                Map<String, String> dictionary = client.getAllDictionaryEntries();
-                StringWriter sw = new StringWriter();
-                Messages.formatDictionaryEntries(new PrintWriter(sw, true), dictionary);
-                message = sw.toString();
+		// Check arguments for valid inputs.
+		checkInput(args);
 
-            } else if (definition == null) {
-                // Print all dictionary entries
-                message = Messages.formatDictionaryEntry(word, client.getDefinition(word));
+		String [] newArgs = parseInput(args);
 
-            } else {
-                // Post the word/definition pair
-                client.addDictionaryEntry(word, definition);
-                message = Messages.definedWordAs(word, definition);
-            }
+		String owner = newArgs[0];
+		String desc = newArgs[1];
+		String bt = newArgs[2]+" "+newArgs[3]+" "+newArgs[4];
+		String et = newArgs[5]+" "+newArgs[6]+" "+newArgs[7];
 
-        } catch ( IOException ex ) {
-            error("While contacting server: " + ex);
-            return;
-        }
+		boolean serverFlag = true;
 
-        System.out.println(message);
+		AppointmentBookRestClient client = new AppointmentBookRestClient(HOST, PORT);
+		HttpRequestHelper.Response response = null;
 
-        System.exit(0);
-    }
+		if (searchEnabled()) {
+			try {
+				response = client.searchTime(owner, bt, et);
+			} catch (IOException ex) {
+				System.out.println("Web connection issue");
+				serverFlag = false;
+			}
+		} else {
+			try {
+				response = client.addAppointment(owner, desc, bt, et);
+			} catch (IOException ex) {
+				System.out.println("Web connection issue");
+				serverFlag = false;
+			}
+		}
 
-    private static void error( String message )
-    {
-        PrintStream err = System.err;
-        err.println("** " + message);
+		if(serverFlag) {
+			checkResponseCode(HttpURLConnection.HTTP_OK, response);
+			System.out.println(response.getContent());
+		}
 
-        System.exit(1);
-    }
+		if(OPTIONS.get("PRINT") == 1){
+			Appointment app = new Appointment(desc, bt, et);
+			AppointmentBook appBook = new AppointmentBook(owner, app);
+			printAppt(appBook);
+		}
 
-    /**
-     * Prints usage information for this program and exits
-     * @param message An error message to print
-     */
-    private static void usage( String message )
-    {
-        PrintStream err = System.err;
-        err.println("** " + message);
-        err.println();
-        err.println("usage: java Project4 host port [word] [definition]");
-        err.println("  host         Host of web server");
-        err.println("  port         Port of web server");
-        err.println("  word         Word in dictionary");
-        err.println("  definition   Definition of word");
-        err.println();
-        err.println("This simple program posts words and their definitions");
-        err.println("to the server.");
-        err.println("If no definition is specified, then the word's definition");
-        err.println("is printed.");
-        err.println("If no word is specified, all dictionary entries are printed");
-        err.println();
+		System.exit(0);
+	}
 
-        System.exit(1);
-    }
+
+	/**
+	 * Makes sure that the give response has the expected HTTP status code
+	 * @param code The expected status code
+	 * @param response The response from the server
+	 */
+	private static void checkResponseCode( int code, HttpRequestHelper.Response response )
+	{
+		if (response.getCode() != code) {
+			printError(String.format("Expected HTTP code %d, got code %d.\n\n%s", code,
+					response.getCode(), response.getContent()), 1);
+		}
+	}
+
+	/**
+	 * Method parses/validates the input String array. The method checks for
+	 * minimal/maximum number of arguments, optional flags enabled, and then
+	 * based on the number of flags enabled, determines the acceptable number
+	 * of arguments. If the {@code -textFile} option is enabled, the method
+	 * parses out the fileName (the immediately following argument).
+	 *
+	 * @param args String array containing the command line arguments to parse.
+	 * @throws IOException Exception handling for loading a README file.
+	 */
+	public static void checkInput(String [] args) throws IOException {
+
+		FLAGS = 0;
+		OPTIONS.put("HOST", 0);
+		OPTIONS.put("PORT", 0);
+		OPTIONS.put("SEARCH", 0);
+		OPTIONS.put("PRINT", 0);
+
+		/* Base cases, ZERO or TOO MANY (over total acceptable, MAX) */
+		if (args.length == 0) {
+			System.err.println("Error: No command line arguments.");
+			printUsage(1);
+		} else if (args.length > MAX) {
+			System.err.println("Error: Too many command line arguments.\n" +
+					"Total number cannot exceed: "+MAX);
+			printUsage(1);
+		}
+
+		for (int i = 0; i < args.length; i++) {
+
+			if (args[i].charAt(0) == '-') {
+
+				if (args[i].equalsIgnoreCase("-README")) {
+					printRes("README.txt");
+
+				} else if (args[i].equalsIgnoreCase("-PRINT")) {
+					OPTIONS.put("PRINT", 1);
+					++FLAGS;
+
+				} else if (args[i].equalsIgnoreCase("-HOST")) {
+					FLAGS = FLAGS + 2;
+					OPTIONS.put("HOST", 1);
+					try {
+						HOST = args[i + 1];
+					} catch (ArrayIndexOutOfBoundsException e) {
+						printErrorUsage("Error: Too few command " +
+								"line arguments.", 1);
+					}
+
+				} else if (args[i].equalsIgnoreCase("-PORT")) {
+
+					FLAGS = FLAGS + 2;
+					OPTIONS.put("PORT", 1);
+					try {
+						PORT = Integer.parseInt(args[i+1]);
+					} catch (ArrayIndexOutOfBoundsException e) {
+						printErrorUsage("Error: Too few command " +
+								"line arguments.", 1);
+					} catch (NumberFormatException ex) {
+					printErrorUsage("Port \"" + PORT + "\" must be an integer", 1);
+				}
+
+				} else if (args[i].equalsIgnoreCase("-SEARCH")) {
+					FLAGS++;
+					OPTIONS.put("SEARCH", 1);
+
+					try {
+						SEARCH[0] = args[i + 1];
+						SEARCH[1] = args[i + 2]+" "+args[i + 3]+" "+args[i + 4];
+						SEARCH[2] = args[i + 5]+" "+args[i + 6]+" "+args[i + 7];
+
+						System.out.println("Searching:");
+						System.out.println(SEARCH[0]+" from "+SEARCH[1]+" to "+SEARCH[2]);
+					} catch (ArrayIndexOutOfBoundsException e) {
+						System.out.println("ERROR?");
+						printErrorUsage("Error: Too few command " +
+								"line arguments.", 1);
+					}
+
+
+				} else if (args[i].equals("-")) {
+					// Ignore cases of a single hyphen.
+					break;
+				} else {
+
+					// Error on all other hyphen combinations.
+					printErrorUsage("Error: " + args[i] + " is an " +
+							"invalid option.", 1);
+				}
+			}
+		}
+
+
+		/*
+		// Error check for options
+		if(printEnabled())
+			if (doesNotContain(VALIDPRINT, args.length)){
+				printErrorUsage("Error: Invalid amount " +
+						"of arguments", 1);
+			}
+
+		if(printerEnabled() || fileEnabled()) {
+			if (doesNotContain(VALIDDUMP, args.length))
+				printErrorUsage("Error: Invalid amount " +
+						"of arguments", 1);
+			else if ((printerEnabled() && fileEnabled())
+					&& FILE.equals(PRETTYFILE))
+				printErrorUsage("Error: Cannot have both printer and " +
+						"textfile paths as the same location.", 1);
+		}
+		 */
+	}
+
+	/**
+	 * Method parses the input into an acceptable format. Based on the number
+	 * of enabled option flags, the method extracts the last six arguments and
+	 * passes it to a StringParser object for validation. If the StringParser
+	 * returns successfully, an appointmentBook object is created from the
+	 * acceptable arguments. If not, the program exits gracefully.
+	 *
+	 * @param args String array containing the command line arguments.
+	 * @return appointmentBook object containing the new appointment.
+	 */
+	public static String [] parseInput(String[] args)
+			throws ParserException {
+
+		// New array for holding parsed arguments.
+		String[] newArgs = Arrays.copyOfRange(args, FLAGS, args.length);
+
+		if (newArgs.length < 8) {
+			printErrorUsage("Error: Too FEW command line arguments.", 1);
+		}
+
+		return newArgs;
+	}
+
+	/**
+	 * Helper method to check if an array does not contain a given key. Used
+	 * for checking whether or not the arguments on the command line are valid.
+	 *
+	 * @param arr Array to check.
+	 * @param key Key to find.
+	 * @return Returns whether or not there was a match.
+	 */
+	public static boolean doesNotContain(final int[] arr, final int key) {
+		return Arrays.stream(arr).noneMatch(i -> i == key);
+	}
+
+	/**
+	 * Method prints a file in the resource folder via a class loader.
+	 *
+	 * @param s String containing the file to load.
+	 * @throws IOException Exception handling for writing the input of file.
+	 */
+	public static void printRes(String s) throws IOException {
+		// Create an input stream from the file indicated at resource class.
+		InputStream file = Project4.class.getResourceAsStream(s);
+
+		// If it is not null, start printing until there are no more lines.
+		if (file != null) {
+			BufferedReader br = new BufferedReader(new InputStreamReader(file));
+			String line;
+			while ((line = br.readLine()) != null)
+				System.out.println(line);
+			System.exit(0);
+		}
+
+		// Otherwise, throw an exception.
+		throw new NullPointerException ("Error: File "+s+" not found.");
+	}
+
+	/**
+	 * Method for printing an appointmentBook object. Leverages the apptBook's
+	 * toString method to print the appointment contents to the standard out.
+	 *
+	 * @param appBook appointmentBook object to print.
+	 */
+	public static void printAppt(AppointmentBook appBook){
+		System.out.println(appBook);
+
+		Collection<Appointment> apps = appBook.getAppointments();
+		for (Appointment a : apps)
+			System.out.println(a);
+	}
+
+	/**
+	 * Method for printing errors, while also outputting the program usage.
+	 * The program will also pass a specified exit code.
+	 *
+	 * @param s String containing the defined error to print to std. error
+	 * @param status Integer containing the exit status code.
+	 */
+	public static void printErrorUsage(String s, int status){
+		System.err.println(s);
+		printUsage(status);
+	}
+
+	/**
+	 * Method for printing errors, while also outputting the program usage.
+	 * The program will also pass a specified exit code.
+	 *
+	 * @param s String containing the defined error to print to std. error
+	 * @param status Integer containing the exit status code.
+	 */
+	public static void printError(String s, int status){
+		System.err.println(s);
+		System.exit(status);
+	}
+
+	/**
+	 * Method for printing the program usage and setting the exit code.
+	 *
+	 * @param status Integer containing the exit status code.
+	 */
+	public static void printUsage(int status){
+		System.err.println(USAGE);
+		System.exit(status);
+	}
+
+	/**
+	 * Method for checking if the {@code -print} option flag is enabled.
+	 *
+	 * @return Boolean for whether or not the option is enabled.
+	 */
+	public static boolean printEnabled(){
+		return OPTIONS.get("PRINT")==1;
+	}
+
+
+	public static boolean hostEnabled(){
+		return OPTIONS.get("HOST")==1;
+	}
+
+
+	public static boolean portEnabled(){
+		return OPTIONS.get("PORT")==1;
+	}
+
+	public static boolean searchEnabled(){
+		return OPTIONS.get("SEARCH")==1;
+	}
+
 }

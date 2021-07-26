@@ -15,6 +15,7 @@ class IndexDotHtmlIT {
   private static final String HOSTNAME = "localhost";
   private static final String PORT = System.getProperty("http.port", "8080");
 
+  /*
   @Test
   void indexDotHtmlExists() throws IOException {
     Response indexDotHtml = fetchIndexDotHtml();
@@ -44,4 +45,6 @@ class IndexDotHtmlIT {
       return get(this.url, Map.of());
     }
   }
+
+   */
 }

@@ -21,6 +21,7 @@ class AppointmentBookRestClientIT {
   private static final String HOSTNAME = "localhost";
   private static final String PORT = System.getProperty("http.port", "8080");
 
+  /*
   private AppointmentBookRestClient newAppointmentBookRestClient() {
     int port = Integer.parseInt(PORT);
     return new AppointmentBookRestClient(HOSTNAME, port);
@@ -58,4 +59,6 @@ class AppointmentBookRestClientIT {
     assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
   }
 
+
+   */
 }

@@ -13,63 +13,65 @@ import static java.net.HttpURLConnection.HTTP_OK;
  * an example of how to make gets and posts to a URL.  You'll need to change it
  * to do something other than just send dictionary entries.
  */
-public class AppointmentBookRestClient extends HttpRequestHelper {
-  private static final String WEB_APP = "apptbook";
-  private static final String SERVLET = "appointments";
+public class AppointmentBookRestClient extends HttpRequestHelper
+{
+	private static final String WEB_APP = "apptbook";
+	private static final String SERVLET = "appointments";
 
-  private final String url;
+	private final String url;
 
 
-  /**
-   * Creates a client to the appointment book REST service running on the given host and port
-   *
-   * @param hostName The name of the host
-   * @param port     The port
-   */
-  public AppointmentBookRestClient(String hostName, int port) {
-    this.url = String.format("http://%s:%d/%s/%s", hostName, port, WEB_APP, SERVLET);
-  }
+	/**
+	 * Creates a client to the appointment book REST service running on the given host and port
+	 * @param hostName The name of the host
+	 * @param port The port
+	 */
+	public AppointmentBookRestClient( String hostName, int port )
+	{
+		this.url = String.format( "http://%s:%d/%s/%s", hostName, port, WEB_APP, SERVLET );
+	}
 
-  /**
-   * Returns all dictionary entries from the server
-   */
-  public Map<String, String> getAllDictionaryEntries() throws IOException {
-    Response response = get(this.url, Map.of());
-    return Messages.parseDictionary(response.getContent());
-  }
+	/**
+	 * Returns all keys and values from the server
+	 */
+	/**
+	 *
+	 * @return
+	 * @throws IOException
+	 */
+	public Response getAllKeysAndValues() throws IOException
+	{
+		return get(this.url,  Map.of());
+	}
 
-  /**
-   * Returns the definition for the given word
-   */
-  public String getDefinition(String word) throws IOException {
-    Response response = get(this.url, Map.of("word", word));
-    throwExceptionIfNotOkayHttpStatus(response);
-    String content = response.getContent();
-    return Messages.parseDictionaryEntry(content).getValue();
-  }
 
-  public void addDictionaryEntry(String word, String definition) throws IOException {
-    Response response = postToMyURL(Map.of("word", word, "definition", definition));
-    throwExceptionIfNotOkayHttpStatus(response);
-  }
+	/**
+	 *
+	 * @param description
+	 * @param beginTime
+	 * @param endTime
+	 * @return
+	 * @throws IOException
+	 */
+	public Response addAppointment( String owner, String description, String beginTime, String endTime) throws IOException {
+		System.out.println("Hello from addAppointment\n");
+		return post(this.url,  Map.of("owner", owner, "description", description, "beginTime", beginTime, "endTime", endTime));
+	}
 
-  @VisibleForTesting
-  Response postToMyURL(Map<String, String> dictionaryEntries) throws IOException {
-    return post(this.url, dictionaryEntries);
-  }
+	/**
+	 * Search for appointment with time
+	 * @param beginTime
+	 * @param endTime
+	 * @return
+	 * @throws IOException
+	 */
+	public Response searchTime(String owner, String beginTime, String endTime) throws IOException {
+		return get(this.url, Map.of("owner", owner, "beginTime", beginTime, "endTime", endTime));	}
 
-  public void removeAllDictionaryEntries() throws IOException {
-    Response response = delete(this.url, Map.of());
-    throwExceptionIfNotOkayHttpStatus(response);
-  }
 
-  private Response throwExceptionIfNotOkayHttpStatus(Response response) {
-    int code = response.getCode();
-    if (code != HTTP_OK) {
-      String message = response.getContent();
-      throw new RestException(code, message);
-    }
-    return response;
-  }
+	public Response removeAllMappings() throws IOException {
+		return delete(this.url,  Map.of());
+	}
+
 
 }
