@@ -90,9 +90,10 @@ public class AppointmentBookTest {
 
 	@Test
 	void getAppointmentEmptyAppointment(){
-		assertThrows(ParserException.class, () -> {
+		assertThrows(UnsupportedOperationException.class, () -> {
 			Appointment appt =
-					new Appointment("Test", "12:00", "13:00");
+					new Appointment("test", "1/1/2000 10:10 AM",
+							"1/1/2000 10:15 AM");
 			AppointmentBook appBook =
 					new AppointmentBook("test", appt);
 
