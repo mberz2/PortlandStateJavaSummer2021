@@ -6,8 +6,6 @@ import edu.pdx.cs410J.web.HttpRequestHelper;
 import java.io.IOException;
 import java.util.Map;
 
-import static java.net.HttpURLConnection.HTTP_OK;
-
 /**
  * A helper class for accessing the rest client.  Note that this class provides
  * an example of how to make gets and posts to a URL.  You'll need to change it
@@ -24,8 +22,12 @@ public class AppointmentBookRestClient extends HttpRequestHelper
 		this.url = String.format( "http://%s:%d/%s/%s", hostName, port, WEB_APP, SERVLET );
 	}
 
+	public Map<String, String> getMap() throws IOException {
+		Response response = get(this.url, Map.of());
+		return Messages.parseMap(response.getContent());
+	}
+
 	public Response getAllAppointments(String owner) throws IOException {
-		System.out.println("Getting all...");
 		return get(this.url, Map.of("owner", owner));
 	}
 
@@ -36,7 +38,12 @@ public class AppointmentBookRestClient extends HttpRequestHelper
 	public Response searchTime(String owner, String beginTime, String endTime) throws IOException {
 		return get(this.url, Map.of("owner", owner, "beginTime", beginTime, "endTime", endTime));	}
 
-	public Response deleteAllAppointments() throws IOException {
-		return delete(this.url, Map.of());
+	public void deleteAllAppointments() throws IOException {
+		delete(this.url, Map.of());
+	}
+
+	@VisibleForTesting
+	Response postToMyURL(Map<String, String> entries) throws IOException {
+		return post(this.url, entries);
 	}
 }

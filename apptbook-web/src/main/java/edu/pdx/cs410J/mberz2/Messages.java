@@ -58,4 +58,48 @@ public class Messages
 				+ TimeUnit.MILLISECONDS.toMinutes(a.getEndTime().getTime()
 				- a.getBeginTime().getTime()) + " mins";
 	}
+
+	public static Map<String, String> parseMap(String content) {
+		Map<String, String> map = new HashMap<>();
+
+		String[] lines = content.split("\n");
+		for (int i = 1; i < lines.length; i++) {
+			String line = lines[i];
+			Map.Entry<String, String> entry = parseMapEntry(line);
+			assert entry != null;
+			map.put(entry.getKey(), entry.getValue());
+		}
+
+		return map;
+	}
+
+	public static Map.Entry<String, String> parseMapEntry(String content) {
+		Pattern pattern = Pattern.compile("\\s*(.*) : (.*)");
+		Matcher matcher = pattern.matcher(content);
+
+		if (!matcher.find()) {
+			return null;
+		}
+
+		return new Map.Entry<>() {
+			@Override
+			public String getKey() {
+				return matcher.group(1);
+			}
+
+			@Override
+			public String getValue() {
+				String value = matcher.group(2);
+				if ("null".equals(value)) {
+					value = null;
+				}
+				return value;
+			}
+
+			@Override
+			public String setValue(String value) {
+				throw new UnsupportedOperationException("This method is not implemented yet");
+			}
+		};
+	}
 }

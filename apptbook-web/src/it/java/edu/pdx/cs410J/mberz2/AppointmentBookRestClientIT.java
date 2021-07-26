@@ -33,23 +33,11 @@ class AppointmentBookRestClientIT {
     client.deleteAllAppointments();
   }
 
-  /*
   @Test
-  void test1EmptyServerContainsNoDictionaryEntries() throws IOException {
+  void test1EmptyServerContainsNoAppointments() throws IOException {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
-    Map<String, String> dictionary = client.getAllDictionaryEntries();
-    assertThat(dictionary.size(), equalTo(0));
-  }
-
-  @Test
-  void test2DefineOneWord() throws IOException {
-    AppointmentBookRestClient client = newAppointmentBookRestClient();
-    String testWord = "TEST WORD";
-    String testDefinition = "TEST DEFINITION";
-    client.addDictionaryEntry(testWord, testDefinition);
-
-    String definition = client.getDefinition(testWord);
-    assertThat(definition, equalTo(testDefinition));
+    Map<String, String> map = client.getMap();
+    assertThat(map.size(), equalTo(0));
   }
 
   @Test
@@ -59,7 +47,4 @@ class AppointmentBookRestClientIT {
     assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("word")));
     assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
   }
-
-
-   */
 }
