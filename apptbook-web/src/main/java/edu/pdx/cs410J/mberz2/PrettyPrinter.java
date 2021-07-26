@@ -48,7 +48,7 @@ public class PrettyPrinter implements AppointmentBookDumper<AppointmentBook> {
 
 		writer.write("==================================================" +
 				"=============================");
-		writer.write("\n|\t\tAppointment Book for: "+appBook.getOwnerName()
+		writer.write("\n|\tAppointment Book for: "+appBook.getOwnerName()
 				+ "\t\tTotal Appointments: "+appBook.getAppointments().size());
 
 		try {

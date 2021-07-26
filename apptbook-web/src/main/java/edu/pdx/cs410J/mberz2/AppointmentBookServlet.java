@@ -70,16 +70,20 @@ public class AppointmentBookServlet extends HttpServlet
 		PrintWriter pw = response.getWriter();
 
 		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
-		Date bt = format.parse(beginTime);
-		Date et = format.parse(endTime);
+		Date min = format.parse(beginTime);
+		Date max = format.parse(endTime);
 		boolean found = false;
 
 		AppointmentBook temp = new AppointmentBook();
 		ArrayList<Appointment> appList = data.get(owner).getAppointments();
 		for(Appointment app : appList) {
 
-			if(bt.compareTo(app.getBeginTime()) >= 0 &&
-					et.compareTo(app.getEndTime()) <= 0) {
+			Date d = app.getBeginTime();
+
+			boolean include = d.after(min) && d.before(max);
+			System.out.println(include);
+
+			if (include){
 				temp.setOwnerName(owner);
 				temp.addAppointment(app);
 				found = true;
@@ -133,13 +137,15 @@ public class AppointmentBookServlet extends HttpServlet
 		try {
 			app = new Appointment(description, beginTime, endTime);
 			AppointmentBook temp;
-			if (data.isEmpty())
+
+			if (data.get(owner) == null) {
 				temp = new AppointmentBook(owner, app);
-				else {
-					temp = data.get(owner);
-					temp.addAppointment(app);
-				}
+			} else {
+				temp = data.get(owner);
+				temp.addAppointment(app);
+			}
 			data.put(owner, temp);
+
 		} catch (ParserException e) {
 			System.err.println("Error: Parsing when creating appointment.");
 			e.printStackTrace();
