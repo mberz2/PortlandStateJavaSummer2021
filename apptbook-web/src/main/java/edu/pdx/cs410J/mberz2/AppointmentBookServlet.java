@@ -170,9 +170,10 @@ public class AppointmentBookServlet extends HttpServlet
 		}
 
 		PrintWriter pw = response.getWriter();
-
+		Appointment app = null;
+		
 		try {
-			Appointment app = new Appointment(description, beginTime, endTime);
+			app = new Appointment(description, beginTime, endTime);
 			AppointmentBook temp;
 			if (data.isEmpty())
 				temp = new AppointmentBook(owner, app);
@@ -188,7 +189,7 @@ public class AppointmentBookServlet extends HttpServlet
 		}
 
 		pw.print("\nAdded the follow appointment to " + owner +"'s appointment book:");
-		pw.println(Messages.printAppointment(description, beginTime, endTime));
+		pw.println(Messages.printAppointment(app));
 		pw.println();
 
 		pw.flush();

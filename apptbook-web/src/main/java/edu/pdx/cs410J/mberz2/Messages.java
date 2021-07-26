@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,57 +38,17 @@ public class Messages
 		return "All mappings have been deleted.";
 	}
 
-	public  static String printAppointment ( Appointment aAppointment) {
-		SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
-		Date beginDateTime = null;
-		Date endDateTime = null;
+	public  static String printAppointment (Appointment a) {
 
-		try {
-			beginDateTime = df.parse(aAppointment.getBeginTimeString());
-		} catch (ParseException e) {
-			System.err.println("Incorrect begin date");
-		}
-		try {
-			endDateTime = df.parse(aAppointment.getEndTimeString());
-		} catch (ParseException e) {
-			System.out.println("Incorrect end date");
-		}
+		SimpleDateFormat ft = new SimpleDateFormat("hh:mm a, E, dd MMM yyyy");
+		String bt = ft.format(a.getBeginTime());
+		String et = ft.format(a.getEndTime());
 
-		int duration = (int) ((endDateTime.getTime() - beginDateTime.getTime())
-				/ (1000*60));
-
-		return String.format( "Appointment with description: %s \nFrom: %s to %s \nDuration: %d\n",
-				aAppointment.getDescription(), aAppointment.getBeginTimeString(),
-				aAppointment.getEndTimeString(), duration);
-	}
-
-	public static String printAppointment (String description, String startTime, String endTime) {
-
-		SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
-		Date beginDateTime = null;
-		Date endDateTime = null;
-
-		try {
-			beginDateTime = df.parse(startTime);
-		} catch (ParseException e) {
-			System.out.println("Incorrect begin date");
-		}
-		try {
-			endDateTime = df.parse(endTime);
-		} catch (ParseException e) {
-			System.out.println("Incorrect end date");
-		}
-
-		int duration = (int) ((endDateTime.getTime() - beginDateTime.getTime())
-				/ (1000*60));
-
-		return String.format("Description: %s " +
-						"\nFrom: %s to %s " +
-						"\nDuration: %d minutes.\n",
-				description, startTime, endTime, duration);
-	}
-
-	public static String printOwner(String owner) {
-		return String.format("Owner Name: %s \n", owner);
+		return "\n-----------------------------------------" +
+				"--------------------------------------" +
+				"\n| " + a.getDescription() + "\n| From " + bt + " until " + et
+				+ "\n| Duration: "
+				+ TimeUnit.MILLISECONDS.toMinutes(a.getEndTime().getTime()
+				- a.getBeginTime().getTime()) + " mins";
 	}
 }

@@ -65,10 +65,9 @@ public class PrettyPrinter implements AppointmentBookDumper<AppointmentBook> {
 						"--------------------------------------");
 				writer.write("\n| "+a.getDescription());
 				writer.write("\n| From " + bt + " until "+ et);
-				writer.write("\n| Duration: "+ TimeUnit.MILLISECONDS.toMinutes(a.getEndTime().getTime() - a.getBeginTime().getTime())
-						+ " mins");
-
-
+				writer.write("\n| Duration: " +
+						TimeUnit.MILLISECONDS.toMinutes(a.getEndTime().getTime()
+								- a.getBeginTime().getTime()) + " mins");
 			}
 
 			writer.write("\n=============================================" +
