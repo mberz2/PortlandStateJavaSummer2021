@@ -113,7 +113,7 @@ public class Project4 {
 			try {
 				// Try to add the new appointment.
 				response = client.postURL(Map.of("owner", owner,
-						"desc",desc,
+						"description",desc,
 						"beginTime",bt,
 						"endTime",et));
 				System.out.println(response.getContent());
