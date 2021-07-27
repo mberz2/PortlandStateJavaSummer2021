@@ -22,11 +22,6 @@ public class AppointmentBookRestClient extends HttpRequestHelper
 		this.url = String.format( "http://%s:%d/%s/%s", hostName, port, WEB_APP, SERVLET );
 	}
 
-	public Map<String, String> getMap() throws IOException {
-		Response response = get(this.url, Map.of());
-		return Messages.parseMap(response.getContent());
-	}
-
 	public Response getAllAppointments(String owner) throws IOException {
 		return get(this.url, Map.of("owner", owner));
 	}

@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.mberz2;
 
+import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.ParserException;
 
 import javax.servlet.ServletException;
@@ -45,17 +46,42 @@ public class AppointmentBookServlet extends HttpServlet
 				pw.println("Error: No appointment book for this owner.");
 			} else if(data.containsKey(owner) && beginTime != null && endTime != null ) {
 				try {
-					searchPrint(owner, beginTime, endTime, response);
+					//searchPrint(owner, beginTime, endTime, response);
+
+					SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+					Date min = format.parse(beginTime);
+					Date max = format.parse(endTime);
+					boolean found = false;
+
+					AppointmentBook temp = new AppointmentBook();
+					ArrayList<Appointment> appList = data.get(owner).getAppointments();
+					for(Appointment app : appList) {
+
+						Date d = app.getBeginTime();
+
+						boolean include = d.after(min) && d.before(max);
+						System.out.println(include);
+
+						if (include){
+							temp.setOwnerName(owner);
+							temp.addAppointment(app);
+							found = true;
+						}
+					}
+
+					if (found){
+						PrettyPrinter printer = new PrettyPrinter(new PrintWriter(pw));
+						printer.dump(temp);
+					} else {
+						pw.println("Error: No appointments found between those dates.");
+					}
+
 				} catch (ParseException e) {
 					System.out.println("Issue while searching.");
 				}
 			} else if(owner != null && beginTime == null && endTime == null) {
 
-				ArrayList<Appointment> appList = data.get(owner).getAppointments();
-				AppointmentBook temp = new AppointmentBook(owner, appList.get(0));
-				for(int i = 1; i < appList.size(); ++i)
-					temp.addAppointment(appList.get(i));
-
+				AppointmentBook temp = getAppointmentBook(owner);
 				PrettyPrinter printer = new PrettyPrinter(new PrintWriter(pw));
 				printer.dump(temp);
 				pw.flush();
@@ -65,42 +91,17 @@ public class AppointmentBookServlet extends HttpServlet
 		response.setStatus( HttpServletResponse.SC_OK);
 	}
 
-	private void searchPrint(String owner, String beginTime, String endTime,
-	                         HttpServletResponse response)
-			throws ParseException, IOException {
+	public AppointmentBook getAppointmentBook(String o){
+		if(data.containsKey(o)){
+			ArrayList<Appointment> appList = data.get(o).getAppointments();
+			AppointmentBook temp = new AppointmentBook(o, appList.get(0));
+			for(int i = 1; i < appList.size(); ++i)
+				temp.addAppointment(appList.get(i));
 
-		PrintWriter pw = response.getWriter();
-
-		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
-		Date min = format.parse(beginTime);
-		Date max = format.parse(endTime);
-		boolean found = false;
-
-		AppointmentBook temp = new AppointmentBook();
-		ArrayList<Appointment> appList = data.get(owner).getAppointments();
-		for(Appointment app : appList) {
-
-			Date d = app.getBeginTime();
-
-			boolean include = d.after(min) && d.before(max);
-			System.out.println(include);
-
-			if (include){
-				temp.setOwnerName(owner);
-				temp.addAppointment(app);
-				found = true;
-			}
+			return temp;
 		}
 
-		if (found){
-			PrettyPrinter printer = new PrettyPrinter(new PrintWriter(pw));
-			printer.dump(temp);
-		} else {
-			pw.println("Error: No appointments found between those dates.");
-		}
-
-		pw.flush();
-		response.setStatus( HttpServletResponse.SC_OK);
+		return null;
 	}
 
 	@Override
