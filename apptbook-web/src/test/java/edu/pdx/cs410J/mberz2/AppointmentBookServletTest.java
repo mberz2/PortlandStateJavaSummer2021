@@ -151,4 +151,25 @@ public class AppointmentBookServletTest {
 		AppointmentBook book = servlet.getAppointmentBook(owner);
 		assertNotNull(book);
 	}
+
+	@Test
+	void deleteIsNotNull() throws ServletException, IOException {
+		AppointmentBookServlet servlet = new AppointmentBookServlet();
+
+		String owner = "Matt";
+		String description = "Test Desc";
+		String beginTime = "7/1/2021 10:00 AM";
+		String endTime = "7/1/2021 10:30 AM";
+
+		invokeServletMethod(Map.of("owner", owner,
+				"description", description,
+				"beginTime", beginTime,
+				"endTime", endTime), servlet::doPost);
+
+
+		invokeServletMethod(Map.of(), servlet::doDelete);
+
+		AppointmentBook book = servlet.getAppointmentBook(owner);
+		assertNull(book);
+	}
 }
