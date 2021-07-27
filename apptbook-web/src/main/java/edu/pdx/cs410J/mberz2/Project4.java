@@ -245,16 +245,18 @@ public class Project4 {
 	}
 
 	/**
-	 * Makes sure that the give response has the expected HTTP status code.
+	 * Checks a response code against a passed in value. Ensures that the
+	 * given response has the expected HTTP status code (argument)
 	 *
-	 * @param code The expected status code
-	 * @param response The response from the server
+	 * @param code Integer containing the expected status code
+	 * @param response Response object received from the servlet.
 	 */
+	@SuppressWarnings("DefaultLocale")
 	private static void checkResponseCode(
 			int code, HttpRequestHelper.Response response ) {
 		if (response.getCode() != code) {
-			printError(String.format("Expected HTTP code %d, got code %d.\n\n%s", code,
-					response.getCode(), response.getContent()), 1);
+			printError(String.format("Expected HTTP code %d, got code %d.\n\n%s",
+					code, response.getCode(), response.getContent()), 1);
 		}
 	}
 
