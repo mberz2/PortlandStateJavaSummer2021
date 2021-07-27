@@ -48,7 +48,7 @@ class AppointmentBookRestClientIT {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
     HttpRequestHelper.Response response = client.postURL(Map.of("owner", "owner"));
     assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
-    assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("owner")));
+    assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("description")));
   }
 
 	@Test
