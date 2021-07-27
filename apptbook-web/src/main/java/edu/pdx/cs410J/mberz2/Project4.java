@@ -30,7 +30,7 @@ public class Project4 {
 	private static final int [] VALIDPRINT = {13};
 
 	/* Int array containing valid argument counts when search is enabled */
-	private static final int [] VALIDSEARCH = {11};
+	private static final int [] VALIDSEARCH = {12};
 
 	/* Int array containing valid argument counts when owner dump is enabled */
 	private static final int [] VALIDOWNER = {5};
