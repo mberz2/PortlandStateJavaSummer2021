@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -44,7 +45,9 @@ public class PrettyPrinter implements AppointmentBookDumper<AppointmentBook> {
 	public void dump(AppointmentBook appBook)
 			throws IOException {
 
-		SimpleDateFormat ft = new SimpleDateFormat("hh:mm a, E, dd MMM yyyy");
+		SimpleDateFormat ft =
+				new SimpleDateFormat("hh:mm a, E, dd MMM yyyy",
+						Locale.ENGLISH);
 
 		writer.write("==================================================" +
 				"=============================");
