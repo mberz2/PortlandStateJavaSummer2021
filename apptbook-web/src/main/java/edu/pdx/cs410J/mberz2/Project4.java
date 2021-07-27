@@ -7,8 +7,16 @@ import java.net.HttpURLConnection;
 import java.util.*;
 
 /**
- * The main class that parses the command line and communicates with the
- * Appointment Book server using REST.
+ * This servlet ultimately provides a REST API for working with an
+ * <code>AppointmentBook</code>. The API handles GET, POST, and DELETE requests
+ * based on parameters in requests, and sends back information in responses.
+ * Based on the different parameters, the servlet will create new appointment
+ * books, post appointments, search appointments, and clear all appointments.
+ *
+ * @author Matthew Berzinskas
+ * @since 2020-6-23
+ * @see Appointment
+ * @see AppointmentBook
  */
 public class Project4 {
 

@@ -1,9 +1,6 @@
 package edu.pdx.cs410J.mberz2;
 
-import com.google.common.annotations.VisibleForTesting;
 import edu.pdx.cs410J.ParserException;
-
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,24 +11,36 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * This servlet ultimately provides a REST API for working with an
- * <code>AppointmentBook</code>.  However, in its current state, it is an example
- * of how to use HTTP and Java servlets to store simple dictionary of words
- * and their definitions.
+ * This is the main class method for the CS410J Appointment Book Project.
+ * <p>The program simulates the receiving an appointment via command line
+ * arguments and proceeds through operations to validate the input, process
+ * a limited number of options, and then creates an {@code Appointment}. This
+ * appointment is added to a server that handles appointment book objects.
+ *
+ * @author Matthew Berzinskas
+ * @since 2020-6-23
+ * @see Appointment
+ * @see AppointmentBook
  */
 public class AppointmentBookServlet extends HttpServlet
 {
+	/* Map containing the key,values for appoointment books */
 	private final Map<String, AppointmentBook> data = new HashMap<>();
 
 	/**
 	 * Handles an HTTP GET request from a client by writing the value of the key
-	 * specified in the "key" HTTP parameter to the HTTP response.  If the "key"
-	 * parameter is not specified, all of the key/value pairs are written to the
-	 * HTTP response.
+	 * specified in the "key" HTTP parameter to the HTTP response. Depending on
+	 * how many parameters are specified, the GET will perform either: getting
+	 * all appointments belonging to a user, or performing a search between two
+	 * dates specified.
+	 *
+	 * @param request Request containing parameters.
+	 * @param response HTTP response to return.
+	 * @throws IOException For handing failures in input/output.
 	 */
 	@Override
-	protected void doGet( HttpServletRequest request, HttpServletResponse response )
-			throws IOException {
+	protected void doGet( HttpServletRequest request,
+	                      HttpServletResponse response ) throws IOException {
 
 		response.setContentType( "text/plain" );
 		PrintWriter pw = response.getWriter();
@@ -44,17 +53,21 @@ public class AppointmentBookServlet extends HttpServlet
 			pw.println(Messages.getMappingCount(0));
 		} else if(!data.containsKey(owner)) {
 				pw.println("Error: No appointment book for this owner.");
-			} else if(data.containsKey(owner) && beginTime != null && endTime != null ) {
+			} else if(data.containsKey(owner) &&
+				beginTime != null && endTime != null ) {
 				try {
 					//searchPrint(owner, beginTime, endTime, response);
 
-					SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+					SimpleDateFormat format =
+							new SimpleDateFormat("MM/dd/yyyy hh:mm a",
+											Locale.ENGLISH);
 					Date min = format.parse(beginTime);
 					Date max = format.parse(endTime);
 					boolean found = false;
 
 					AppointmentBook temp = new AppointmentBook();
-					ArrayList<Appointment> appList = data.get(owner).getAppointments();
+					ArrayList<Appointment> appList
+							= data.get(owner).getAppointments();
 					for(Appointment app : appList) {
 
 						Date d = app.getBeginTime();
@@ -70,10 +83,12 @@ public class AppointmentBookServlet extends HttpServlet
 					}
 
 					if (found){
-						PrettyPrinter printer = new PrettyPrinter(new PrintWriter(pw));
+						PrettyPrinter printer
+								= new PrettyPrinter(new PrintWriter(pw));
 						printer.dump(temp);
 					} else {
-						pw.println("Error: No appointments found between those dates.");
+						pw.println("Error: No appointments found " +
+								"between those dates.");
 					}
 
 				} catch (ParseException e) {
@@ -91,19 +106,30 @@ public class AppointmentBookServlet extends HttpServlet
 		response.setStatus( HttpServletResponse.SC_OK);
 	}
 
+	/**
+	 * Helper method for doGet. Searches the map for a matching owner, and if
+	 * it exists, returns an appointment book to the calling routine.
+	 *
+	 * @param o String containing the owner to find in the map.
+	 * @return Null if no existing owner, or an appointment book.
+	 */
 	public AppointmentBook getAppointmentBook(String o){
-		if(data.containsKey(o)){
-			ArrayList<Appointment> appList = data.get(o).getAppointments();
-			AppointmentBook temp = new AppointmentBook(o, appList.get(0));
-			for(int i = 1; i < appList.size(); ++i)
-				temp.addAppointment(appList.get(i));
-
-			return temp;
-		}
+		if(data.containsKey(o))
+			return data.get(o);
 
 		return null;
 	}
 
+	/**
+	 * Handles an HTTP POST request from a client by reading the values of the
+	 * keys specified in the "key" HTTP parameter to the HTTP response. If all
+	 * keys/parameters are present, the function will post a new appointment to
+	 * the server. It checks to see if the owner exists in the data map already.
+	 *
+	 * @param request Request containing parameters.
+	 * @param response HTTP response to return.
+	 * @throws IOException For handing failures in input/output.
+	 */
 	@Override
 	protected void doPost( HttpServletRequest request,
 	                       HttpServletResponse response ) throws IOException
@@ -164,6 +190,13 @@ public class AppointmentBookServlet extends HttpServlet
 		response.setStatus( HttpServletResponse.SC_OK);
 	}
 
+	/**
+	 * Handles an HTTP DELETE request from a client. Clears the data map.
+	 *
+	 * @param request Request containing no parameters.
+	 * @param response HTTP response to return.
+	 * @throws IOException For handing failures in input/output.
+	 */
 	@Override
 	protected void doDelete(HttpServletRequest request,
 	                        HttpServletResponse response) throws IOException {
