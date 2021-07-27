@@ -24,7 +24,7 @@ import java.util.*;
  */
 public class AppointmentBookServlet extends HttpServlet
 {
-	/* Map containing the key,values for appoointment books */
+	/* Map containing the key,values for appointment books */
 	private final Map<String, AppointmentBook> data = new HashMap<>();
 
 	/**
@@ -50,14 +50,17 @@ public class AppointmentBookServlet extends HttpServlet
 		String endTime = getParameter("endTime", request);
 
 		if (data.isEmpty()) {
-			pw.println(Messages.getMappingCount(0));
+			pw.println(Messages.getAppointmentCount(data.size()));
 		} else if(!data.containsKey(owner)) {
-				pw.println("Error: No appointment book for this owner.");
+				pw.println(Messages.printMissingOwner());
 			} else if(data.containsKey(owner) &&
 				beginTime != null && endTime != null ) {
-				try {
-					//searchPrint(owner, beginTime, endTime, response);
 
+					pw.println(Messages.findAppointments(data,
+							owner, beginTime, endTime));
+
+					/*
+									try {
 					SimpleDateFormat format =
 							new SimpleDateFormat("MM/dd/yyyy hh:mm a",
 											Locale.ENGLISH);
@@ -87,13 +90,15 @@ public class AppointmentBookServlet extends HttpServlet
 								= new PrettyPrinter(new PrintWriter(pw));
 						printer.dump(temp);
 					} else {
-						pw.println("Error: No appointments found " +
-								"between those dates.");
+						pw.println(Messages.printNoAppointmentsFound());
 					}
 
+
+
 				} catch (ParseException e) {
-					System.out.println("Issue while searching.");
+
 				}
+				*/
 			} else if(owner != null && beginTime == null && endTime == null) {
 
 				AppointmentBook temp = getAppointmentBook(owner);
@@ -205,7 +210,7 @@ public class AppointmentBookServlet extends HttpServlet
 		this.data.clear();
 
 		PrintWriter pw = response.getWriter();
-		pw.println(Messages.allMappingsDeleted());
+		pw.println(Messages.deleteAllAppointments());
 		pw.flush();
 
 		response.setStatus(HttpServletResponse.SC_OK);
