@@ -34,61 +34,36 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
 	 * @param port String containing the desired port.
 	 */
 	@SuppressWarnings("DefaultLocale")
-	public AppointmentBookRestClient(String hostName, int port ) {
+	public AppointmentBookRestClient(String hostName, int port) {
 		this.url = String.format( "http://%s:%d/%s/%s", hostName,
 				port, WEB_APP, SERVLET );
 	}
 
 	/**
-	 * Helper method for GET on one parameter. Attempts to get all appointment
-	 * matching the passed in owner and return to the response.
+	 * Helper method for GET on one parameter. Depending on the parameters in
+	 * a given map, will attempt to either get all appointments of a given
+	 * owner, or search for matching appointments within two dates.
 	 *
-	 * @param owner Owner to find all appointments for.
+	 * @param map Containing the parameters to get from URL.
 	 * @return Response containing HTTP response.
 	 * @throws IOException Exception handling for Input/Output.
 	 */
-	public Response getAllAppointments(String owner) throws IOException {
-		return get(this.url, Map.of("owner", owner));
+	public Response getURL(Map<String, String> map)
+			throws IOException {
+		return get(this.url, map);
 	}
 
 	/**
-	 * Helper method for GET on three parameters. Attempts to get all appts.
-	 * between a beginning and ending date.
-	 *
-	 * @param owner Owner to find all appointments for.
-	 * @param beginTime Beginning time to search for.
-	 * @param endTime Ending time to search for.
-	 * @return Response containing HTTP response.
-	 * @throws IOException Exception handling for Input/Output.
-	 */
-	public Response searchTime(String owner,
-	                           String beginTime,
-	                           String endTime)
-			throws IOException {
-		return get(this.url, Map.of("owner", owner,
-				"beginTime", beginTime,
-				"endTime", endTime));	}
-
-	/**
 	 * Helper method for POST of an appointment to the server. Attempts to post
-	 * a given appointment based on four parameters.
+	 * a given appointment, based on four parameters.
 	 *
-	 * @param owner Owner of the appointment.
-	 * @param description Appointment description.
-	 * @param beginTime Begintime of the appointment.
-	 * @param endTime Endtime of the appointment.
+	 * @param map Map containing the appointment parameters.
 	 * @return HTTP response.
 	 * @throws IOException Exception handling for Input/Output.
 	 */
-	public Response addAppointment( String owner,
-	                                String description,
-	                                String beginTime,
-	                                String endTime)
+	public Response postURL(Map <String, String> map)
 			throws IOException {
-		return post(this.url, Map.of("owner", owner,
-				"description", description,
-				"beginTime", beginTime,
-				"endTime", endTime));
+		return post(this.url, map);
 	}
 
 	/**
@@ -97,7 +72,7 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
 	 *
 	 * @throws IOException Exception handling for input/output.
 	 */
-	public void deleteAllAppointments() throws IOException {
+	public void deleteURL() throws IOException {
 		delete(this.url, Map.of());
 	}
 }

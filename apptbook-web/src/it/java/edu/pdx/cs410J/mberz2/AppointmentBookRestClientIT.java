@@ -7,6 +7,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -31,23 +32,23 @@ class AppointmentBookRestClientIT {
   @Test
   void test0RemoveAllAppointments() throws IOException {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
-    client.deleteAllAppointments();
+    client.deleteURL();
   }
 
   @Test
   void test1EmptyServerContainsNoAppointments() throws IOException {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
-    //HttpRequestHelper.Response response = client.getMap();
-    //System.out.println((response.getContent()));
-    //assertThat(map.size(), equalTo(0));
+    Map<String, String> map = new HashMap<>();
+    HttpRequestHelper.Response response = client.getURL(map);
+    assertThat(map.size(), equalTo(0));
   }
 
   @Test
   void test2MissingRequiredParameterReturnsPreconditionFailed() throws IOException {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
-    HttpRequestHelper.Response response = client.postToMyURL(Map.of());
+    HttpRequestHelper.Response response = client.postURL(Map.of("owner", "owner"));
     assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
-    //assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("owner")));
+    assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("owner")));
   }
 
 	@Test
@@ -59,7 +60,10 @@ class AppointmentBookRestClientIT {
 
 		AppointmentBookRestClient client = newAppointmentBookRestClient();
 		HttpRequestHelper.Response response =
-				client.addAppointment(owner, description, beginTime, endTime);
+				client.postURL(Map.of("owner", owner,
+						"description", description,
+						"beginTime",beginTime,
+						"endTime",endTime));
 		assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_OK));
 		assertThat(response.getContent(), containsString(Messages.printOwner("test owner")));
 	}
@@ -73,7 +77,7 @@ class AppointmentBookRestClientIT {
 
 		AppointmentBookRestClient client = newAppointmentBookRestClient();
 		HttpRequestHelper.Response response =
-				client.postToMyURL(Map.of("owner", owner,
+				client.postURL(Map.of("owner", owner,
 				"description", description,
 				"beginTime", beginTime,
 				"endTime", endTime));
@@ -91,7 +95,9 @@ class AppointmentBookRestClientIT {
 		String endTime = "1/1/2020 9:05 AM";
 
 		HttpRequestHelper.Response response =
-				client.searchTime(owner, beginTime, endTime);
+				client.getURL(Map.of("owner", owner,
+						"beginTime",beginTime,
+						"endTime",endTime));
 		assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_OK));
 		assertThat(response.getContent(), containsString(Messages.printOwner("test owner")));
 	}
@@ -103,7 +109,7 @@ class AppointmentBookRestClientIT {
 		String owner = "test owner";
 
 		HttpRequestHelper.Response response =
-				client.getAllAppointments(owner);
+				client.getURL(Map.of("owner",owner));
 		assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_OK));
 		assertThat(response.getContent(), containsString(Messages.printOwner("test owner")));
 	}

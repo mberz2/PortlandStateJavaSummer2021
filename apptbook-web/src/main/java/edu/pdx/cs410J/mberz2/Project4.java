@@ -83,7 +83,7 @@ public class Project4 {
 		we immediately print out all associated appointments for that user. */
 		if(ownerEnabled()){
 			try {
-				response = client.getAllAppointments(OWNER);
+				response = client.getURL(Map.of("owner,", OWNER));
 				System.out.println(response.getContent());
 				checkResponseCode( HttpURLConnection.HTTP_OK, response);
 				System.exit(0);
@@ -92,7 +92,9 @@ public class Project4 {
 			}
 		} else if (searchEnabled()) {
 			try {
-				response = client.searchTime(SEARCH[0], SEARCH[1], SEARCH[2]);
+				response = client.getURL(Map.of("owner", SEARCH[0],
+						"beginTime", SEARCH[1],
+						"endTime", SEARCH[2]));
 				System.out.println(response.getContent());
 				checkResponseCode(HttpURLConnection.HTTP_OK, response);
 				System.exit(0);
@@ -110,7 +112,10 @@ public class Project4 {
 
 			try {
 				// Try to add the new appointment.
-				response = client.addAppointment(owner, desc, bt, et);
+				response = client.postURL(Map.of("owner", owner,
+						"desc",desc,
+						"beginTime",bt,
+						"endTime",et));
 				System.out.println(response.getContent());
 				checkResponseCode( HttpURLConnection.HTTP_OK, response);
 			} catch (IOException ex) {
