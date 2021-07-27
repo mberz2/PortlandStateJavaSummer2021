@@ -19,10 +19,10 @@ public class Project4 {
 	private static int FLAGS;
 
 	/* Int array containing valid argument counts when print is enabled */
-	private static final int [] VALIDPRINT = {11};
+	private static final int [] VALIDPRINT = {13};
 
 	/* Int array containing valid argument counts when search is enabled */
-	private static final int [] VALIDSEARCH = {13};
+	private static final int [] VALIDSEARCH = {11};
 
 	/* Int array containing valid argument counts when owner dump is enabled */
 	private static final int [] VALIDOWNER = {5};
