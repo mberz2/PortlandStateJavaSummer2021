@@ -1,16 +1,11 @@
 package edu.pdx.cs410J.mberz2;
 
-import edu.pdx.cs410J.ParserException;
-
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Class for formatting messages on the server side.  Parses/prints a variety
@@ -24,20 +19,39 @@ import java.util.regex.Pattern;
  */
 public class Messages
 {
+	/**
+	 *
+	 * @param count
+	 * @return
+	 */
 	@SuppressWarnings("DefaultLocale")
 	public static String getAppointmentCount(int count ) {
 		return String.format( "Server has %d appointments.", count );
 	}
 
+	/**
+	 *
+	 * @param parameterName
+	 * @return
+	 */
 	public static String missingRequiredParameter( String parameterName ) {
 		return String.format("The required parameter \"%s\" is missing",
 				parameterName);
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	public static String deleteAllAppointments() {
 		return "All appointments have been deleted.";
 	}
 
+	/**
+	 *
+	 * @param o
+	 * @return
+	 */
 	public static String printOwner (String o) {
 		return o;
 	}

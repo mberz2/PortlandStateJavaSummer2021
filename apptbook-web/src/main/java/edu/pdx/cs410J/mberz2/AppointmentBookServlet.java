@@ -6,8 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -59,46 +57,6 @@ public class AppointmentBookServlet extends HttpServlet
 					pw.println(Messages.findAppointments(data,
 							owner, beginTime, endTime));
 
-					/*
-									try {
-					SimpleDateFormat format =
-							new SimpleDateFormat("MM/dd/yyyy hh:mm a",
-											Locale.ENGLISH);
-					Date min = format.parse(beginTime);
-					Date max = format.parse(endTime);
-					boolean found = false;
-
-					AppointmentBook temp = new AppointmentBook();
-					ArrayList<Appointment> appList
-							= data.get(owner).getAppointments();
-					for(Appointment app : appList) {
-
-						Date d = app.getBeginTime();
-
-						boolean include = d.after(min) && d.before(max);
-						System.out.println(include);
-
-						if (include){
-							temp.setOwnerName(owner);
-							temp.addAppointment(app);
-							found = true;
-						}
-					}
-
-					if (found){
-						PrettyPrinter printer
-								= new PrettyPrinter(new PrintWriter(pw));
-						printer.dump(temp);
-					} else {
-						pw.println(Messages.printNoAppointmentsFound());
-					}
-
-
-
-				} catch (ParseException e) {
-
-				}
-				*/
 			} else if(owner != null && beginTime == null && endTime == null) {
 
 				AppointmentBook temp = getAppointmentBook(owner);
@@ -166,8 +124,9 @@ public class AppointmentBookServlet extends HttpServlet
 		}
 
 		PrintWriter pw = response.getWriter();
-		Appointment app = null;
-		
+
+		Appointment app;
+
 		try {
 			app = new Appointment(description, beginTime, endTime);
 			AppointmentBook temp;
@@ -181,15 +140,10 @@ public class AppointmentBookServlet extends HttpServlet
 			data.put(owner, temp);
 
 		} catch (ParserException e) {
-			System.err.println("Error: Parsing when creating appointment.");
+			System.err.println("** Error: Parsing when creating appointment.");
 			e.printStackTrace();
 			System.exit(1);
 		}
-
-		pw.print("\nAdded the follow appointment to " +
-				owner +"'s appointment book:");
-		pw.println(Messages.printAppointment(app));
-		pw.println();
 
 		pw.flush();
 		response.setStatus( HttpServletResponse.SC_OK);
