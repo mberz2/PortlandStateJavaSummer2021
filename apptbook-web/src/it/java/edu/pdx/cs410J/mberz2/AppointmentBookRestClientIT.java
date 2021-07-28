@@ -130,12 +130,12 @@ class AppointmentBookRestClientIT {
 
 		client.postURL(Map.of("owner", owner,
 						"description", description,
-						"start", beginTime,
+						"begin", beginTime,
 						"end", endTime));
 
 		client.postURL(Map.of("owner", owner,
 						"description", description2,
-						"start", beginTime2,
+						"begin", beginTime2,
 						"end", endTime2));
 
 		String beginTime3 = "1/1/2020 07:00 AM";
@@ -165,12 +165,12 @@ class AppointmentBookRestClientIT {
 
 		client.postURL(Map.of("owner", owner,
 				"description", description,
-				"start", beginTime,
+				"begin", beginTime,
 				"end", endTime));
 
 		client.postURL(Map.of("owner", owner,
 				"description", description2,
-				"start", beginTime2,
+				"begin", beginTime2,
 				"end", endTime2));
 
 		String beginTime3 = "1/1/2020 07:00 LM";
