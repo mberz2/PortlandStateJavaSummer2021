@@ -52,10 +52,6 @@ public class AppointmentBookRestClient extends HttpRequestHelper {
 	 */
 	public Response getURL(Map<String, String> map)
 			throws IOException {
-
-		map.forEach((k,v) -> {
-			System.out.println(k + "[" + v + "]");
-		});
 		return get(this.url, map);
 	}
 

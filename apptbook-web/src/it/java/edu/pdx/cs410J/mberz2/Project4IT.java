@@ -34,13 +34,13 @@ class Project4IT extends InvokeMainTestCase {
 				"1/1/1000", "10:00", "am",
 				"1/1/1000", "10:05", "am"};
 
-		//InvokeMainTestCase.MainMethodResult result = invokeMain( Project4.class, args);
+		InvokeMainTestCase.MainMethodResult result = invokeMain( Project4.class, args);
 
 		//System.out.println(result.getTextWrittenToStandardError());
 		//System.out.println(result.getTextWrittenToStandardOut());
 
-		//assertThat(result.getTextWrittenToStandardError(), containsString("** Error: Issue with connecting to add."));
-		//assertThat(result.getExitCode(), equalTo(1));
+		assertThat(result.getTextWrittenToStandardError(), containsString("** Error: Unable to connect."));
+		assertThat(result.getExitCode(), equalTo(1));
 	}
 
 	@Test
@@ -48,13 +48,13 @@ class Project4IT extends InvokeMainTestCase {
 		String [] args = {"-host", "host", "-port", "123",
 				"Owner"};
 
-		//InvokeMainTestCase.MainMethodResult result = invokeMain( Project4.class, args);
+		InvokeMainTestCase.MainMethodResult result = invokeMain( Project4.class, args);
 
 		//System.out.println(result.getTextWrittenToStandardError());
 		//System.out.println(result.getTextWrittenToStandardOut());
 
-		//assertThat(result.getTextWrittenToStandardError(), containsString("** Error: Issue with connecting to print."));
-		//assertThat(result.getExitCode(), equalTo(1));
+		assertThat(result.getTextWrittenToStandardError(), containsString("** Error: Unable to connect."));
+		assertThat(result.getExitCode(), equalTo(1));
 	}
 
 	@Test
@@ -64,13 +64,13 @@ class Project4IT extends InvokeMainTestCase {
 				"1/1/1000", "10:00", "am",
 				"1/1/1000", "10:05", "am"};
 
-		//InvokeMainTestCase.MainMethodResult result = invokeMain( Project4.class, args);
+		InvokeMainTestCase.MainMethodResult result = invokeMain( Project4.class, args);
 
 		//System.out.println(result.getTextWrittenToStandardError());
 		//System.out.println(result.getTextWrittenToStandardOut());
 
-		//assertThat(result.getTextWrittenToStandardError(), containsString("** Error: Issue with connecting to search."));
-		//assertThat(result.getExitCode(), equalTo(1));
+		assertThat(result.getTextWrittenToStandardError(), containsString("** Error: Unable to connect."));
+		assertThat(result.getExitCode(), equalTo(1));
 	}
 
 

@@ -75,51 +75,47 @@ public class Project4 {
 		checkInput(args);
 
 		// Setup a REST client object and HTTP Response object
-		AppointmentBookRestClient client =
-				new AppointmentBookRestClient(HOST, PORT);
+		AppointmentBookRestClient client = new AppointmentBookRestClient(HOST, PORT);
 		HttpRequestHelper.Response response;
 
 		/* If, after checking the input, a single owner argument is detected,
 		we immediately print out all associated appointments for that user. */
-		if(ownerEnabled()){
-			response = client.getURL(Map.of("owner", OWNER));
-			print(response);
-		} else if (searchEnabled()) {
-			try {
+		try {
+			if (ownerEnabled()) {
+				response = client.getURL(Map.of("owner", OWNER));
+				print(response);
+			} else if (searchEnabled()) {
+
 				response = client.getURL(Map.of("owner", SEARCH[0],
 						"start", SEARCH[1],
 						"end", SEARCH[2]));
 				print(response);
-			} catch (IOException ex) {
-				printError("Issue with connecting to search.", 1);
-			}
-		} else {
+			} else {
 
-			// Parse a new array for appointment arguments.
-			String [] newArgs = parseInput(args);
-			String owner = newArgs[0];
-			String desc = newArgs[1];
-			String bt = newArgs[2]+" "+newArgs[3]+" "+newArgs[4];
-			String et = newArgs[5]+" "+newArgs[6]+" "+newArgs[7];
+				// Parse a new array for appointment arguments.
+				String[] newArgs = parseInput(args);
+				String owner = newArgs[0];
+				String desc = newArgs[1];
+				String bt = newArgs[2] + " " + newArgs[3] + " " + newArgs[4];
+				String et = newArgs[5] + " " + newArgs[6] + " " + newArgs[7];
 
-			try {
 				// Try to add the new appointment.
 				response = client.postURL(Map.of("owner", owner,
-						"description",desc,
-						"begin",bt,
-						"end",et));
+						"description", desc,
+						"begin", bt,
+						"end", et));
 				System.out.println(response.getContent());
 				checkResponseCode(response);
-			} catch (IOException ex) {
-				printError("Issue with connecting to add.", 1);
-			}
 
-			// If PRINT is enabled, print out the new appointment to the Cl.
-			if(printEnabled()){
-				Appointment app = new Appointment(desc, bt, et);
-				AppointmentBook appBook = new AppointmentBook(owner, app);
-				printAppt(appBook);
+				// If PRINT is enabled, print out the new appointment to the Cl.
+				if (printEnabled()) {
+					Appointment app = new Appointment(desc, bt, et);
+					AppointmentBook appBook = new AppointmentBook(owner, app);
+					printAppt(appBook);
+				}
 			}
+		} catch (IOException ex) {
+			printError("Unable to connect.", 1);
 		}
 
 		System.exit(0);
