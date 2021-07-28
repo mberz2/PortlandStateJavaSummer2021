@@ -82,29 +82,14 @@ public class Project4 {
 		/* If, after checking the input, a single owner argument is detected,
 		we immediately print out all associated appointments for that user. */
 		if(ownerEnabled()){
-			try {
-				response = client.getURL(Map.of("owner,", OWNER));
-				TextParser parser = new TextParser(new StringReader(response.getContent()));
-				AppointmentBook appBook = parser.parse();
-				if (appBook == null){
-					printError("No appointment book for this owner.", 1);
-				} else {
-					PrettyPrinter printer = new PrettyPrinter(new PrintWriter(System.out));
-					printer.dump(appBook);
-					checkResponseCode(HttpURLConnection.HTTP_OK, response);
-					System.exit(0);
-				}
-			} catch (IOException ex) {
-				printError("Issue with connecting to print.", 1);
-			}
+			response = client.getURL(Map.of("owner", OWNER));
+			print(response);
 		} else if (searchEnabled()) {
 			try {
 				response = client.getURL(Map.of("owner", SEARCH[0],
 						"start", SEARCH[1],
 						"end", SEARCH[2]));
-				System.out.println(response.getContent());
-				checkResponseCode(HttpURLConnection.HTTP_OK, response);
-				System.exit(0);
+				print(response);
 			} catch (IOException ex) {
 				printError("Issue with connecting to search.", 1);
 			}
@@ -124,7 +109,7 @@ public class Project4 {
 						"begin",bt,
 						"end",et));
 				System.out.println(response.getContent());
-				checkResponseCode( HttpURLConnection.HTTP_OK, response);
+				checkResponseCode(response);
 			} catch (IOException ex) {
 				printError("Issue with connecting to add.", 1);
 			}
@@ -137,6 +122,22 @@ public class Project4 {
 			}
 		}
 
+		System.exit(0);
+	}
+
+	/**
+	 * Method to print out the content of a response if its valid.
+	 *
+	 * @param response Response to parse/print.
+	 * @throws ParserException Exception handling for parsing.
+	 * @throws IOException Exception handling for input/output.
+	 */
+	private static void print(HttpRequestHelper.Response response) throws ParserException, IOException {
+		TextParser parser = new TextParser(new StringReader(response.getContent()));
+		checkResponseCode(response);
+		AppointmentBook appBook = parser.parse();
+		PrettyPrinter printer = new PrettyPrinter(new PrintWriter(System.out));
+		printer.dump(appBook);
 		System.exit(0);
 	}
 
@@ -255,15 +256,14 @@ public class Project4 {
 	 * Checks a response code against a passed in value. Ensures that the
 	 * given response has the expected HTTP status code (argument)
 	 *
-	 * @param code Integer containing the expected status code
 	 * @param response Response object received from the servlet.
 	 */
 	@SuppressWarnings("DefaultLocale")
 	private static void checkResponseCode(
-			int code, HttpRequestHelper.Response response ) {
-		if (response.getCode() != code) {
+			HttpRequestHelper.Response response) {
+		if (response.getCode() != HttpURLConnection.HTTP_OK) {
 			printError(String.format("Expected HTTP code %d, got code %d.\n\n%s",
-					code, response.getCode(), response.getContent()), 1);
+					HttpURLConnection.HTTP_OK, response.getCode(), response.getContent()), 1);
 		}
 	}
 

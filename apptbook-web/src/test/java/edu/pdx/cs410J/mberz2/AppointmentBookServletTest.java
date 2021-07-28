@@ -33,7 +33,7 @@ public class AppointmentBookServletTest {
 		servlet.doGet(request, response);
 
 		int expectedAppts = 0;
-		verify(pw).println(Messages.getAppointmentCount(expectedAppts));
+		verify(pw).println("Server has "+expectedAppts+" appointments.");
 		verify(response).setStatus(HttpServletResponse.SC_OK);
 	}
 

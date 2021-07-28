@@ -43,17 +43,23 @@ public class AppointmentBookServlet extends HttpServlet
 	                      HttpServletResponse response ) throws IOException {
 
 		response.setContentType( "text/plain" );
-		PrintWriter pw = response.getWriter();
 
 		String owner = getParameter("owner", request);
 		String beginTime = getParameter("begin", request);
 		String startTime = getParameter("start", request);
 		String endTime = getParameter("end", request);
 
+		PrintWriter pw = response.getWriter();
+
 		if (data.isEmpty()) {
 			pw.println(Messages.getAppointmentCount(data.size()));
+			pw.flush();
+			response.setStatus( HttpServletResponse.SC_BAD_REQUEST);
 		} else if(!data.containsKey(owner)) {
+				System.out.println("** Owner "+owner+" not found.");
 				pw.println(Messages.printMissingOwner());
+				pw.flush();
+				response.setStatus( HttpServletResponse.SC_BAD_REQUEST);
 			} else if(data.containsKey(owner) &&
 				startTime != null && endTime != null ) {
 
@@ -66,7 +72,6 @@ public class AppointmentBookServlet extends HttpServlet
 				//PrettyPrinter printer = new PrettyPrinter(new PrintWriter(pw));
 				TextDumper printer = new TextDumper(pw);
 				printer.dump(temp);
-				pw.flush();
 			}
 
 		pw.flush();
