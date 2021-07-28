@@ -91,7 +91,6 @@ public class AppointmentTest {
 				"10/11/2020 10:10 AM");
 
 		int e = app.compareTo(app2);
-		System.out.println(e);
 
 		assertEquals(e, 0);
 	}
@@ -108,7 +107,6 @@ public class AppointmentTest {
 				"10/12/2020 10:10 AM");
 
 		int e = app.compareTo(app2);
-		System.out.println(e);
 
 		assertEquals(e, 1);
 	}
