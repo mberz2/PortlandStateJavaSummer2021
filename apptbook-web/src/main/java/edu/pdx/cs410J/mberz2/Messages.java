@@ -20,9 +20,10 @@ import java.util.concurrent.TimeUnit;
 public class Messages
 {
 	/**
+	 * Method for printing a message that outputs the number of appointments.
 	 *
-	 * @param count
-	 * @return
+	 * @param count Number to print.
+	 * @return String containing the message.
 	 */
 	@SuppressWarnings("DefaultLocale")
 	public static String getAppointmentCount(int count ) {
@@ -30,9 +31,10 @@ public class Messages
 	}
 
 	/**
+	 * Method for printing out a missing parameter message.
 	 *
-	 * @param parameterName
-	 * @return
+	 * @param parameterName Parameter that is missing.
+	 * @return String containing the message.
 	 */
 	public static String missingRequiredParameter( String parameterName ) {
 		return String.format("The required parameter \"%s\" is missing",
@@ -40,22 +42,30 @@ public class Messages
 	}
 
 	/**
+	 * Method to print out a message after deleting all.
 	 *
-	 * @return
+	 * @return String containing the message.
 	 */
 	public static String deleteAllAppointments() {
 		return "All appointments have been deleted.";
 	}
 
 	/**
+	 * Method to print out an appointment's owner.
 	 *
-	 * @param o
-	 * @return
+	 * @param o owner to print.
+	 * @return String containing the message.
 	 */
 	public static String printOwner (String o) {
 		return o;
 	}
 
+	/**
+	 * Method to print out a formatted single appointment.
+	 *
+	 * @param a Appointment to print.
+	 * @return String containing the formatted appointment output.
+	 */
 	public static String printAppointment (Appointment a) {
 
 		SimpleDateFormat ft =
@@ -72,17 +82,39 @@ public class Messages
 				- a.getBeginTime().getTime()) + " mins";
 	}
 
+	/**
+	 * Method to print that an appointment book was not found for an owner.
+	 *
+	 * @return String containing the message.
+	 */
 	public static String printMissingOwner() {
 		return "** Error: No appointment book for this owner.";
 	}
 
+	/**
+	 * Method to print that no matching appointments were found.
+	 *
+	 * @return String containing the message.
+	 */
 	public static String printNoAppointmentsFound() {
 		return "** Error: No appointments found between those dates.";
 	}
 
+	/**
+	 * Method to print all matching appointments between a given set of dates.
+	 * Formats the dates and attempts to find matches. Matches are written to
+	 * a string writer which is returned for printing.
+	 *
+	 * @param data Map containing all appointmentBooks.
+	 * @param owner owner to search for.
+	 * @param beginTime beginTime to search for.
+	 * @param endTime endTime to search for.
+	 * @return String containing the matching appointments.
+	 */
 	public static String findAppointments(Map<String, AppointmentBook> data,
 	                                      String owner, String beginTime,
 	                                      String endTime) {
+
 		StringWriter output = new StringWriter();
 		try {
 			SimpleDateFormat format =
@@ -100,6 +132,7 @@ public class Messages
 				Date d = app.getBeginTime();
 
 				boolean include = d.after(min) && d.before(max);
+				//boolean include = !d.before(min) && !d.after(max);
 				System.out.println(include);
 
 				if (include) {

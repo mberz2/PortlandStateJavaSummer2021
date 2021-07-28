@@ -64,7 +64,6 @@ class AppointmentBookRestClientIT {
 						"beginTime",beginTime,
 						"endTime",endTime));
 		assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_OK));
-		assertThat(response.getContent(), containsString(Messages.printOwner("test owner")));
 	}
 
 	@Test
@@ -82,7 +81,6 @@ class AppointmentBookRestClientIT {
 				"endTime", endTime));
 
 		assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_OK));
-		assertThat(response.getContent(), containsString(Messages.printOwner("test owner2")));
 	}
 
 	@Test

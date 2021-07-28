@@ -125,10 +125,8 @@ public class AppointmentBookServlet extends HttpServlet
 
 		PrintWriter pw = response.getWriter();
 
-		Appointment app;
-
 		try {
-			app = new Appointment(description, beginTime, endTime);
+			Appointment app = new Appointment(description, beginTime, endTime);
 			AppointmentBook temp;
 
 			if (data.get(owner) == null) {
@@ -138,7 +136,7 @@ public class AppointmentBookServlet extends HttpServlet
 				temp.addAppointment(app);
 			}
 			data.put(owner, temp);
-
+			System.out.println("** Appointment added in post.");
 		} catch (ParserException e) {
 			System.err.println("** Error: Parsing when creating appointment.");
 			e.printStackTrace();
