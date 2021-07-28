@@ -6,8 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -67,9 +65,7 @@ public class AppointmentBookServlet extends HttpServlet
 							owner, startTime, endTime));
 
 			} else if(owner != null && beginTime == null && endTime == null) {
-
 				AppointmentBook temp = getAppointmentBook(owner);
-				//PrettyPrinter printer = new PrettyPrinter(new PrintWriter(pw));
 				TextDumper printer = new TextDumper(pw);
 				printer.dump(temp);
 			}
@@ -146,9 +142,8 @@ public class AppointmentBookServlet extends HttpServlet
 			data.put(owner, temp);
 			System.out.println("** Appointment added in post.");
 		} catch (ParserException e) {
-			System.err.println("** Error: Parsing when creating appointment.");
-			e.printStackTrace();
-			System.exit(1);
+			response.sendError(1,"** Error: Parsing when creating appointment.");
+			response.setStatus( HttpServletResponse.SC_BAD_REQUEST);
 		}
 
 		pw.flush();
