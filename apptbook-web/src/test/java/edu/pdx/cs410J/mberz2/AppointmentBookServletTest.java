@@ -141,7 +141,7 @@ public class AppointmentBookServletTest {
 
 		invokeServletMethod(Map.of("owner", owner,
 				"description", description,
-				"start", beginTime,
+				"begin", beginTime,
 				"end", endTime), servlet::doPost);
 
 		invokeServletMethod(Map.of("owner", owner,
@@ -163,7 +163,7 @@ public class AppointmentBookServletTest {
 
 		invokeServletMethod(Map.of("owner", owner,
 				"description", description,
-				"start", beginTime,
+				"begin", beginTime,
 				"end", endTime), servlet::doPost);
 
 
