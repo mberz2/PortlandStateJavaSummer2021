@@ -40,6 +40,7 @@ public class Appointment extends AbstractAppointment
 	 * @param d String for the appointment description.
 	 * @param bt String for the appt. begin time. {@code MM/DD/YYYY HH:MM}
 	 * @param et String for the appt. end time. {@code MM/DD/YYYY HH:MM}
+	 * @throws ParserException Exception handling for parsing.
 	 */
 	Appointment (String d, String bt, String et) throws ParserException {
 		this.desc = d;
