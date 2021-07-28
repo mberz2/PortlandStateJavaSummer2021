@@ -9,8 +9,7 @@ import java.util.Map;
 /**
  * Helper class for a the servlet. Serves as a REST client for processing the
  * different requests from the main method. Handles GET, POST, DELETE requests
- * through {@see HttpRequestHelper}, eventually going to
- * {@see AppointmentBookServlet}.
+ * through {@link HttpRequestHelper}, eventually going to {@link AppointmentBookServlet}.
  *
  * @author Matthew Berzinskas
  * @since 2020-6-23
