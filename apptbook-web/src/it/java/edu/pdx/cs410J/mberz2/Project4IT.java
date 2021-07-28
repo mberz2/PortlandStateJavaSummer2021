@@ -1,21 +1,16 @@
 package edu.pdx.cs410J.mberz2;
 
 import edu.pdx.cs410J.InvokeMainTestCase;
-import edu.pdx.cs410J.UncaughtExceptionInMain;
-import edu.pdx.cs410J.web.HttpRequestHelper.RestException;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.MethodOrderer.MethodName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-
 import java.io.IOException;
-import java.net.HttpURLConnection;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * An integration test for {@link Project4} that invokes its main method with

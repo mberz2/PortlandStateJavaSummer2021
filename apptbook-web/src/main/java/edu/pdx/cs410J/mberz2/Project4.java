@@ -276,7 +276,7 @@ public class Project4 {
 		String[] newArgs = Arrays.copyOfRange(args, FLAGS, args.length);
 
 		if (newArgs.length < 8) {
-			printErrorUsage("Error: Too FEW command line arguments.", 1);
+			printErrorUsage("Too FEW command line arguments.", 1);
 		}
 
 		return newArgs;
