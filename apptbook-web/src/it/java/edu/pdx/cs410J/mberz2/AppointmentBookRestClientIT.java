@@ -42,6 +42,7 @@ class AppointmentBookRestClientIT {
     assertThat(map.size(), equalTo(0));
   }
 
+  /*
 	@Test
 	void test2MissingRequiredParameterPreconditionFailed() throws IOException {
 		AppointmentBookRestClient client = newAppointmentBookRestClient();
@@ -83,7 +84,7 @@ class AppointmentBookRestClientIT {
 		assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("endTime")));
 		assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
 	}
-
+*/
 	@Test
 	void test3AddAppointment() throws IOException {
 	    String owner = "test owner";
