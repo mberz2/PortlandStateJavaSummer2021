@@ -38,24 +38,58 @@ class AppointmentBookRestClientIT {
   void test1EmptyServerContainsNoAppointments() throws IOException {
     AppointmentBookRestClient client = newAppointmentBookRestClient();
     Map<String, String> map = new HashMap<>();
-    HttpRequestHelper.Response response = client.getURL(map);
+    client.getURL(map);
     assertThat(map.size(), equalTo(0));
   }
 
-  @Test
-  void test2MissingRequiredParameterReturnsPreconditionFailed() throws IOException {
-    AppointmentBookRestClient client = newAppointmentBookRestClient();
-    HttpRequestHelper.Response response = client.postURL(Map.of("owner", "owner"));
-    assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
-    assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("description")));
-  }
+	@Test
+	void test2MissingRequiredParameterPreconditionFailed() throws IOException {
+		AppointmentBookRestClient client = newAppointmentBookRestClient();
+		HttpRequestHelper.Response response = client.postURL(Map.of());
+		System.out.println(response.getContent());
+		assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("owner")));
+		assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
+	}
+
+	@Test
+	void test2MissingRequiredParameterReturnsPreconditionFailed1() throws IOException {
+		AppointmentBookRestClient client = newAppointmentBookRestClient();
+		HttpRequestHelper.Response response = client.postURL(Map.of(
+				"owner", "owner"));
+		System.out.println(response.getContent());
+		assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("description")));
+		assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
+	}
+
+	@Test
+	void test2MissingRequiredParameterReturnsPreconditionFailed2() throws IOException {
+		AppointmentBookRestClient client = newAppointmentBookRestClient();
+		HttpRequestHelper.Response response = client.postURL(Map.of(
+				"owner", "owner",
+				"description", "description"));
+		System.out.println(response.getContent());
+		assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("beginTime")));
+		assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
+	}
+
+	@Test
+	void test2MissingRequiredParameterReturnsPreconditionFailed3() throws IOException {
+		AppointmentBookRestClient client = newAppointmentBookRestClient();
+		HttpRequestHelper.Response response = client.postURL(Map.of(
+		        "owner", "owner",
+			    "description", "description",
+			    "begin", "begin"));
+		System.out.println(response.getContent());
+		assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("endTime")));
+		assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
+	}
 
 	@Test
 	void test3AddAppointment() throws IOException {
-  	    String owner = "test owner";
-  	    String description = "test description";
-  	    String beginTime = "1/1/2020 09:00 AM";
-  	    String endTime = "1/1/2020 10:00 AM";
+	    String owner = "test owner";
+	    String description = "test description";
+	    String beginTime = "1/1/2020 09:00 AM";
+	    String endTime = "1/1/2020 10:00 AM";
 
 		AppointmentBookRestClient client = newAppointmentBookRestClient();
 		HttpRequestHelper.Response response =
@@ -103,16 +137,26 @@ class AppointmentBookRestClientIT {
 	void test4SearchAppointmentFail() throws IOException {
 		AppointmentBookRestClient client = newAppointmentBookRestClient();
 
-		String owner = "test owner";
-		String beginTime = "1/1/2020 01:00 AM";
-		String endTime = "1/1/2020 01:05 AM";
+		String owner = "test 4owner";
+		String description = "test description";
+		String beginTime = "1/1/2020 09:00 AM";
+		String endTime = "1/1/2020 10:00 AM";
+
+		client.postURL(Map.of("owner", owner,
+				"description", description,
+				"begin", beginTime,
+				"end", endTime));
+
+		String owner2 = "test owner";
+		String beginTime2 = "1/1/2020 01:00 AM";
+		String endTime2 = "1/1/2020 01:05 AM";
 
 		HttpRequestHelper.Response response =
-				client.getURL(Map.of("owner", owner,
-						"start",beginTime,
-						"end",endTime));
+				client.getURL(Map.of("owner_does_not_exist", owner2,
+						"start",beginTime2,
+						"end",endTime2));
 		assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_OK));
-		assertThat(response.getContent(), containsString(Messages.printOwner("** Error:")));
+		assertThat(response.getContent(), containsString(Messages.printOwner("** Error: No appointment book for this owner.")));
 	}
 
 	@Test

@@ -54,7 +54,6 @@ public class AppointmentBookServlet extends HttpServlet
 			pw.flush();
 			response.setStatus( HttpServletResponse.SC_BAD_REQUEST);
 		} else if(!data.containsKey(owner)) {
-				System.out.println("** Owner "+owner+" not found.");
 				pw.println(Messages.printMissingOwner());
 				pw.flush();
 				response.setStatus( HttpServletResponse.SC_BAD_REQUEST);
@@ -103,6 +102,8 @@ public class AppointmentBookServlet extends HttpServlet
 	                       HttpServletResponse response ) throws IOException {
 		response.setContentType("text/plain");
 
+		PrintWriter pw = response.getWriter();
+
 		String owner = getParameter("owner", request);
 		if (owner == null) {
 			missingRequiredParameter(response, "owner");
@@ -126,8 +127,6 @@ public class AppointmentBookServlet extends HttpServlet
 			missingRequiredParameter(response, "endTime");
 			return;
 		}
-
-		PrintWriter pw = response.getWriter();
 
 		try {
 			Appointment app = new Appointment(description, beginTime, endTime);
