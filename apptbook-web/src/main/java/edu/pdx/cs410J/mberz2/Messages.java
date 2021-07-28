@@ -69,6 +69,7 @@ public class Messages
 	public static String findAppointments(Map<String, AppointmentBook> data,
 	                                      String owner, String beginTime,
 	                                      String endTime) {
+		StringWriter output = new StringWriter();
 		try {
 			SimpleDateFormat format =
 					new SimpleDateFormat("MM/dd/yyyy hh:mm a",
@@ -95,15 +96,15 @@ public class Messages
 			}
 
 			if (found) {
-				PrettyPrinter printer = new PrettyPrinter(new StringWriter());
+				PrettyPrinter printer = new PrettyPrinter(output);
 				printer.dump(temp);
+				return String.valueOf(output);
+
 			} else {
 				return printNoAppointmentsFound();
 			}
 		} catch (ParseException | IOException e) {
 			return "** Error: Parse exception while searching";
 		}
-
-		return null;
 	}
 }
