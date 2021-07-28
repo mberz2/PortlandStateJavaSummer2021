@@ -100,6 +100,93 @@ class AppointmentBookRestClientIT {
 	}
 
 	@Test
+	void test4SearchAppointmentFail() throws IOException {
+		AppointmentBookRestClient client = newAppointmentBookRestClient();
+
+		String owner = "test owner";
+		String beginTime = "1/1/2020 01:00 AM";
+		String endTime = "1/1/2020 01:05 AM";
+
+		HttpRequestHelper.Response response =
+				client.getURL(Map.of("owner", owner,
+						"beginTime",beginTime,
+						"endTime",endTime));
+		assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_OK));
+		assertThat(response.getContent(), containsString(Messages.printOwner("** Error:")));
+	}
+
+	@Test
+	void test4SearchingDates() throws IOException{
+		AppointmentBookRestClient client = newAppointmentBookRestClient();
+
+		String owner = "test 4owner";
+		String description = "test description";
+		String beginTime = "1/1/2020 09:00 AM";
+		String endTime = "1/1/2020 10:00 AM";
+
+		String description2 = "test description";
+		String beginTime2 = "5/1/2020 9:00 AM";
+		String endTime2 = "5/1/2020 10:00 AM";
+
+		client.postURL(Map.of("owner", owner,
+						"description", description,
+						"beginTime", beginTime,
+						"endTime", endTime));
+
+		client.postURL(Map.of("owner", owner,
+						"description", description2,
+						"beginTime", beginTime2,
+						"endTime", endTime2));
+
+		String beginTime3 = "1/1/2020 07:00 AM";
+		String endTime3 = "6/1/2020 9:05 AM";
+
+		HttpRequestHelper.Response response =
+				client.getURL(Map.of("owner", owner,
+						"beginTime",beginTime3,
+						"endTime",endTime3));
+
+		assertThat(response.getContent(), containsString(Messages.printOwner("Appointment Book for: test 4owner")));
+		assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_OK));
+	}
+
+	@Test
+	void test5SearchingParseException() throws IOException{
+		AppointmentBookRestClient client = newAppointmentBookRestClient();
+
+		String owner = "test 5owner";
+		String description = "test description";
+		String beginTime = "1/1/2020 09:00 AM";
+		String endTime = "1/1/2020 10:00 AM";
+
+		String description2 = "test description";
+		String beginTime2 = "5/1/2020 9:00 AM";
+		String endTime2 = "5/1/2020 10:00 AM";
+
+		client.postURL(Map.of("owner", owner,
+				"description", description,
+				"beginTime", beginTime,
+				"endTime", endTime));
+
+		client.postURL(Map.of("owner", owner,
+				"description", description2,
+				"beginTime", beginTime2,
+				"endTime", endTime2));
+
+		String beginTime3 = "1/1/2020 07:00 LM";
+		String endTime3 = "6/1/2020 9:05 AM";
+
+		HttpRequestHelper.Response response =
+				client.getURL(Map.of("owner", owner,
+						"beginTime",beginTime3,
+						"endTime",endTime3));
+
+		assertThat(response.getContent(), containsString(Messages.printOwner("Parse exception")));
+		assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_OK));
+	}
+
+
+	@Test
 	void test5OwnerArgumentReturnsAppointments() throws IOException {
 		AppointmentBookRestClient client = newAppointmentBookRestClient();
 

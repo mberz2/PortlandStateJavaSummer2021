@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.mberz2;
 
+import edu.pdx.cs410J.ParserException;
 import org.junit.jupiter.api.Test;
 
 import java.io.PrintWriter;
@@ -12,65 +13,57 @@ import static org.hamcrest.Matchers.*;
 
 class MessagesTest {
 
-  @Test
-  void printOwnerReturnsString() {
-    assertThat(Messages.printOwner("Owner"),
+	@Test
+	void printOwnerReturnsString() {
+		assertThat(Messages.printOwner("Owner"),
 		    equalTo("Owner"));
-  }
-
-  /*
-  @Test
-  void canParseFormattedDictionaryEntryPair() {
-    String word = "testWord";
-    String definition = "testDefinition";
-    String formatted = Messages.formatKeyValuePair(word, definition);
-    Map.Entry<String, String> parsed = Messages.printAppointment(formatted);
-    assertThat(parsed, notNullValue());
-    assertThat(parsed.getKey(), equalTo(word));
-    assertThat(parsed.getValue(), equalTo(definition));
-  }
+	}
 
   @Test
-  void canParseFormattedDictionaryEntryWithoutLeadingSpaces() {
-    String word = "testWord";
-    String definition = "testDefinition";
-    String formatted = Messages.formatDictionaryEntry(word, definition);
-    String trimmed = formatted.trim();
-    Map.Entry<String, String> parsed = Messages.parseDictionaryEntry(trimmed);
-    assertThat(parsed, notNullValue());
-    assertThat(parsed.getKey(), equalTo(word));
-    assertThat(parsed.getValue(), equalTo(definition));
+  void findAppointmentsInvalid() throws ParserException {
 
+		Map <String, AppointmentBook> data = new HashMap<>();
+
+		Appointment app = new Appointment("description",
+				"1/1/2020 09:00 AM",
+				"1/1/2020 09:30 AM");
+
+		AppointmentBook appBook = new AppointmentBook("owner1", app);
+		data.put("owner1", appBook);
+
+		String result = Messages.findAppointments(data, "owner1",
+				"1/1/2020 10:00 AM",
+				"1/1/2020 11:00 AM");
+
+	  assertThat(result, equalTo("** Error: No appointments found between those dates."));
   }
 
-  @Test
-  void nullDefinitionIsParsedAsNull() {
-    String word = "testWord";
-    String formatted = Messages.formatDictionaryEntry(word, null);
-    Map.Entry<String, String> parsed = Messages.parseDictionaryEntry(formatted);
-    assertThat(parsed, notNullValue());
-    assertThat(parsed.getKey(), equalTo(word));
-    assertThat(parsed.getValue(), equalTo(null));
-  }
+	@Test
+	void findAppointmentsValid() throws ParserException {
 
-  @Test
-  void canParseFormattedDictionary() {
-    Map<String, String> dictionary = new HashMap<>();
+		Map <String, AppointmentBook> data = new HashMap<>();
 
-    for (int i = 0; i < 5; i++) {
-      String word = String.valueOf(i);
-      String definition = "QQ" + word;
-      dictionary.put(word, definition);
-    }
+		Appointment app = new Appointment("description",
+				"1/1/2020 09:00 AM",
+				"1/1/2020 09:30 AM");
 
-    StringWriter sw = new StringWriter();
-    Messages.formatDictionaryEntries(new PrintWriter(sw, true), dictionary);
+		AppointmentBook appBook = new AppointmentBook("owner1", app);
+		data.put("owner1", appBook);
 
-    String formatted = sw.toString();
+		String result = Messages.findAppointments(data, "owner1",
+				"1/1/2020 08:50 AM",
+				"1/1/2020 09:30 AM");
 
-    Map<String, String> actual = Messages.parseDictionary(formatted);
-    assertThat(actual, equalTo(dictionary));
-  }
+		assertThat(result, containsString("Appointment Book for: owner1"));
+	}
 
-   */
+
+	@Test
+	void printAppointment() throws ParserException {
+		Appointment app = new Appointment("description",
+				"1/1/2020 09:00 AM",
+				"1/1/2020 09:30 AM");
+		String result = Messages.printAppointment(app);
+		assertThat(result, containsString("From"));
+	}
 }

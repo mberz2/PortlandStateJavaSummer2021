@@ -115,6 +115,10 @@ public class Messages
 	                                      String owner, String beginTime,
 	                                      String endTime) {
 
+		if(data == null) {
+			return "** Error: Dataset is empty.";
+		}
+
 		StringWriter output = new StringWriter();
 		try {
 			SimpleDateFormat format =
@@ -127,13 +131,13 @@ public class Messages
 			AppointmentBook temp = new AppointmentBook();
 			ArrayList<Appointment> appList
 					= data.get(owner).getAppointments();
+
 			for (Appointment app : appList) {
 
 				Date d = app.getBeginTime();
 
 				boolean include = d.after(min) && d.before(max);
 				//boolean include = !d.before(min) && !d.after(max);
-				System.out.println(include);
 
 				if (include) {
 					temp.setOwnerName(owner);
