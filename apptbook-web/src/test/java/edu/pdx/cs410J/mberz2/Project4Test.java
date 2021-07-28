@@ -17,8 +17,8 @@ public class Project4Test extends InvokeMainTestCase {
 
 		InvokeMainTestCase.MainMethodResult result = invokeMain( Project4.class, args);
 
-		System.out.println(result.getTextWrittenToStandardError());
-		System.out.println(result.getTextWrittenToStandardOut());
+		//System.out.println(result.getTextWrittenToStandardError());
+		//System.out.println(result.getTextWrittenToStandardOut());
 
 		assertThat(result.getTextWrittenToStandardError(), containsString("** Error: Issue with connecting to add."));
 		assertThat(result.getExitCode(), equalTo(1));
@@ -33,9 +33,6 @@ public class Project4Test extends InvokeMainTestCase {
 
 		InvokeMainTestCase.MainMethodResult result = invokeMain( Project4.class, args);
 
-		System.out.println(result.getTextWrittenToStandardError());
-		System.out.println(result.getTextWrittenToStandardOut());
-
 		assertThat(result.getTextWrittenToStandardError(), containsString("** Error: Issue with connecting to search."));
 		assertThat(result.getExitCode(), equalTo(1));
 	}
@@ -48,9 +45,6 @@ public class Project4Test extends InvokeMainTestCase {
 				"1/1/1000 10:05 am"};
 
 		InvokeMainTestCase.MainMethodResult result = invokeMain( Project4.class, args);
-
-		System.out.println(result.getTextWrittenToStandardError());
-		System.out.println(result.getTextWrittenToStandardOut());
 
 		assertThat(result.getTextWrittenToStandardError(), containsString("must be an integer"));
 		assertThat(result.getExitCode(), equalTo(1));
