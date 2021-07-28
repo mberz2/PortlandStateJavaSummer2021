@@ -2,9 +2,6 @@ package edu.pdx.cs410J.mberz2;
 
 import edu.pdx.cs410J.ParserException;
 import org.junit.jupiter.api.Test;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +36,25 @@ class MessagesTest {
   }
 
 	@Test
+	void findAppointmentsInvalidParse() throws ParserException {
+
+		Map <String, AppointmentBook> data = new HashMap<>();
+
+		Appointment app = new Appointment("description",
+				"1/1/2020 09:00 AM",
+				"1/1/2020 09:30 AM");
+
+		AppointmentBook appBook = new AppointmentBook("owner1", app);
+		data.put("owner1", appBook);
+
+		String result = Messages.findAppointments(data, "owner1",
+				"1/1/2020 10:00 AM",
+				"1/1/2020 11:00 A");
+
+		assertThat(result, equalTo("** Error: Parse exception while searching"));
+	}
+
+	@Test
 	void findAppointmentsValid() throws ParserException {
 
 		Map <String, AppointmentBook> data = new HashMap<>();
@@ -51,7 +67,7 @@ class MessagesTest {
 		data.put("owner1", appBook);
 
 		String result = Messages.findAppointments(data, "owner1",
-				"1/1/2020 08:50 AM",
+				"1/1/2020 09:00 AM",
 				"1/1/2020 09:30 AM");
 
 		assertThat(result, containsString("Appointment Book for: owner1"));
