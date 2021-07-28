@@ -53,7 +53,7 @@ public class AppointmentBookServlet extends HttpServlet
 		} else if(!data.containsKey(owner)) {
 				pw.println(Messages.printMissingOwner());
 			} else if(data.containsKey(owner) &&
-				beginTime != null && endTime != null ) {
+				startTime != null && endTime != null ) {
 
 					pw.println(Messages.findAppointments(data,
 							owner, startTime, endTime));
