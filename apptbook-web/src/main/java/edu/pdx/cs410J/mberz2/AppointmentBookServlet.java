@@ -63,7 +63,8 @@ public class AppointmentBookServlet extends HttpServlet
 			} else if(owner != null && beginTime == null && endTime == null) {
 
 				AppointmentBook temp = getAppointmentBook(owner);
-				PrettyPrinter printer = new PrettyPrinter(new PrintWriter(pw));
+				//PrettyPrinter printer = new PrettyPrinter(new PrintWriter(pw));
+				TextDumper printer = new TextDumper(pw);
 				printer.dump(temp);
 				pw.flush();
 			}

@@ -84,9 +84,16 @@ public class Project4 {
 		if(ownerEnabled()){
 			try {
 				response = client.getURL(Map.of("owner,", OWNER));
-				System.out.println(response.getContent());
-				checkResponseCode( HttpURLConnection.HTTP_OK, response);
-				System.exit(0);
+				TextParser parser = new TextParser(new StringReader(response.getContent()));
+				AppointmentBook appBook = parser.parse();
+				if (appBook == null){
+					printError("No appointment book for this owner.", 1);
+				} else {
+					PrettyPrinter printer = new PrettyPrinter(new PrintWriter(System.out));
+					printer.dump(appBook);
+					checkResponseCode(HttpURLConnection.HTTP_OK, response);
+					System.exit(0);
+				}
 			} catch (IOException ex) {
 				printError("Issue with connecting to print.", 1);
 			}

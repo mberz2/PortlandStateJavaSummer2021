@@ -146,7 +146,7 @@ class AppointmentBookRestClientIT {
 						"start",beginTime3,
 						"end",endTime3));
 
-		assertThat(response.getContent(), containsString(Messages.printOwner("Appointment Book for: test 4owner")));
+		assertThat(response.getContent(), containsString(Messages.printOwner("test 4owner")));
 		assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_OK));
 	}
 

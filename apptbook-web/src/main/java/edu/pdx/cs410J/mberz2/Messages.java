@@ -142,14 +142,15 @@ public class Messages
 			}
 
 			if (found) {
-				PrettyPrinter printer = new PrettyPrinter(output);
+				//PrettyPrinter printer = new PrettyPrinter(output);
+				TextDumper printer = new TextDumper(output);
 				printer.dump(temp);
 				return String.valueOf(output);
 
 			} else {
 				return printNoAppointmentsFound();
 			}
-		} catch (ParseException | IOException e) {
+		} catch (ParseException e) {
 			return "** Error: Parse exception while searching";
 		}
 	}

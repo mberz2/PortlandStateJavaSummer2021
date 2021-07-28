@@ -118,13 +118,15 @@ public class AppointmentBookServletTest {
 	void noApptSearchIsNull() throws ServletException, IOException {
 		AppointmentBookServlet servlet = new AppointmentBookServlet();
 
-		String owner = "Matt";
+		String owner = "Matt2";
 		String beginTime = "7/1/2021 10:00 AM";
 		String endTime = "7/1/2021 10:30 AM";
 
-		invokeServletMethod(Map.of("owner", owner,
+		StringWriter response = invokeServletMethod(Map.of("owner", owner,
 				"start", beginTime,
 				"end", endTime), servlet::doGet);
+
+		response.flush();
 
 		AppointmentBook book = servlet.getAppointmentBook(owner);
 		assertNull(book);

@@ -70,7 +70,7 @@ class MessagesTest {
 				"1/1/2020 09:00 AM",
 				"1/1/2020 09:30 AM");
 
-		assertThat(result, containsString("Appointment Book for: owner1"));
+		assertThat(result, containsString("owner1"));
 	}
 
 
