@@ -55,10 +55,6 @@ public class Project4 {
 			"Usage: java -jar /apptbook/target/apptbook-2021.0.0.jar " +
 					"[options] <args>";
 
-	/* String containing syntax for how to display README */
-	public static final String README =
-			"java -jar /apptbook/target/apptbook-2021.0.0.jar -README";
-
 	/**
 	 * Main entry point for the program. Validates command line arguments, and
 	 * then based on a variety of different option conditions, performs a few
@@ -67,9 +63,8 @@ public class Project4 {
 	 *
 	 * @param args String containing command line arguments.
 	 * @throws ParserException Exception handling for parsing an appointment.
-	 * @throws IOException Exception handling for input/out operations.
 	 */
-	public static void main(String... args) throws ParserException, IOException {
+	public static void main(String... args) throws ParserException {
 
 		// Check arguments for valid inputs.
 		checkInput(args);
@@ -145,9 +140,8 @@ public class Project4 {
 	 * parses out the fileName (the immediately following argument).
 	 *
 	 * @param args String array containing the command line arguments to parse.
-	 * @throws IOException Exception handling for loading a README file.
 	 */
-	public static void checkInput(String [] args) throws IOException {
+	public static void checkInput(String [] args) {
 
 		FLAGS = 0;
 		OPTIONS.put("HOST", 0);
