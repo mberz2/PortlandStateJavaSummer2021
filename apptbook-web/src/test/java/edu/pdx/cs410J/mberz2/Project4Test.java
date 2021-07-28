@@ -20,7 +20,7 @@ public class Project4Test extends InvokeMainTestCase {
 		//System.out.println(result.getTextWrittenToStandardError());
 		//System.out.println(result.getTextWrittenToStandardOut());
 
-		assertThat(result.getTextWrittenToStandardError(), containsString("** Error: Issue with connecting to add."));
+		assertThat(result.getTextWrittenToStandardError(), containsString("Error: Unable to connect"));
 		assertThat(result.getExitCode(), equalTo(1));
 	}
 
@@ -33,7 +33,7 @@ public class Project4Test extends InvokeMainTestCase {
 
 		InvokeMainTestCase.MainMethodResult result = invokeMain( Project4.class, args);
 
-		assertThat(result.getTextWrittenToStandardError(), containsString("** Error: Issue with connecting to search."));
+		assertThat(result.getTextWrittenToStandardError(), containsString("Error: Unable to connect"));
 		assertThat(result.getExitCode(), equalTo(1));
 	}
 
