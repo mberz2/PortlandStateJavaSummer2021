@@ -93,8 +93,8 @@ public class Project4 {
 		} else if (searchEnabled()) {
 			try {
 				response = client.getURL(Map.of("owner", SEARCH[0],
-						"beginTime", SEARCH[1],
-						"endTime", SEARCH[2]));
+						"start", SEARCH[1],
+						"end", SEARCH[2]));
 				System.out.println(response.getContent());
 				checkResponseCode(HttpURLConnection.HTTP_OK, response);
 				System.exit(0);
@@ -114,8 +114,8 @@ public class Project4 {
 				// Try to add the new appointment.
 				response = client.postURL(Map.of("owner", owner,
 						"description",desc,
-						"beginTime",bt,
-						"endTime",et));
+						"begin",bt,
+						"end",et));
 				System.out.println(response.getContent());
 				checkResponseCode( HttpURLConnection.HTTP_OK, response);
 			} catch (IOException ex) {

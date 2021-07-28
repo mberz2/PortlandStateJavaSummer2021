@@ -61,8 +61,8 @@ class AppointmentBookRestClientIT {
 		HttpRequestHelper.Response response =
 				client.postURL(Map.of("owner", owner,
 						"description", description,
-						"beginTime",beginTime,
-						"endTime",endTime));
+						"begin",beginTime,
+						"end",endTime));
 		assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_OK));
 	}
 
@@ -77,8 +77,8 @@ class AppointmentBookRestClientIT {
 		HttpRequestHelper.Response response =
 				client.postURL(Map.of("owner", owner,
 				"description", description,
-				"beginTime", beginTime,
-				"endTime", endTime));
+				"begin", beginTime,
+				"end", endTime));
 
 		assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_OK));
 	}
@@ -93,8 +93,8 @@ class AppointmentBookRestClientIT {
 
 		HttpRequestHelper.Response response =
 				client.getURL(Map.of("owner", owner,
-						"beginTime",beginTime,
-						"endTime",endTime));
+						"start",beginTime,
+						"end",endTime));
 		assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_OK));
 		assertThat(response.getContent(), containsString(Messages.printOwner("test owner")));
 	}
@@ -109,8 +109,8 @@ class AppointmentBookRestClientIT {
 
 		HttpRequestHelper.Response response =
 				client.getURL(Map.of("owner", owner,
-						"beginTime",beginTime,
-						"endTime",endTime));
+						"start",beginTime,
+						"end",endTime));
 		assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_OK));
 		assertThat(response.getContent(), containsString(Messages.printOwner("** Error:")));
 	}
@@ -130,21 +130,21 @@ class AppointmentBookRestClientIT {
 
 		client.postURL(Map.of("owner", owner,
 						"description", description,
-						"beginTime", beginTime,
-						"endTime", endTime));
+						"start", beginTime,
+						"end", endTime));
 
 		client.postURL(Map.of("owner", owner,
 						"description", description2,
-						"beginTime", beginTime2,
-						"endTime", endTime2));
+						"start", beginTime2,
+						"end", endTime2));
 
 		String beginTime3 = "1/1/2020 07:00 AM";
 		String endTime3 = "6/1/2020 9:05 AM";
 
 		HttpRequestHelper.Response response =
 				client.getURL(Map.of("owner", owner,
-						"beginTime",beginTime3,
-						"endTime",endTime3));
+						"start",beginTime3,
+						"end",endTime3));
 
 		assertThat(response.getContent(), containsString(Messages.printOwner("Appointment Book for: test 4owner")));
 		assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_OK));
@@ -165,21 +165,21 @@ class AppointmentBookRestClientIT {
 
 		client.postURL(Map.of("owner", owner,
 				"description", description,
-				"beginTime", beginTime,
-				"endTime", endTime));
+				"start", beginTime,
+				"end", endTime));
 
 		client.postURL(Map.of("owner", owner,
 				"description", description2,
-				"beginTime", beginTime2,
-				"endTime", endTime2));
+				"start", beginTime2,
+				"end", endTime2));
 
 		String beginTime3 = "1/1/2020 07:00 LM";
 		String endTime3 = "6/1/2020 9:05 AM";
 
 		HttpRequestHelper.Response response =
 				client.getURL(Map.of("owner", owner,
-						"beginTime",beginTime3,
-						"endTime",endTime3));
+						"start",beginTime3,
+						"end",endTime3));
 
 		assertThat(response.getContent(), containsString(Messages.printOwner("Parse exception")));
 		assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_OK));

@@ -67,8 +67,8 @@ public class AppointmentBookServletTest {
 
 		invokeServletMethod(Map.of("owner", owner,
 				"description", description,
-				"beginTime", beginTime,
-				"endTime", endTime), servlet::doPost);
+				"begin", beginTime,
+				"end", endTime), servlet::doPost);
 
 		AppointmentBook book = servlet.getAppointmentBook(owner);
 		assertThat(book, notNullValue());
@@ -104,8 +104,8 @@ public class AppointmentBookServletTest {
 
 		invokeServletMethod(Map.of("owner", owner,
 				"description", description,
-				"beginTime", beginTime,
-				"endTime", endTime), servlet::doPost);
+				"begin", beginTime,
+				"end", endTime), servlet::doPost);
 
 
 		invokeServletMethod(Map.of("owner", owner), servlet::doGet);
@@ -123,8 +123,8 @@ public class AppointmentBookServletTest {
 		String endTime = "7/1/2021 10:30 AM";
 
 		invokeServletMethod(Map.of("owner", owner,
-				"beginTime", beginTime,
-				"endTime", endTime), servlet::doGet);
+				"start", beginTime,
+				"end", endTime), servlet::doGet);
 
 		AppointmentBook book = servlet.getAppointmentBook(owner);
 		assertNull(book);
@@ -141,12 +141,12 @@ public class AppointmentBookServletTest {
 
 		invokeServletMethod(Map.of("owner", owner,
 				"description", description,
-				"beginTime", beginTime,
-				"endTime", endTime), servlet::doPost);
+				"start", beginTime,
+				"end", endTime), servlet::doPost);
 
 		invokeServletMethod(Map.of("owner", owner,
-				"beginTime", beginTime,
-				"endTime", endTime), servlet::doGet);
+				"start", beginTime,
+				"end", endTime), servlet::doGet);
 
 		AppointmentBook book = servlet.getAppointmentBook(owner);
 		assertNotNull(book);
@@ -163,8 +163,8 @@ public class AppointmentBookServletTest {
 
 		invokeServletMethod(Map.of("owner", owner,
 				"description", description,
-				"beginTime", beginTime,
-				"endTime", endTime), servlet::doPost);
+				"start", beginTime,
+				"end", endTime), servlet::doPost);
 
 
 		invokeServletMethod(Map.of(), servlet::doDelete);

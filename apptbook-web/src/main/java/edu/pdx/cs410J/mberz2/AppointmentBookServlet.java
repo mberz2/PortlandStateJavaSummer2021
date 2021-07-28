@@ -44,8 +44,9 @@ public class AppointmentBookServlet extends HttpServlet
 		PrintWriter pw = response.getWriter();
 
 		String owner = getParameter("owner", request);
-		String beginTime = getParameter("beginTime", request);
-		String endTime = getParameter("endTime", request);
+		String beginTime = getParameter("begin", request);
+		String startTime = getParameter("start", request);
+		String endTime = getParameter("end", request);
 
 		if (data.isEmpty()) {
 			pw.println(Messages.getAppointmentCount(data.size()));
@@ -55,7 +56,7 @@ public class AppointmentBookServlet extends HttpServlet
 				beginTime != null && endTime != null ) {
 
 					pw.println(Messages.findAppointments(data,
-							owner, beginTime, endTime));
+							owner, startTime, endTime));
 
 			} else if(owner != null && beginTime == null && endTime == null) {
 
@@ -95,8 +96,7 @@ public class AppointmentBookServlet extends HttpServlet
 	 */
 	@Override
 	protected void doPost( HttpServletRequest request,
-	                       HttpServletResponse response ) throws IOException
-	{
+	                       HttpServletResponse response ) throws IOException {
 		response.setContentType("text/plain");
 
 		String owner = getParameter("owner", request);
@@ -111,13 +111,13 @@ public class AppointmentBookServlet extends HttpServlet
 			return;
 		}
 
-		String beginTime = getParameter("beginTime", request);
+		String beginTime = getParameter("begin", request);
 		if (beginTime == null) {
 			missingRequiredParameter(response, "beginTime");
 			return;
 		}
 
-		String endTime = getParameter("endTime", request);
+		String endTime = getParameter("end", request);
 		if (endTime == null) {
 			missingRequiredParameter(response, "endTime");
 			return;
