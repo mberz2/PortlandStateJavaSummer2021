@@ -2,6 +2,8 @@ package edu.pdx.cs410J.mberz2;
 
 import edu.pdx.cs410J.web.HttpRequestHelper;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
