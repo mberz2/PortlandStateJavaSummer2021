@@ -42,26 +42,15 @@ public class Appointment extends AbstractAppointment
 	 * @param et String for the appt. end time. {@code MM/DD/YYYY HH:MM}
 	 * @throws ParserException Exception handling for parsing.
 	 */
-	Appointment (String d, String bt, String et) throws ParserException {
+	Appointment (String d, String bt, String et) throws ParseException {
 		this.desc = d;
 
 		if (bt == null || et == null){
 			throw new NullPointerException("Error: Time is currently null.");
 		}
 
-		try {
-			this.beginTime = dateFormat.parse(bt.trim());
-		} catch (ParseException e){
-			System.err.println("Error: Unable to parse begin date.");
-			System.exit(1);
-		}
-
-		try {
-			this.endTime = dateFormat.parse(et.trim());
-		} catch (ParseException e){
-			System.err.println("Error: Unable to parse end date.");
-			System.exit(1);
-		}
+		this.beginTime = dateFormat.parse(bt.trim());
+		this.endTime = dateFormat.parse(et.trim());
 
 		if (this.getBeginTime().getTime() > this.getEndTime().getTime())
 			throw (new UnsupportedOperationException("Error: " +

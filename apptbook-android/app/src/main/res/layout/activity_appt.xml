@@ -1,50 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="20dp"
     tools:context=".ApptActivity">
 
-
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/appt_name"
-        android:hint="@string/name"
-        android:padding="10dp"
-        android:inputType="textPersonName"
-        android:background="@android:color/darker_gray"
-        android:autofillHints=""/>
+        app:helperTextEnabled="true"
+        app:helperText="@string/appt_name_helper"
+        app:endIconMode="clear_text"
+        android:paddingBottom="20dp">
 
-    <EditText
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/appt_name"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:orientation="vertical"
+            android:hint="@string/name"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            android:paddingBottom="20dp"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/appt_desc"
-        android:hint="@string/appointment_description"
-        android:padding="10dp"
-        android:inputType="textPersonName"
-        android:background="@android:color/darker_gray"
-        android:autofillHints=""/>
+        app:helperTextEnabled="true"
+        app:helperText="@string/appt_name_desc"
+        app:counterEnabled="true"
+        app:counterMaxLength="255">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/appt_desc"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:hint="@string/appointment_description"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine"
+            android:orientation="vertical"
+            android:padding="10dp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/select_begin_time"
-        android:id="@+id/beginTime"
-        android:textSize="20sp"
-        android:padding="10dp"
-        />
+        android:layout_height="wrap_content"/>
+
 
     <TextView
-        android:id="@+id/endTime"
-        android:layout_width="180dp"
+        android:id="@+id/txtStartDate"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/select_end_time"
-        android:padding="10dp"
-        android:textSize="20sp" />
+        android:text="Start Date"
+        android:textSize="16sp"
+        android:padding="10dp" />
+
+    <TextView
+        android:id="@+id/txtStartTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Time"
+        android:textSize="16sp"
+        android:padding="10dp" />
+
+
+    <TextView
+        android:id="@+id/txtEndDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="EndDate"
+        android:textSize="16sp"
+        android:padding="10dp" />
+
+    <TextView
+        android:id="@+id/txtEndTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="End Time"
+        android:textSize="16sp"
+        android:padding="10dp" />
+
+    <CheckBox
+        android:id="@+id/chboxConfirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:text="@string/print_confirmation" />
+
+    <Button
+        android:id="@+id/btnConfirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/confirm"/>
+
+    <Button
+        android:id="@+id/btnReset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/reset"/>
 
 </LinearLayout>
