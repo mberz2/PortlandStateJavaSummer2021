@@ -2,4 +2,8 @@
     <string name="app_name">apptbook-android</string>
     <string name="edit_message">Enter a message</string>
     <string name="button_send">Send</string>
+    <string name="select_end_time">Select End Time</string>
+    <string name="select_begin_time">Select Begin Time</string>
+    <string name="appointment_description">Appointment Description</string>
+    <string name="name">Name</string>
 </resources>
