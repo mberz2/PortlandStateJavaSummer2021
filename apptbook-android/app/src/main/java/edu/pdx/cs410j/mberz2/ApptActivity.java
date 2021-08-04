@@ -16,9 +16,19 @@ import android.view.View;
 import android.widget.*;
 
 import com.google.android.material.snackbar.Snackbar;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
+
+import edu.pdx.cs410J.ParserException;
 
 public class ApptActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener,
         TimePickerDialog.OnTimeSetListener, View.OnClickListener {
@@ -77,8 +87,7 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
     }
 
     private void createDialogFragment(String tag) {
-        /* getSupportFragmentManager() will return a FragmentManager
-         * that is used to manage the fragments */
+
         if (tag.equals("StartDatePicker") || tag.equals("EndDatePicker")) {
             DialogFragment datePicker = new DatePickerFragment();
             datePicker.show(getSupportFragmentManager(), tag);
@@ -135,37 +144,118 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
             if(TextUtils.isEmpty(name)) {
                 Snackbar.make(view, "Name is blank.", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                printError(view, "Name cannot be blank.");
+                printError(view, "Missing Fields. Name cannot be blank.");
                 return;
             } else if (TextUtils.isEmpty(desc)) {
                 Snackbar.make(view,"Desc: "+desc, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 if(name.equals(""))
-                    printError(view, "Description cannot be blank.");
+                    printError(view, "Missing Fields. Description cannot be blank.");
                 return;
             }
 
             Log.e(TAG, "Creating appointment.");
-            Appointment appointment = new Appointment(
-                    desc,
-                    txtStartDate.getText().toString() + " " + txtStartTime.getText().toString(),
-                    txtEndDate.getText().toString() + " " + txtEndTime.getText().toString());
 
-            if (isChecked){
-                Snackbar.make(view, appointment.toString(), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            } else {
-                Snackbar.make(view, "Appointment confirmed!", Snackbar.LENGTH_LONG)
+            String bt = txtStartDate.getText().toString() + " " + txtStartTime.getText().toString();
+            String et = txtEndDate.getText().toString() + " " + txtEndTime.getText().toString();
+
+            try{
+                Appointment app = new Appointment(
+                        desc,
+                        txtStartDate.getText().toString() + " " + txtStartTime.getText().toString(),
+                        txtEndDate.getText().toString() + " " + txtEndTime.getText().toString());
+
+                AppointmentBook book = new AppointmentBook(name, app);
+
+                // -- Check if a file exists for this owner -- //
+                AppointmentBook tempBook = loadFromInternalStorage(book);
+
+                // -- Write back book to internal storage, combined -- //
+                writeToInternalStorage(tempBook);
+
+                if (isChecked){
+                    Snackbar.make(view, app.toString(), Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                } else {
+                    Snackbar.make(view, "Appointment confirmed!", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+
+            } catch (ParseException | ParserException e) {
+                String error = e.getMessage();
+                assert error != null;
+                Snackbar.make(view, error, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
 
-        } catch (ParseException | NullPointerException | UnsupportedOperationException e) {
+        } catch (NullPointerException | UnsupportedOperationException | IOException e) {
+            Log.e(TAG, "Writing appointment.");
             String error = e.getMessage();
             assert error != null;
             Snackbar.make(view, error, Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         }
     }
+
+    public AppointmentBook loadFromInternalStorage(AppointmentBook appBook)
+            throws ParserException {
+
+        try {
+            File file = new File(ApptActivity.this.getFilesDir()
+                    +"/"+appBook.getOwnerName()
+                    +"_apptBook.csv");
+            TextParser textParser = new TextParser(new FileReader(file));
+
+            //Check if anything is in the file.
+            AppointmentBook tempBook = textParser.parse();
+
+            // If the owners of the new book and the parsed book don't match, exit
+            if(!tempBook.getOwnerName().equals(appBook.getOwnerName())){
+                System.err.println("Error: Incompatible owners.\nPlease check " +
+                        "that the new appointment owner is the same as the " +
+                        "loaded file.");
+                System.exit(1);
+            } else {
+                // Combining the appointments.
+                ArrayList<Appointment> app = appBook.getAppointments();
+
+                for (Appointment a: app)
+                    tempBook.addAppointment(a);
+
+                return tempBook;
+            }
+
+        } catch (FileNotFoundException e){
+
+            //Nothing to merge, return original book.
+            return appBook;
+        }
+
+        return appBook;
+    }
+
+    public void writeToInternalStorage(AppointmentBook appBook) throws IOException {
+        Log.e(TAG, "Writing book");
+        FileOutputStream fileout = openFileOutput(appBook.getOwnerName() + "_apptBook.csv", MODE_PRIVATE);
+
+        TextDumper textDumper = new TextDumper(new OutputStreamWriter(fileout));
+        textDumper.dump(appBook);
+        //String result = text.toString();
+        //Log.e(TAG, result);
+
+        // textParser = new TextParser(new FileReader(n+"_apptBook.csv"));
+        //AppointmentBook tempBook = textParser.parse();
+
+        //FileOutputStream fileout=openFileOutput(n+"_apptBook.csv", MODE_PRIVATE);
+        //OutputStreamWriter outputWriter=new OutputStreamWriter(fileout);
+        //outputWriter.write(n+d+bt+et);
+        //outputWriter.close();
+
+        //display file saved message
+        Toast.makeText(getBaseContext(), "File saved successfully!",
+                Toast.LENGTH_SHORT).show();
+    }
+
 
     private void printError(View view, String s){
         String msg = "Error: "+s;

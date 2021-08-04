@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.mberz2;
+package edu.pdx.cs410j.mberz2;
 
 import edu.pdx.cs410J.AppointmentBookDumper;
 

@@ -25,9 +25,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Button btnCreate = findViewById(R.id.btnCreate);
         Button btnHelp = findViewById(R.id.btnHelp);
+        Button btnExit = findViewById(R.id.btnExit);
 
         btnCreate.setOnClickListener(this);
         btnHelp.setOnClickListener(this);
+        btnExit.setOnClickListener(this);
 
     }
 
@@ -42,6 +44,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btnHelp:
                 intent = new Intent(MainActivity.this, HelpActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.btnExit:
+                onBackPressed();
                 break;
         }
     }

@@ -1,4 +1,4 @@
-package edu.pdx.cs410J.mberz2;
+package edu.pdx.cs410j.mberz2;
 
 import edu.pdx.cs410J.AppointmentBookParser;
 import edu.pdx.cs410J.ParserException;
@@ -6,6 +6,7 @@ import edu.pdx.cs410J.ParserException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.text.ParseException;
 
 /**
  * This class implements read-only class {@link AppointmentBookParser}.
@@ -82,7 +83,7 @@ public class TextParser implements AppointmentBookParser<AppointmentBook> {
 			reader.close();
 			return tempBook;
 
-		} catch (IOException e) {
+		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
