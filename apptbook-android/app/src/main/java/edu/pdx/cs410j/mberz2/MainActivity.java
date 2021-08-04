@@ -24,10 +24,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         Button btnCreate = findViewById(R.id.btnCreate);
+        Button btnSearch = findViewById(R.id.btnSearch);
+        Button btnView = findViewById(R.id.btnView);
         Button btnHelp = findViewById(R.id.btnHelp);
         Button btnExit = findViewById(R.id.btnExit);
 
         btnCreate.setOnClickListener(this);
+        btnSearch.setOnClickListener(this);
+        btnView.setOnClickListener(this);
         btnHelp.setOnClickListener(this);
         btnExit.setOnClickListener(this);
 

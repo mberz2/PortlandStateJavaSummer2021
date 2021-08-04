@@ -202,8 +202,8 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
 
         try {
             File file = new File(ApptActivity.this.getFilesDir()
-                    +"/"+appBook.getOwnerName()
-                    +"_apptBook.csv");
+                    +"apptBook_" + appBook.getOwnerName()
+                    +".csv");
             TextParser textParser = new TextParser(new FileReader(file));
 
             //Check if anything is in the file.
@@ -236,20 +236,9 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
 
     public void writeToInternalStorage(AppointmentBook appBook) throws IOException {
         Log.e(TAG, "Writing book");
-        FileOutputStream fileout = openFileOutput(appBook.getOwnerName() + "_apptBook.csv", MODE_PRIVATE);
-
+        FileOutputStream fileout = openFileOutput("apptBook_" + appBook.getOwnerName() + ".csv", MODE_PRIVATE);
         TextDumper textDumper = new TextDumper(new OutputStreamWriter(fileout));
         textDumper.dump(appBook);
-        //String result = text.toString();
-        //Log.e(TAG, result);
-
-        // textParser = new TextParser(new FileReader(n+"_apptBook.csv"));
-        //AppointmentBook tempBook = textParser.parse();
-
-        //FileOutputStream fileout=openFileOutput(n+"_apptBook.csv", MODE_PRIVATE);
-        //OutputStreamWriter outputWriter=new OutputStreamWriter(fileout);
-        //outputWriter.write(n+d+bt+et);
-        //outputWriter.close();
 
         //display file saved message
         Toast.makeText(getBaseContext(), "File saved successfully!",
