@@ -1,11 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_help"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="20dp"
     tools:context=".HelpActivity">
+
+    <TextView
+        android:id="@+id/titleHelp"
+        android:layout_width="307dp"
+        android:layout_height="80dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="41dp"
+        android:text="@string/title_help" />
+
+    <TextView
+        android:id="@+id/titleVersion"
+        android:layout_width="307dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="120dp"
+        android:text="@string/version" />
+
+    <TextView
+        android:id="@+id/titleAuthor"
+        android:layout_width="307dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="150dp"
+        android:text="@string/created_by" />
+
+    <TextView
+        android:id="@+id/titleFor"
+        android:layout_width="307dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="180dp"
+        android:text="@string/created_for" />
 
     <Button
         android:id="@+id/btnReadme"
@@ -14,9 +54,18 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="193dp"
-        android:onClick="displayReadme"
-        android:text="Readme" />
+        android:layout_marginTop="370dp"
+        android:text="@string/btnReadme" />
+
+    <Button
+        android:id="@+id/btnExit"
+        android:layout_width="137dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="430dp"
+        android:text="@string/btnExit" />
 
 
-</LinearLayout>
+</RelativeLayout>

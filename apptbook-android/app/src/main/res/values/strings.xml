@@ -12,4 +12,15 @@
     <string name="appt_name_desc">i.e. Going to see a movie.</string>
     <string name="confirm">Confirm</string>
     <string name="reset">reset</string>
+    <string name="create">Create</string>
+    <string name="title_help">
+        <![CDATA[<p><h1>BookMe Help Center</h1>
+        <p>In this section you can find information about the application, as well as a README.</p>
+
+        </p>]]></string>
+    <string name="created_by"><![CDATA[<B>Created By:</B> Matthew Berzinskas]]></string>
+    <string name="version"><![CDATA[<B>Version:</B> 1.0]]></string>
+    <string name="created_for"><![CDATA[<B>For:</B> CS410 Advanced Java Programming]]></string>
+    <string name="btnReadme">Readme</string>
+    <string name="btnExit">Exit</string>
 </resources>
