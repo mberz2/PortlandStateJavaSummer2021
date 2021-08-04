@@ -8,18 +8,32 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.google.android.material.snackbar.Snackbar;
+
+import java.io.File;
+
 import edu.pdx.cs410J.ParserException;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    static final String TAG = "MainActivity";
+    private TextView txtWelcome;
+    private TextView txtGettingStarted;
+    private TextView txtCountBox;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -29,12 +43,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button btnHelp = findViewById(R.id.btnHelp);
         Button btnExit = findViewById(R.id.btnExit);
 
+        txtWelcome = findViewById(R.id.titleMain);
+        txtGettingStarted = findViewById(R.id.gettingStarted);
+        txtCountBox = findViewById(R.id.mainCount);
+
         btnCreate.setOnClickListener(this);
         btnSearch.setOnClickListener(this);
         btnView.setOnClickListener(this);
         btnHelp.setOnClickListener(this);
         btnExit.setOnClickListener(this);
 
+        fill(txtWelcome, getString(R.string.welcome));
+        fill(txtGettingStarted, getString(R.string.gettingStarted));
+        total(txtCountBox);
+
+    }
+
+    public void fill (TextView v, String id) {
+        Spanned htmlAsSpanned = Html.fromHtml(id, Html.FROM_HTML_MODE_COMPACT);
+        v.setText(htmlAsSpanned);
+    }
+
+    public void total (TextView v) {
+
+
+        File file = new File(String.valueOf(MainActivity.this.getFilesDir()));
+        File [] list = file.listFiles();
+        int count = 0;
+        for (File f: list){
+            String name = f.getName();
+            if (name.endsWith(".csv"))
+                count++;
+            Log.e(TAG, String.valueOf(count));
+            System.out.println("COUNT: " + count);
+        }
+
+        String txt = "Total Bookings, by Name: " + count;
+
+        v.setText(txt);
     }
 
     @Override
