@@ -7,7 +7,6 @@
     <string name="appointment_description">Appointment Description</string>
     <string name="name">Name</string>
     <string name="print_confirmation">Print Confirmation?</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="appt_name_helper">i.e. John Doe</string>
     <string name="appt_name_desc">i.e. Going to see a movie.</string>

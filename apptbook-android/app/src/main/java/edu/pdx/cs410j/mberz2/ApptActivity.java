@@ -1,44 +1,29 @@
 package edu.pdx.cs410j.mberz2;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.Toast;
+import android.widget.*;
 
 import com.google.android.material.snackbar.Snackbar;
-
-import java.sql.Time;
 import java.text.DateFormat;
-import java.text.Format;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
-import edu.pdx.cs410J.ParserException;
 
 public class ApptActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener,
         TimePickerDialog.OnTimeSetListener, View.OnClickListener {
 
     private static final String TAG = "ApptActivity";
-
     private TextView txtStartDate;
     private TextView txtEndDate;
     private TextView txtStartTime;
@@ -63,7 +48,6 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
         btnReset.setOnClickListener(this);
         btnConfirm.setOnClickListener(this);
 
-
     } //end onCreate
 
     @Override
@@ -87,6 +71,7 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
                 break;
             case R.id.btnReset:
                 startActivity(new Intent(this, ApptActivity.class));
+                finish();
                 break;
         }
     }
@@ -182,11 +167,28 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
         }
     }
 
-
     private void printError(View view, String s){
         String msg = "Error: "+s;
         Log.d(TAG, msg);
         Snackbar.make(view,msg, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setTitle("Returning to Main Menu")
+                .setMessage("Are you sure you want to exit?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 }

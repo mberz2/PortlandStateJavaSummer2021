@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="btnCreate" type="id" />
+    <item name="btnHelp" type="id" />
+    <item name="button_help" type="id" />
+    <item name="readme_text" type="id" />
+</resources>
