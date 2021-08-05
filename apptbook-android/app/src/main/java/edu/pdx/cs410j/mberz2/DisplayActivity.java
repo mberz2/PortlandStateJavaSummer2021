@@ -4,28 +4,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.Spanned;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Serializable;
-import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -59,7 +46,7 @@ public class DisplayActivity extends AppCompatActivity {
                 Log.e(TAG, "Loading appointment book.");
                 appBook = loadFromInternalStorage(fileName);
             } catch (ParserException | FileNotFoundException e) {
-                Log.e(TAG, e.getMessage());
+                printError(e.getMessage());
                 e.printStackTrace();
             }
 
@@ -67,23 +54,20 @@ public class DisplayActivity extends AppCompatActivity {
             String msg = ("All bookings for: " + appBook.getOwnerName());
             txtOwner.setText(msg);
             loadAppointments(appBook);
+
         } else {
             Log.e(TAG, "Loading all appointments between dates.");
+
+            String header = "Displaying all bookings between dates:";
+            txtOwner.setText(header);
 
             String start = savedInstanceState.getString("start");
             String end = savedInstanceState.getString("end");
 
             File dir = new File(String.valueOf(DisplayActivity.this.getFilesDir()));
-            File[] foundFiles = dir.listFiles(new FilenameFilter() {
-                public boolean accept(File dir, String name) {
-                    return name.startsWith("apptBook_");
-                }
-            });
+            File[] foundFiles = dir.listFiles((dir1, name) -> name.startsWith("apptBook_"));
 
             assert foundFiles != null;
-            String msg = ("Found " + foundFiles.length + " files.");
-            Toast toast = Toast.makeText(this, msg, Toast.LENGTH_LONG);
-            toast.show();
 
             ArrayList<AppointmentBook> books = new ArrayList<>();
 
@@ -92,11 +76,11 @@ public class DisplayActivity extends AppCompatActivity {
                     TextParser textParser = new TextParser(new FileReader(f));
                     books.add(textParser.parse());
                 } catch (FileNotFoundException | ParserException e) {
+                    printError(e.getMessage());
                     e.printStackTrace();
                 }
             }
 
-            StringWriter output = new StringWriter();
             try {
                 SimpleDateFormat format =
                         new SimpleDateFormat("MM/dd/yy hh:mm a", Locale.ENGLISH);
@@ -111,7 +95,7 @@ public class DisplayActivity extends AppCompatActivity {
                                 format.parse(start), format.parse(end))) {
                             temp.setOwnerName(book.getOwnerName());
                             temp.addAppointment(app);
-                            loadAppointments(temp);
+                            loadAppointmentsWithOwner(temp);
                         }
                     }
                 }
@@ -139,6 +123,28 @@ public class DisplayActivity extends AppCompatActivity {
                     - a.getBeginTime().getTime()) + " mins\n";
 
             list.add(desc + bt + et + duration);
+        }
+
+        final ListView listview = findViewById(R.id.listview);
+        final StableArrayAdapter adapter = new StableArrayAdapter(this,
+                android.R.layout.simple_list_item_1, list);
+        listview.setAdapter(adapter);
+    }
+
+    private void loadAppointmentsWithOwner(AppointmentBook appBook) {
+        ArrayList<Appointment> app = appBook.getAppointments();
+
+        final ArrayList<String> list = new ArrayList<>();
+
+        for (Appointment a : app) {
+            String name = "\nBooking for: " + appBook.getOwnerName();
+            String desc = "\nDescription: " + a.getDescription();
+            String bt = "\nFrom: " + a.getBeginTimeString();
+            String et = "\nUntil: " + a.getEndTimeString();
+            String duration = "\nDuration: " + TimeUnit.MILLISECONDS.toMinutes(a.getEndTime().getTime()
+                    - a.getBeginTime().getTime()) + " mins\n";
+
+            list.add(name + desc + bt + et + duration);
         }
 
         final ListView listview = findViewById(R.id.listview);

@@ -1,6 +1,8 @@
 <resources>
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
     <string name="app_name">apptbook-android</string>
     <string name="edit_message">Enter a message</string>
     <string name="button_send">Send</string>
@@ -30,19 +32,16 @@
     <string name="gettingStarted"><![CDATA[To get started, click <b>CREATE</b> below.</h1>]]></string>
     <string name="title_activity_search">SearchActivity</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
+
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
-
     <string name="welcomeSearch">
         <![CDATA[<h1>Search</h1>]]></string>
     <string name="gettingStartedSearch">
-        <![CDATA[<p>Here you can search for bookings between certain dates.
-        Or you can search for all bookings by a given owner. </p>]]></string>
-    <string name="searchByDates">Enter beginning and ending date to search. </string>
+        <![CDATA[<p>Here you can search for all bookings by a given owner
+        Or you can search for bookings between certain dates. </p>]]></string>
     <string name="searchByOwner">Select an owner to view all appointments.</string>
+    <string name="searchByDates">-OR- Enter beginning and ending dates to search. </string>
     <string name="view">View</string>
     <string name="start_date">Start Date</string>
     <string name="start_time">Start Time</string>
