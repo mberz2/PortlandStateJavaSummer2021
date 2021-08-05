@@ -1,5 +1,9 @@
 package edu.pdx.cs410j.mberz2;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -58,13 +62,13 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
         total(txtCountBox);
 
-        File [] files = getFiles(String.valueOf(SearchActivity.this.getFilesDir()));
+        File[] files = getFiles(String.valueOf(SearchActivity.this.getFilesDir()));
         ArrayList<String> names = getFileNames(files);
         Collection<AppointmentBook> books = new ArrayList<>();
 
         for (String n : names) {
             try {
-                books.add(loadFromInternalStorage("/"+n));
+                books.add(loadFromInternalStorage("/" + n));
             } catch (ParserException | FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -74,7 +78,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 new ArrayAdapter<>(this,
                         android.R.layout.simple_spinner_dropdown_item);
         adapter.add("Select an option:");
-        for (AppointmentBook book : books){
+        for (AppointmentBook book : books) {
             adapter.addAll(book.getOwnerName());
         }
         dropdown.setAdapter(adapter);
@@ -85,21 +89,16 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
 
-        TextView textView = (TextView)dropdown.getSelectedView();
+        TextView textView = (TextView) dropdown.getSelectedView();
         String result = textView.getText().toString();
 
-        try {
-            Log.e(TAG, "Loading appointment book.");
-            AppointmentBook appBook = loadFromInternalStorage("/apptBook_"+result+".csv");
+        if (pos > 0) {
             Intent intent = new Intent(SearchActivity.this, DisplayActivity.class);
-            intent.putExtra("displayBook", appBook);
+            intent.putExtra("fileName", "/apptBook_" + result + ".csv");
             startActivity(intent);
             finish();
-
-        } catch (ParserException | FileNotFoundException e) {
-            Log.e(TAG, e.getMessage());
-            e.printStackTrace();
         }
+
 
         //Toast toast = Toast.makeText(this, result, Toast.LENGTH_LONG);
         //toast.show();
@@ -114,7 +113,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     public AppointmentBook loadFromInternalStorage(String fileName)
             throws ParserException, FileNotFoundException {
 
-        File file = new File(SearchActivity.this.getFilesDir() +fileName);
+        File file = new File(SearchActivity.this.getFilesDir() + fileName);
         TextParser textParser = new TextParser(new FileReader(file));
         return textParser.parse();
     }
@@ -126,29 +125,29 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         return file;
     }
 
-    public ArrayList<String> getFileNames(File[] file){
+    public ArrayList<String> getFileNames(File[] file) {
         ArrayList<String> arrayFiles = new ArrayList<String>();
         if (file.length == 0)
             return null;
         else {
-            for (int i=0; i<file.length; i++)
+            for (int i = 0; i < file.length; i++)
                 arrayFiles.add(file[i].getName());
         }
 
         return arrayFiles;
     }
 
-    public void fill (TextView v, String id) {
+    public void fill(TextView v, String id) {
         Spanned htmlAsSpanned = Html.fromHtml(id, Html.FROM_HTML_MODE_COMPACT);
         v.setText(htmlAsSpanned);
     }
 
-    public void total (TextView v) {
+    public void total(TextView v) {
 
         File file = new File(String.valueOf(SearchActivity.this.getFilesDir()));
-        File [] list = file.listFiles();
+        File[] list = file.listFiles();
         int count = 0;
-        for (File f: list){
+        for (File f : list) {
             String name = f.getName();
             if (name.endsWith(".csv"))
                 count++;
@@ -179,8 +178,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .setTitle("Returning to main menu")
                 .setMessage("Are you sure you want to exit?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                {
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();

@@ -43,4 +43,5 @@
         Or you can search for all bookings by a given owner. </p>]]></string>
     <string name="searchByDates">Enter beginning and ending date to search. </string>
     <string name="searchByOwner">Select an owner to view all appointments.</string>
+    <string name="view">View</string>
 </resources>

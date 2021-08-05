@@ -53,7 +53,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="28dp"
         android:layout_marginTop="250dp"
-        android:text="View" />
+        android:text="@string/view" />
 
     <Button
         android:id="@+id/btnSearch"
