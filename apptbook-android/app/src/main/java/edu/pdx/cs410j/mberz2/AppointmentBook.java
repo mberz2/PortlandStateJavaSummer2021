@@ -2,6 +2,7 @@ package edu.pdx.cs410j.mberz2;
 
 import edu.pdx.cs410J.AbstractAppointmentBook;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -16,7 +17,7 @@ import java.util.Collections;
  * @since 2020-6-23
  * @see AbstractAppointmentBook
  */
-public class AppointmentBook extends AbstractAppointmentBook<Appointment> {
+public class AppointmentBook extends AbstractAppointmentBook<Appointment> implements Serializable {
 
 	/* String containing the appointment book owner */
 	private String owner;

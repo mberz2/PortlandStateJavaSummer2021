@@ -26,10 +26,7 @@ import edu.pdx.cs410J.ParserException;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     static final String TAG = "MainActivity";
-    private TextView txtWelcome;
-    private TextView txtGettingStarted;
     private TextView txtCountBox;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +40,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button btnHelp = findViewById(R.id.btnHelp);
         Button btnExit = findViewById(R.id.btnExit);
 
-        txtWelcome = findViewById(R.id.titleMain);
-        txtGettingStarted = findViewById(R.id.gettingStarted);
+        TextView txtWelcome = findViewById(R.id.titleMain);
+        TextView txtGettingStarted = findViewById(R.id.gettingStarted);
         txtCountBox = findViewById(R.id.mainCount);
 
         btnCreate.setOnClickListener(this);
@@ -55,8 +52,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         fill(txtWelcome, getString(R.string.welcome));
         fill(txtGettingStarted, getString(R.string.gettingStarted));
-        total(txtCountBox);
 
+        total(txtCountBox);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        total(txtCountBox);
     }
 
     public void fill (TextView v, String id) {
@@ -65,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void total (TextView v) {
-
 
         File file = new File(String.valueOf(MainActivity.this.getFilesDir()));
         File [] list = file.listFiles();
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             System.out.println("COUNT: " + count);
         }
 
-        String txt = "Total Bookings, by Name: " + count;
+        String txt = "Total Bookings, by individuals: " + count;
 
         v.setText(txt);
     }
@@ -89,6 +91,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btnCreate:
                 intent = new Intent(MainActivity.this, ApptActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.btnSearch:
+                intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.btnView:
+                intent = new Intent(MainActivity.this, ViewActivity.class);
                 startActivity(intent);
                 break;
             case R.id.btnHelp:
