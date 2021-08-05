@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     static final String TAG = "MainActivity";
     private TextView txtCountBox;
+    private int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         File file = new File(String.valueOf(MainActivity.this.getFilesDir()));
         File [] list = file.listFiles();
-        int count = 0;
+        count = 0;
         for (File f: list){
             String name = f.getName();
             if (name.endsWith(".csv"))
@@ -94,12 +95,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.btnSearch:
-                intent = new Intent(MainActivity.this, SearchActivity.class);
-                startActivity(intent);
+                if (count == 0){
+                    new AlertDialog.Builder(this)
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setMessage("There are currently no appointments booked.")
+                            .setNegativeButton("Ok", null)
+                            .show();
+                } else {
+                    intent = new Intent(MainActivity.this, SearchActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.btnView:
-                intent = new Intent(MainActivity.this, ViewActivity.class);
-                startActivity(intent);
+                if (count == 0){
+                    new AlertDialog.Builder(this)
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setMessage("There are currently no appointments booked.")
+                            .setNegativeButton("Ok", null)
+                            .show();
+                } else {
+                    intent = new Intent(MainActivity.this, ViewActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.btnHelp:
                 intent = new Intent(MainActivity.this, HelpActivity.class);

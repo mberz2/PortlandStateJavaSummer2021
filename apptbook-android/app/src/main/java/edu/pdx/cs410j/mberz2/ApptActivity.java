@@ -17,14 +17,8 @@ import android.widget.*;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.text.DateFormat;
-import java.text.ParseException;
+import java.io.*;
+import java.text.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -41,6 +35,8 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Log.e(TAG, "Activity Switch");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appt);
 
@@ -58,13 +54,12 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
         btnReset.setOnClickListener(this);
         btnConfirm.setOnClickListener(this);
 
-    } //end onCreate
+    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.txtStartDate:
-                /* You need to define a unique tag name for each fragment */
                 createDialogFragment("StartDatePicker");
                 break;
             case R.id.txtEndDate:
@@ -87,7 +82,6 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
     }
 
     private void createDialogFragment(String tag) {
-
         if (tag.equals("StartDatePicker") || tag.equals("EndDatePicker")) {
             DialogFragment datePicker = new DatePickerFragment();
             datePicker.show(getSupportFragmentManager(), tag);
@@ -131,33 +125,27 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
     }
 
     public void confirmInput(View view) {
+        Log.e(TAG,"Confirming appointment.");
 
+        //Check if the confirmation widget is checked.
         boolean isChecked = ((CheckBox) findViewById(R.id.chboxConfirm)).isChecked();
 
         try {
 
+            //Get the name and description fields from their widgets.
             EditText editTextName = findViewById(R.id.appt_name);
             String name = editTextName.getText().toString();
             EditText editTextDesc = findViewById(R.id.appt_desc);
             String desc = editTextDesc.getText().toString();
 
+            //If name or description are empty, notify the user.
             if(TextUtils.isEmpty(name)) {
-                Snackbar.make(view, "Name is blank.", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                printError(view, "Missing Fields. Name cannot be blank.");
+                printError("Missing Fields. Name cannot be blank.");
                 return;
             } else if (TextUtils.isEmpty(desc)) {
-                Snackbar.make(view,"Desc: "+desc, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                if(name.equals(""))
-                    printError(view, "Missing Fields. Description cannot be blank.");
+                printError("Missing Fields. Description cannot be blank.");
                 return;
             }
-
-            Log.e(TAG, "Creating appointment.");
-
-            String bt = txtStartDate.getText().toString() + " " + txtStartTime.getText().toString();
-            String et = txtEndDate.getText().toString() + " " + txtEndTime.getText().toString();
 
             try{
                 Appointment app = new Appointment(
@@ -166,34 +154,21 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
                         txtEndDate.getText().toString() + " " + txtEndTime.getText().toString());
 
                 AppointmentBook book = new AppointmentBook(name, app);
-
-                // -- Check if a file exists for this owner -- //
                 AppointmentBook tempBook = loadFromInternalStorage(book);
 
-                // -- Write back book to internal storage, combined -- //
-                writeToInternalStorage(tempBook);
-
                 if (isChecked){
-                    Snackbar.make(view, app.toString(), Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    displayAppointment(app, tempBook);
+
                 } else {
-                    Snackbar.make(view, "Appointment confirmed!", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    writeToInternalStorage(tempBook);
                 }
 
             } catch (ParseException | ParserException e) {
-                String error = e.getMessage();
-                assert error != null;
-                Snackbar.make(view, error, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                printError("Unable to parse date/time.\n"+e.getMessage());
             }
 
         } catch (NullPointerException | UnsupportedOperationException | IOException e) {
-            Log.e(TAG, "Writing appointment.");
-            String error = e.getMessage();
-            assert error != null;
-            Snackbar.make(view, error, Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+            printError(e.getMessage());
         }
     }
 
@@ -209,29 +184,18 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
             //Check if anything is in the file.
             AppointmentBook tempBook = textParser.parse();
 
-            // If the owners of the new book and the parsed book don't match, exit
-            if(!tempBook.getOwnerName().equals(appBook.getOwnerName())){
-                System.err.println("Error: Incompatible owners.\nPlease check " +
-                        "that the new appointment owner is the same as the " +
-                        "loaded file.");
-                System.exit(1);
-            } else {
-                // Combining the appointments.
-                ArrayList<Appointment> app = appBook.getAppointments();
+            // Combining the appointments.
+            ArrayList<Appointment> app = appBook.getAppointments();
 
-                for (Appointment a: app)
-                    tempBook.addAppointment(a);
+            for (Appointment a: app)
+                tempBook.addAppointment(a);
 
-                return tempBook;
-            }
+            return tempBook;
 
         } catch (FileNotFoundException e){
-
             //Nothing to merge, return original book.
             return appBook;
         }
-
-        return appBook;
     }
 
     public void writeToInternalStorage(AppointmentBook appBook) throws IOException {
@@ -241,16 +205,40 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
         textDumper.dump(appBook);
 
         //display file saved message
-        Toast.makeText(getBaseContext(), "File saved successfully!",
-                Toast.LENGTH_SHORT).show();
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setMessage("Appointment saved successfully!")
+                .setPositiveButton("Ok", (dialog, which) -> finish())
+                .show();
     }
 
+    private void printError(String s){
 
-    private void printError(View view, String s){
-        String msg = "Error: "+s;
-        Log.d(TAG, msg);
-        Snackbar.make(view,msg, Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Error")
+                .setMessage(s)
+                .setNegativeButton("Ok", null)
+                .show();
+    }
+
+    public void displayAppointment(Appointment app, AppointmentBook tempBook){
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setTitle("Appointment Confirmation")
+                .setMessage("Description: "+app.getDescription()
+                +"\nFrom: "+app.getBeginTimeString()
+                +"\nTo: "+app.getEndTimeString())
+                .setPositiveButton("Ok", (dialog, which) -> {
+                    try {
+                        writeToInternalStorage(tempBook);
+                        finish();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 
     @Override
@@ -259,14 +247,7 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .setTitle("Returning to Main Menu")
                 .setMessage("Are you sure you want to exit?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-
-                })
+                .setPositiveButton("Yes", (dialog, which) -> finish())
                 .setNegativeButton("No", null)
                 .show();
     }

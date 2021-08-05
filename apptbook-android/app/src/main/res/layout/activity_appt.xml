@@ -43,7 +43,7 @@
             android:layout_height="54dp"
             android:hint="@string/appointment_description"
             android:importantForAutofill="no"
-            android:inputType="textMultiLine"
+            android:inputType="text"
             android:orientation="vertical"
             android:padding="10dp" />
     </com.google.android.material.textfield.TextInputLayout>
