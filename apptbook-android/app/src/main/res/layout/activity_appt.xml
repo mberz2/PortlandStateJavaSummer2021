@@ -57,7 +57,7 @@
         android:id="@+id/txtStartDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start Date"
+        android:text="@string/start_date"
         android:textSize="16sp"
         android:padding="10dp" />
 
@@ -65,7 +65,7 @@
         android:id="@+id/txtStartTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start Time"
+        android:text="@string/start_time"
         android:textSize="16sp"
         android:padding="10dp" />
 
@@ -74,7 +74,7 @@
         android:id="@+id/txtEndDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="EndDate"
+        android:text="@string/enddate"
         android:textSize="16sp"
         android:padding="10dp" />
 
@@ -82,7 +82,7 @@
         android:id="@+id/txtEndTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="End Time"
+        android:text="@string/end_time"
         android:textSize="16sp"
         android:padding="10dp" />
 

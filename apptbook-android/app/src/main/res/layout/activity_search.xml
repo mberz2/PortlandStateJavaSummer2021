@@ -63,6 +63,57 @@
         android:layout_marginTop="275dp"
         android:text="@string/searchByDates" />
 
+    <TextView
+        android:id="@+id/txtStartDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start_date"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="300dp"
+        android:textSize="18sp"
+        android:padding="10dp" />
+
+    <TextView
+        android:id="@+id/txtStartTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start_time"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="340dp"
+        android:textSize="18sp"
+        android:padding="10dp" />
+
+
+    <TextView
+        android:id="@+id/txtEndDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/enddate"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="300dp"
+        android:textSize="18sp"
+        android:padding="10dp" />
+
+    <TextView
+        android:id="@+id/txtEndTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/end_time"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="340dp"
+        android:textSize="18sp"
+        android:padding="10dp" />
+
+    <Button
+        android:id="@+id/btnSearch"
+        android:layout_width="137dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="400dp"
+        android:text="@string/search" />
+
     <Button
         android:id="@+id/btnExit"
         android:layout_width="137dp"
@@ -70,7 +121,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="430dp"
-        android:text="Exit" />
+        android:layout_marginTop="460dp"
+        android:text="@string/exit" />
 
 </RelativeLayout>

@@ -44,4 +44,10 @@
     <string name="searchByDates">Enter beginning and ending date to search. </string>
     <string name="searchByOwner">Select an owner to view all appointments.</string>
     <string name="view">View</string>
+    <string name="start_date">Start Date</string>
+    <string name="start_time">Start Time</string>
+    <string name="enddate">EndDate</string>
+    <string name="end_time">End Time</string>
+    <string name="exit">Exit</string>
+    <string name="search">Search</string>
 </resources>

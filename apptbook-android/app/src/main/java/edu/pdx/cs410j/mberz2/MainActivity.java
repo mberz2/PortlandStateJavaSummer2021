@@ -77,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String name = f.getName();
             if (name.endsWith(".csv"))
                 count++;
-            Log.e(TAG, String.valueOf(count));
             System.out.println("COUNT: " + count);
         }
 

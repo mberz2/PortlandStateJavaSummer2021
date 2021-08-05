@@ -31,7 +31,7 @@ public class Appointment extends AbstractAppointment
 	private Date endTime;
 	/* DateFormat object containing the date format */
 	DateFormat dateFormat =
-			new SimpleDateFormat("MM/dd/yy hh:mm a", Locale.ENGLISH);
+			new SimpleDateFormat("MM/dd/yyyy hh:mm a", Locale.ENGLISH);
 
 	/**
 	 * Parameterized constructor for an appointment object. Sets the private

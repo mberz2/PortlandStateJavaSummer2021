@@ -21,6 +21,7 @@ import java.io.*;
 import java.text.*;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import edu.pdx.cs410J.ParserException;
 
@@ -98,12 +99,18 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
         c.set(Calendar.MONTH, month);
         c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
+        Log.e(TAG, String.valueOf(year));
+
         String currentDateString = DateFormat.getDateInstance(DateFormat.SHORT).format(c.getTime());
+
+        Log.e(TAG, currentDateString);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (fragmentManager.findFragmentByTag("StartDatePicker") != null) {
+
             txtStartDate.setText(currentDateString);
         } else {
+
             txtEndDate.setText(currentDateString);
         }
     }
@@ -153,12 +160,14 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
                         txtStartDate.getText().toString() + " " + txtStartTime.getText().toString(),
                         txtEndDate.getText().toString() + " " + txtEndTime.getText().toString());
 
-                //AppointmentBook book = new AppointmentBook(name, app);
                 AppointmentBook tempBook = loadFromInternalStorage(app, name);
+
+                if (tempBook == null) {
+                    tempBook = new AppointmentBook(name, app);
+                }
 
                 if (isChecked){
                     displayAppointment(app, tempBook);
-
                 } else {
                     writeToInternalStorage(tempBook);
                 }
@@ -174,7 +183,6 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
 
     public AppointmentBook loadFromInternalStorage(Appointment app, String owner)
             throws ParserException {
-
         try {
             File file = new File(ApptActivity.this.getFilesDir()
                     +"/apptBook_" + owner
@@ -184,17 +192,15 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
             //Check if anything is in the file.
             AppointmentBook tempBook = textParser.parse();
 
+            tempBook.setOwnerName(owner);
             // Combining the appointments.
             tempBook.addAppointment(app);
 
             return tempBook;
 
         } catch (FileNotFoundException e){
-            //Nothing to merge, return original book.
-            printError(e.getMessage());
+            return null;
         }
-
-        return null;
     }
 
     public void writeToInternalStorage(AppointmentBook appBook) throws IOException {
@@ -222,6 +228,7 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
     }
 
     public void displayAppointment(Appointment app, AppointmentBook tempBook){
+        Log.e(TAG, "in Display");
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .setTitle("Appointment Confirmation")
