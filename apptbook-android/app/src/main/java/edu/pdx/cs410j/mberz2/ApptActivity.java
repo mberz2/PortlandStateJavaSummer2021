@@ -153,8 +153,8 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
                         txtStartDate.getText().toString() + " " + txtStartTime.getText().toString(),
                         txtEndDate.getText().toString() + " " + txtEndTime.getText().toString());
 
-                AppointmentBook book = new AppointmentBook(name, app);
-                AppointmentBook tempBook = loadFromInternalStorage(book);
+                //AppointmentBook book = new AppointmentBook(name, app);
+                AppointmentBook tempBook = loadFromInternalStorage(app, name);
 
                 if (isChecked){
                     displayAppointment(app, tempBook);
@@ -172,12 +172,12 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
         }
     }
 
-    public AppointmentBook loadFromInternalStorage(AppointmentBook appBook)
+    public AppointmentBook loadFromInternalStorage(Appointment app, String owner)
             throws ParserException {
 
         try {
             File file = new File(ApptActivity.this.getFilesDir()
-                    +"apptBook_" + appBook.getOwnerName()
+                    +"/apptBook_" + owner
                     +".csv");
             TextParser textParser = new TextParser(new FileReader(file));
 
@@ -185,17 +185,16 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
             AppointmentBook tempBook = textParser.parse();
 
             // Combining the appointments.
-            ArrayList<Appointment> app = appBook.getAppointments();
-
-            for (Appointment a: app)
-                tempBook.addAppointment(a);
+            tempBook.addAppointment(app);
 
             return tempBook;
 
         } catch (FileNotFoundException e){
             //Nothing to merge, return original book.
-            return appBook;
+            printError(e.getMessage());
         }
+
+        return null;
     }
 
     public void writeToInternalStorage(AppointmentBook appBook) throws IOException {
