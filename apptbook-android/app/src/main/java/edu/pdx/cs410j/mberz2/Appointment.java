@@ -23,6 +23,8 @@ import java.util.Locale;
 public class Appointment extends AbstractAppointment
 		implements Comparable<Appointment>{
 
+	/* String containing the appointment owner. */
+	private String owner;
 	/* String containing the appointment description. */
 	private final String desc;
 	/* String containing the begin time in MM/DD/YYYY HH:MM format */
@@ -137,4 +139,12 @@ public class Appointment extends AbstractAppointment
 				return this.getDescription().compareTo(app.getDescription());
 		return diff;
 	}
+
+	public void setOwnerName(String o) {
+		this.owner = o;
+	}
+
+    public String getOwnerName() {
+		return this.owner;
+    }
 }

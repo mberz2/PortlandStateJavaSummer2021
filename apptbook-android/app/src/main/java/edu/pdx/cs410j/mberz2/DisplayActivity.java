@@ -93,6 +93,7 @@ public class DisplayActivity extends AppCompatActivity {
 
                         if (checkDates(Objects.requireNonNull(format.parse(app.getBeginTimeString())),
                                 format.parse(start), format.parse(end))) {
+                            app.setOwnerName(book.getOwnerName());
                             temp.setOwnerName(book.getOwnerName());
                             temp.addAppointment(app);
                             loadAppointmentsWithOwner(temp);
@@ -137,14 +138,14 @@ public class DisplayActivity extends AppCompatActivity {
         final ArrayList<String> list = new ArrayList<>();
 
         for (Appointment a : app) {
-            String name = "\nBooking for: " + appBook.getOwnerName();
+            String o = "\nBooking for: " + a.getOwnerName();
             String desc = "\nDescription: " + a.getDescription();
             String bt = "\nFrom: " + a.getBeginTimeString();
             String et = "\nUntil: " + a.getEndTimeString();
             String duration = "\nDuration: " + TimeUnit.MILLISECONDS.toMinutes(a.getEndTime().getTime()
                     - a.getBeginTime().getTime()) + " mins\n";
 
-            list.add(name + desc + bt + et + duration);
+            list.add(o + desc + bt + et + duration);
         }
 
         final ListView listview = findViewById(R.id.listview);
