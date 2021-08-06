@@ -19,8 +19,8 @@ public class ReadmeActivity extends AppCompatActivity {
                 "\t\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />" +
                 "\t\t<title>Help</title>\t</head>\t<body>\t\t<main>" +
                 "<div class=\"container\">" +
-                "<div id=\"about\"><h1>appointmentBook-android app</h1>" +
-                "<p>appointmentBook-android is a self-contained demo application for " +
+                "<div id=\"about\"><h1>BookMe Appointment Book App</h1>" +
+                "<p>BookMe is a self-contained demo application for " +
                 "creating, storing, viewing, and deleting applications based on a series of simple " +
                 "inputs.<br>appointmentBook-android is not available for public release.</p>" +
                 "<br><h2>About</h2><p>From the create menu, provide a name, " +
