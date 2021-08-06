@@ -246,11 +246,10 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         String currentDateString = DateFormat.getDateInstance(DateFormat.SHORT).format(c.getTime());
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if (fragmentManager.findFragmentByTag("StartDatePicker") != null) {
+        if (fragmentManager.findFragmentByTag("StartDatePicker") != null)
             txtStartDate.setText(currentDateString);
-        } else {
+        else
             txtEndDate.setText(currentDateString);
-        }
     }
 
     @Override
@@ -262,11 +261,10 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         String currentTimeString = DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime());
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if (fragmentManager.findFragmentByTag("StartTimePicker") != null) {
+        if (fragmentManager.findFragmentByTag("StartTimePicker") != null)
             txtStartTime.setText(currentTimeString);
-        } else {
+        else
             txtEndTime.setText(currentTimeString);
-        }
     }
 
     private void printError(String s){

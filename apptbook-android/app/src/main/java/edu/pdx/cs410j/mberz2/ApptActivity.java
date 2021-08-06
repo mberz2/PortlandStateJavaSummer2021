@@ -7,7 +7,6 @@ import androidx.fragment.app.FragmentManager;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,19 +14,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.*;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import java.io.*;
 import java.text.*;
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 import edu.pdx.cs410J.ParserException;
 
 public class ApptActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener,
         TimePickerDialog.OnTimeSetListener, View.OnClickListener {
 
+    // Widget variables.
     private static final String TAG = "ApptActivity";
     private TextView txtStartDate;
     private TextView txtEndDate;
@@ -41,6 +40,7 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appt);
 
+        // Set widget variables.
         txtStartDate = findViewById(R.id.txtStartDate);
         txtEndDate = findViewById(R.id.txtEndDate);
         txtStartTime = findViewById(R.id.txtStartTime);
@@ -48,6 +48,7 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
         Button btnReset = findViewById(R.id.btnReset);
         Button btnConfirm = findViewById(R.id.btnConfirm);
 
+        // Check current context on click.
         txtStartDate.setOnClickListener(this);
         txtEndDate.setOnClickListener(this);
         txtStartTime.setOnClickListener(this);
@@ -59,26 +60,25 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.txtStartDate:
-                createDialogFragment("StartDatePicker");
-                break;
-            case R.id.txtEndDate:
-                createDialogFragment("EndDatePicker");
-                break;
-            case R.id.txtStartTime:
-                createDialogFragment("StartTimePicker");
-                break;
-            case R.id.txtEndTime:
-                createDialogFragment("EndTimePicker");
-                break;
-            case R.id.btnConfirm:
+        // Checks the current view and performs the appropriate action.
+        if (v.getId() == R.id.txtStartDate) {
+            createDialogFragment("StartDatePicker");
+        } else if (v.getId() == R.id.txtEndDate) {
+            createDialogFragment("EndDatePicker");
+        } else if (v.getId() == R.id.txtStartTime) {
+            createDialogFragment("StartTimePicker");
+        } else if (v.getId() == R.id.txtEndTime) {
+            createDialogFragment("EndTimePicker");
+        } else if (v.getId() == R.id.btnConfirm) {
+            try {
                 confirmInput(v);
-                break;
-            case R.id.btnReset:
-                startActivity(new Intent(this, ApptActivity.class));
-                finish();
-                break;
+            } catch (ParseException e) {
+                printError(e.getMessage());
+                e.printStackTrace();
+            }
+        } else if (v.getId() == R.id.btnReset) {
+            startActivity(new Intent(this, ApptActivity.class));
+            finish();
         }
     }
 
@@ -99,20 +99,14 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
         c.set(Calendar.MONTH, month);
         c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-        Log.e(TAG, String.valueOf(year));
-
         String currentDateString = DateFormat.getDateInstance(DateFormat.SHORT).format(c.getTime());
 
-        Log.e(TAG, currentDateString);
-
+        // Set the date into the widget.
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if (fragmentManager.findFragmentByTag("StartDatePicker") != null) {
-
+        if (fragmentManager.findFragmentByTag("StartDatePicker") != null)
             txtStartDate.setText(currentDateString);
-        } else {
-
+        else
             txtEndDate.setText(currentDateString);
-        }
     }
 
     @Override
@@ -131,14 +125,26 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
         }
     }
 
-    public void confirmInput(View view) {
-        Log.e(TAG,"Confirming appointment.");
+    public void confirmInput(View view) throws ParseException {
+        Log.e(TAG, "Confirming appointment.");
 
         //Check if the confirmation widget is checked.
         boolean isChecked = ((CheckBox) findViewById(R.id.chboxConfirm)).isChecked();
 
-        try {
+        // Check if the date is before TODAY. Error.
+        SimpleDateFormat format =
+                new SimpleDateFormat("MM/dd/yy hh:mm a", Locale.ENGLISH);
 
+        Date start = format.parse(txtStartDate+" "+txtStartTime);
+        Date end = format.parse(txtEndDate+" "+txtEndTime);
+        Date today = new Date();
+
+        if (Objects.requireNonNull(start).before(today) || Objects.requireNonNull(end).before(today)) {
+            printError("You cannot book an appointment that happens BEFORE now.");
+            return;
+        }
+
+        try {
             //Get the name and description fields from their widgets.
             EditText editTextName = findViewById(R.id.appt_name);
             String name = editTextName.getText().toString();
@@ -146,7 +152,7 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
             String desc = editTextDesc.getText().toString();
 
             //If name or description are empty, notify the user.
-            if(TextUtils.isEmpty(name)) {
+            if (TextUtils.isEmpty(name)) {
                 printError("Missing Fields. Name cannot be blank.");
                 return;
             } else if (TextUtils.isEmpty(desc)) {
@@ -154,7 +160,7 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
                 return;
             }
 
-            try{
+            try {
                 Appointment app = new Appointment(
                         desc,
                         txtStartDate.getText().toString() + " " + txtStartTime.getText().toString(),
@@ -166,14 +172,14 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
                     tempBook = new AppointmentBook(name, app);
                 }
 
-                if (isChecked){
+                if (isChecked) {
                     displayAppointment(app, tempBook);
                 } else {
                     writeToInternalStorage(tempBook);
                 }
 
             } catch (ParseException | ParserException e) {
-                printError("Unable to parse date/time.\n"+e.getMessage());
+                printError("Unable to parse date/time.\n" + e.getMessage());
             }
 
         } catch (NullPointerException | UnsupportedOperationException | IOException e) {
@@ -185,8 +191,8 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
             throws ParserException {
         try {
             File file = new File(ApptActivity.this.getFilesDir()
-                    +"/apptBook_" + owner
-                    +".csv");
+                    + "/apptBook_" + owner
+                    + ".csv");
             TextParser textParser = new TextParser(new FileReader(file));
 
             //Check if anything is in the file.
@@ -198,7 +204,7 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
 
             return tempBook;
 
-        } catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             return null;
         }
     }
@@ -217,7 +223,7 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
                 .show();
     }
 
-    private void printError(String s){
+    private void printError(String s) {
 
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -227,14 +233,14 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
                 .show();
     }
 
-    public void displayAppointment(Appointment app, AppointmentBook tempBook){
+    public void displayAppointment(Appointment app, AppointmentBook tempBook) {
         Log.e(TAG, "in Display");
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .setTitle("Appointment Confirmation")
-                .setMessage("Description: "+app.getDescription()
-                +"\nFrom: "+app.getBeginTimeString()
-                +"\nTo: "+app.getEndTimeString())
+                .setMessage("Description: " + app.getDescription()
+                        + "\nFrom: " + app.getBeginTimeString()
+                        + "\nTo: " + app.getEndTimeString())
                 .setPositiveButton("Ok", (dialog, which) -> {
                     try {
                         writeToInternalStorage(tempBook);
