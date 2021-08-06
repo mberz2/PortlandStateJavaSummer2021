@@ -127,13 +127,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .setTitle("Shutting down")
                 .setMessage("Are you sure you want to exit?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-
-                })
+                .setPositiveButton("Yes", (dialog, which) -> finish())
                 .setNegativeButton("No", null)
                 .show();
     }
