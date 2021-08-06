@@ -83,16 +83,6 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
         }
     }
 
-    private void createDialogFragment(String tag) {
-        if (tag.equals("StartDatePicker") || tag.equals("EndDatePicker")) {
-            DialogFragment datePicker = new DatePickerFragment();
-            datePicker.show(getSupportFragmentManager(), tag);
-        } else {
-            DialogFragment timePicker = new TimePickerFragment();
-            timePicker.show(getSupportFragmentManager(), tag);
-        }
-    }
-
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         Calendar c = Calendar.getInstance();
@@ -123,6 +113,16 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
             txtStartTime.setText(currentTimeString);
         } else {
             txtEndTime.setText(currentTimeString);
+        }
+    }
+
+    private void createDialogFragment(String tag) {
+        if (tag.equals("StartDatePicker") || tag.equals("EndDatePicker")) {
+            DialogFragment datePicker = new DatePickerFragment();
+            datePicker.show(getSupportFragmentManager(), tag);
+        } else {
+            DialogFragment timePicker = new TimePickerFragment();
+            timePicker.show(getSupportFragmentManager(), tag);
         }
     }
 
@@ -183,7 +183,7 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
                     tempBook = new AppointmentBook(name, app);
 
                 if (isChecked)
-                    displayAppointment(app, tempBook);
+                    printAppointment(app, tempBook);
                 else
                     writeToInternalStorage(tempBook);
 
@@ -200,8 +200,7 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
             throws ParserException {
         try {
             File file = new File(ApptActivity.this.getFilesDir()
-                    + "/apptBook_" + owner
-                    + ".csv");
+                    + "/apptBook_" + owner + ".csv");
             TextParser textParser = new TextParser(new FileReader(file));
 
             //Check if anything is in the file.
@@ -232,17 +231,7 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
                 .show();
     }
 
-    private void printError(String s) {
-
-        new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Error")
-                .setMessage(s)
-                .setNegativeButton("Ok", null)
-                .show();
-    }
-
-    public void displayAppointment(Appointment app, AppointmentBook tempBook) {
+    public void printAppointment(Appointment app, AppointmentBook tempBook) {
         Log.e(TAG, "in Display");
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_info)
@@ -259,6 +248,16 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
                     }
                 })
                 .setNegativeButton("No", null)
+                .show();
+    }
+
+    private void printError(String s) {
+
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Error")
+                .setMessage(s)
+                .setNegativeButton("Ok", null)
                 .show();
     }
 
