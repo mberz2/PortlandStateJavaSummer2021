@@ -1,9 +1,7 @@
 package edu.pdx.cs410j.mberz2;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +12,7 @@ public class ReadmeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_readme);
+
         t = findViewById(R.id.readme);
         t.setText(Html.fromHtml("<html lang=\"en\">\t<head>\t\t<meta charset=\"UTF-8\" />" +
                 "\t\t<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\" />" +

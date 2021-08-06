@@ -3,7 +3,6 @@ package edu.pdx.cs410j.mberz2;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
@@ -68,12 +67,6 @@ public class ViewActivity extends AppCompatActivity {
             }
 
         fill(txtViewWelcome, getString(R.string.welcomeView));
-
-    }
-
-    public void fill(TextView v, String id) {
-        Spanned htmlAsSpanned = Html.fromHtml(id, Html.FROM_HTML_MODE_COMPACT);
-        v.setText(htmlAsSpanned);
     }
 
     private void loadAppointmentsWithOwner(AppointmentBook appBook) {
@@ -98,9 +91,9 @@ public class ViewActivity extends AppCompatActivity {
         listview.setAdapter(adapter);
     }
 
-    @Override
-    public void onBackPressed() {
-        finish();
+    public void fill(TextView v, String id) {
+        Spanned htmlAsSpanned = Html.fromHtml(id, Html.FROM_HTML_MODE_COMPACT);
+        v.setText(htmlAsSpanned);
     }
 
     private void printError(String s) {
@@ -112,4 +105,10 @@ public class ViewActivity extends AppCompatActivity {
                 .setNegativeButton("Ok", null)
                 .show();
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
 }
