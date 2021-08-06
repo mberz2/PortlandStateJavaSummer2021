@@ -2,14 +2,18 @@ package edu.pdx.cs410j.mberz2;
 
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ReadmeActivity extends AppCompatActivity {
 
-    TextView t;
+    private static final String TAG = "ReadmeActivity";
+    protected TextView t;
+
     protected void onCreate(Bundle savedInstanceState) {
+        Log.e(TAG, "Creating readme activity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_readme);
 

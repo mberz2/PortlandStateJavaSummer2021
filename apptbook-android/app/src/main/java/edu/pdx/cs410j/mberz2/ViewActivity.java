@@ -20,27 +20,30 @@ import edu.pdx.cs410J.ParserException;
 
 public class ViewActivity extends AppCompatActivity {
 
+    private final String TAG = "ViewActivity";
+    protected TextView txtViewWelcome;
+    protected TextView txtHeader;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        String TAG = "ViewActivity";
-        Log.e(TAG, "In view activity");
+
+        Log.e(TAG, "Creating view activity");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
 
-        TextView txtViewWelcome = findViewById(R.id.titleView);
-        TextView txtHeader = findViewById(R.id.viewHeader);
+        txtViewWelcome = findViewById(R.id.titleView);
+        txtHeader = findViewById(R.id.viewHeader);
 
         String header = "Displaying all appointment bookings.\nFrom most recent to latest:";
         txtHeader.setText(header);
 
         Log.e(TAG, "Loading all appointments.");
-
         File dir = new File(String.valueOf(ViewActivity.this.getFilesDir()));
         File[] foundFiles = dir.listFiles((dir1, name) -> name.startsWith("apptBook_"));
 
         assert foundFiles != null;
-
         ArrayList<AppointmentBook> books = new ArrayList<>();
 
         for (File f : foundFiles) {
@@ -70,6 +73,7 @@ public class ViewActivity extends AppCompatActivity {
     }
 
     private void loadAppointmentsWithOwner(AppointmentBook appBook) {
+        Log.e(TAG, "Loading appointments");
         ArrayList<Appointment> app = appBook.getAppointments();
 
         final ArrayList<String> list = new ArrayList<>();

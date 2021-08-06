@@ -41,18 +41,22 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private TextView txtEndDate;
     private TextView txtStartTime;
     private TextView txtEndTime;
+    protected TextView txtCountBox;
+    protected TextView txtSearchWelcome;
+    protected TextView txtGettingStarted;
     protected Button btnExit;
     protected Button btnSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.e(TAG, "Creating search activity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
         //Widget setup.
-        TextView txtCountBox = findViewById(R.id.mainCount);
-        TextView txtSearchWelcome = findViewById(R.id.titleSearch);
-        TextView txtGettingStarted = findViewById(R.id.gettingStartedSearch);
+        txtCountBox = findViewById(R.id.mainCount);
+        txtSearchWelcome = findViewById(R.id.titleSearch);
+        txtGettingStarted = findViewById(R.id.gettingStartedSearch);
         txtStartDate = findViewById(R.id.txtStartDate);
         txtEndDate = findViewById(R.id.txtEndDate);
         txtStartTime = findViewById(R.id.txtStartTime);

@@ -3,11 +3,9 @@ package edu.pdx.cs410j.mberz2;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import java.io.File;
@@ -17,8 +15,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -27,18 +23,25 @@ import edu.pdx.cs410J.ParserException;
 
 public class DisplayActivity extends AppCompatActivity {
 
+    private static final String TAG = "DisplayActivity";
+    protected TextView txtOwner;
+    protected String fileName;
+    protected String msg;
+    protected String header;
+    protected String start;
+    protected String end;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        String TAG = "DisplayActivity";
-        Log.e(TAG, "In display activity");
+        Log.e(TAG, "Creating display activity");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
 
         savedInstanceState = getIntent().getExtras();
-        String fileName = savedInstanceState.getString("fileName");
+        fileName = savedInstanceState.getString("fileName");
 
-        TextView txtOwner = findViewById(R.id.owner);
+        txtOwner = findViewById(R.id.owner);
 
         if (savedInstanceState.getInt("type") == 1) {
             AppointmentBook appBook = null;
@@ -51,18 +54,18 @@ public class DisplayActivity extends AppCompatActivity {
             }
 
             assert appBook != null;
-            String msg = ("All bookings for: " + appBook.getOwnerName());
+            msg = ("All bookings for: " + appBook.getOwnerName());
             txtOwner.setText(msg);
             loadAppointments(appBook);
 
         } else {
             Log.e(TAG, "Loading all appointments between dates.");
 
-            String header = "Displaying all bookings between dates:";
+            header = "Displaying all bookings between dates:";
             txtOwner.setText(header);
 
-            String start = savedInstanceState.getString("start");
-            String end = savedInstanceState.getString("end");
+            start = savedInstanceState.getString("start");
+            end = savedInstanceState.getString("end");
 
             File dir = new File(String.valueOf(DisplayActivity.this.getFilesDir()));
             File[] foundFiles = dir.listFiles((dir1, name) -> name.startsWith("apptBook_"));

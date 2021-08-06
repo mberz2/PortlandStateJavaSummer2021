@@ -32,11 +32,13 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
     private TextView txtEndDate;
     private TextView txtStartTime;
     private TextView txtEndTime;
+    protected Button btnReset;
+    protected Button btnConfirm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Log.e(TAG, "Activity Switch");
+        Log.e(TAG, "Creating appointment activity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appt);
 
@@ -45,8 +47,8 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
         txtEndDate = findViewById(R.id.txtEndDate);
         txtStartTime = findViewById(R.id.txtStartTime);
         txtEndTime = findViewById(R.id.txtEndTime);
-        Button btnReset = findViewById(R.id.btnReset);
-        Button btnConfirm = findViewById(R.id.btnConfirm);
+        btnReset = findViewById(R.id.btnReset);
+        btnConfirm = findViewById(R.id.btnConfirm);
 
         // Check current context on click.
         txtStartDate.setOnClickListener(this);
@@ -55,7 +57,6 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
         txtEndTime.setOnClickListener(this);
         btnReset.setOnClickListener(this);
         btnConfirm.setOnClickListener(this);
-
     }
 
     @Override
