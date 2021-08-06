@@ -163,7 +163,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             System.out.println("COUNT: " + count);
         }
 
-        String txt = "Total Bookings, by Name: " + count;
+        String txt = "Total individuals with appointments: " + count;
 
         v.setText(txt);
     }

@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             System.out.println("COUNT: " + count);
         }
 
-        String txt = "Total Bookings, by individuals: " + count;
+        String txt = "Total individuals with appointments: " + count;
 
         v.setText(txt);
     }
