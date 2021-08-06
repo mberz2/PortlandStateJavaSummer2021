@@ -93,7 +93,23 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             adapter.addAll(book.getOwnerName());
         }
         dropdown.setAdapter(adapter);
+    }
 
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.txtStartDate) {
+            createDialogFragment("StartDatePicker");
+        } else if (v.getId() == R.id.txtEndDate) {
+            createDialogFragment("EndDatePicker");
+        } else if (v.getId() == R.id.txtStartTime) {
+            createDialogFragment("StartTimePicker");
+        } else if (v.getId() == R.id.txtEndTime) {
+            createDialogFragment("EndTimePicker");
+        } else if (v.getId() == R.id.btnSearch) {
+            search();
+        } else if (v.getId() == R.id.btnExit) {
+            onBackPressed();
+        }
     }
 
     @Override
@@ -116,124 +132,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
         // Do nothing.
-    }
-
-    public AppointmentBook loadFromInternalStorage(String fileName)
-            throws ParserException, FileNotFoundException {
-
-        File file = new File(SearchActivity.this.getFilesDir() + fileName);
-        TextParser textParser = new TextParser(new FileReader(file));
-        return textParser.parse();
-    }
-
-    public File[] getFiles(String DirectoryPath) {
-        File f = new File(DirectoryPath);
-        f.mkdirs();
-        File[] file = f.listFiles();
-        return file;
-    }
-
-    public ArrayList<String> getFileNames(File[] file) {
-        ArrayList<String> arrayFiles = new ArrayList<String>();
-        if (file.length == 0)
-            return null;
-        else {
-            for (int i = 0; i < file.length; i++)
-                arrayFiles.add(file[i].getName());
-        }
-
-        return arrayFiles;
-    }
-
-    public void fill(TextView v, String id) {
-        Spanned htmlAsSpanned = Html.fromHtml(id, Html.FROM_HTML_MODE_COMPACT);
-        v.setText(htmlAsSpanned);
-    }
-
-    public void total(TextView v) {
-
-        File file = new File(String.valueOf(SearchActivity.this.getFilesDir()));
-        File[] list = file.listFiles();
-        int count = 0;
-        for (File f : list) {
-            String name = f.getName();
-            if (name.endsWith(".csv"))
-                count++;
-            Log.e(TAG, String.valueOf(count));
-            System.out.println("COUNT: " + count);
-        }
-
-        String txt = "Total individuals with appointments: " + count;
-
-        v.setText(txt);
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.txtStartDate:
-                createDialogFragment("StartDatePicker");
-                break;
-            case R.id.txtEndDate:
-                createDialogFragment("EndDatePicker");
-                break;
-            case R.id.txtStartTime:
-                createDialogFragment("StartTimePicker");
-                break;
-            case R.id.txtEndTime:
-                createDialogFragment("EndTimePicker");
-                break;
-            case R.id.btnSearch:
-                search();
-                break;
-            case R.id.btnExit:
-                onBackPressed();
-        }
-    }
-
-    private void createDialogFragment(String tag) {
-        if (tag.equals("StartDatePicker") || tag.equals("EndDatePicker")) {
-            DialogFragment datePicker = new DatePickerFragment();
-            datePicker.show(getSupportFragmentManager(), tag);
-        } else {
-            DialogFragment timePicker = new TimePickerFragment();
-            timePicker.show(getSupportFragmentManager(), tag);
-        }
-    }
-
-    public void search() {
-        String msg = (String) txtStartDate.getText();
-        if(msg.equals("Start Date")
-                || msg.equals("End Date")
-                || msg.equals("Start Time")
-                || msg.equals("End Time")){
-            printError("Missing dates or times.");
-            return;
-        }
-
-        Intent intent = new Intent(SearchActivity.this, DisplayActivity.class);
-        intent.putExtra("start", txtStartDate.getText()+" "+txtStartTime.getText() );
-        intent.putExtra("end", txtEndDate.getText()+" "+txtEndTime.getText());
-        startActivity(intent);
-        finish();
-    }
-
-    @Override
-    public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_info)
-                .setTitle("Returning to main menu")
-                .setMessage("Are you sure you want to exit?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-
-                })
-                .setNegativeButton("No", null)
-                .show();
     }
 
     @Override
@@ -267,13 +165,108 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             txtEndTime.setText(currentTimeString);
     }
 
-    private void printError(String s){
+    public File[] getFiles(String DirectoryPath) {
+        File f = new File(DirectoryPath);
+        if (!f.mkdirs())
+            printError("Error in directory creation.");
+        return f.listFiles();
+    }
+
+    public ArrayList<String> getFileNames(File[] file) {
+        ArrayList<String> arrayFiles = new ArrayList<>();
+        if (file.length == 0)
+            return null;
+        else {
+            for (File value : file) arrayFiles.add(value.getName());
+        }
+
+        return arrayFiles;
+    }
+
+    public AppointmentBook loadFromInternalStorage(String fileName)
+            throws ParserException, FileNotFoundException {
+
+        File file = new File(SearchActivity.this.getFilesDir() + fileName);
+        TextParser textParser = new TextParser(new FileReader(file));
+        return textParser.parse();
+    }
+
+
+    private void createDialogFragment(String tag) {
+        if (tag.equals("StartDatePicker") || tag.equals("EndDatePicker")) {
+            DialogFragment datePicker = new DatePickerFragment();
+            datePicker.show(getSupportFragmentManager(), tag);
+        } else {
+            DialogFragment timePicker = new TimePickerFragment();
+            timePicker.show(getSupportFragmentManager(), tag);
+        }
+    }
+
+    public void search() {
+        String msg = (String) txtStartDate.getText();
+        if (msg.equals("Start Date")
+                || msg.equals("End Date")
+                || msg.equals("Start Time")
+                || msg.equals("End Time")) {
+            printError("Missing dates or times.");
+            return;
+        }
+
+        Intent intent = new Intent(SearchActivity.this, DisplayActivity.class);
+        intent.putExtra("start", txtStartDate.getText() + " " + txtStartTime.getText());
+        intent.putExtra("end", txtEndDate.getText() + " " + txtEndTime.getText());
+        startActivity(intent);
+        finish();
+    }
+
+    public void fill(TextView v, String id) {
+        Spanned htmlAsSpanned = Html.fromHtml(id, Html.FROM_HTML_MODE_COMPACT);
+        v.setText(htmlAsSpanned);
+    }
+
+    public void total(TextView v) {
+
+        File file = new File(String.valueOf(SearchActivity.this.getFilesDir()));
+        File[] list = file.listFiles();
+        int count = 0;
+        if (list != null) {
+            for (File f : list) {
+                String name = f.getName();
+                if (name.endsWith(".csv"))
+                    count++;
+                Log.e(TAG, String.valueOf(count));
+                System.out.println("COUNT: " + count);
+            }
+        }
+
+        String txt = "Total individuals with appointments: " + count;
+        v.setText(txt);
+    }
+
+    private void printError(String s) {
 
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle("Error")
                 .setMessage(s)
                 .setNegativeButton("Ok", null)
+                .show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setTitle("Returning to main menu")
+                .setMessage("Are you sure you want to exit?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+
+                })
+                .setNegativeButton("No", null)
                 .show();
     }
 }
