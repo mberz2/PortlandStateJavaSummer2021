@@ -7,7 +7,6 @@ import androidx.fragment.app.FragmentManager;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
@@ -36,21 +35,21 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         AdapterView.OnItemSelectedListener, DatePickerDialog.OnDateSetListener,
         TimePickerDialog.OnTimeSetListener {
 
-    static final String TAG = "SearchActivity";
+    private static final String TAG = "SearchActivity";
     private Spinner dropdown;
     private TextView txtStartDate;
     private TextView txtEndDate;
     private TextView txtStartTime;
     private TextView txtEndTime;
+    protected Button btnExit;
+    protected Button btnSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        Button btnExit = findViewById(R.id.btnExit);
-        Button btnSearch = findViewById(R.id.btnSearch);
-
+        //Widget setup.
         TextView txtCountBox = findViewById(R.id.mainCount);
         TextView txtSearchWelcome = findViewById(R.id.titleSearch);
         TextView txtGettingStarted = findViewById(R.id.gettingStartedSearch);
@@ -58,14 +57,15 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         txtEndDate = findViewById(R.id.txtEndDate);
         txtStartTime = findViewById(R.id.txtStartTime);
         txtEndTime = findViewById(R.id.txtEndTime);
+        dropdown = findViewById(R.id.searchBooks);
+        btnExit = findViewById(R.id.btnExit);
+        btnSearch = findViewById(R.id.btnSearch);
 
         txtStartDate.setOnClickListener(this);
         txtEndDate.setOnClickListener(this);
         txtStartTime.setOnClickListener(this);
         txtEndTime.setOnClickListener(this);
         btnSearch.setOnClickListener(this);
-
-        dropdown = findViewById(R.id.searchBooks);
         btnExit.setOnClickListener(this);
         dropdown.setOnItemSelectedListener(this);
 
@@ -259,13 +259,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .setTitle("Returning to main menu")
                 .setMessage("Are you sure you want to exit?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-
-                })
+                .setPositiveButton("Yes", (dialog, which) -> finish())
                 .setNegativeButton("No", null)
                 .show();
     }
