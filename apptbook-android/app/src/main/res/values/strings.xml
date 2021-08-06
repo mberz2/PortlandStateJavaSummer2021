@@ -50,4 +50,8 @@
     <string name="exit">Exit</string>
     <string name="search">Search</string>
     <string name="welcomeView"> <![CDATA[<h1>View All</h1>]]></string>
+    <string name="startDate">Start Date</string>
+    <string name="startTime">Start Time</string>
+    <string name="endDate">End Date</string>
+    <string name="endTime">End Time</string>
 </resources>

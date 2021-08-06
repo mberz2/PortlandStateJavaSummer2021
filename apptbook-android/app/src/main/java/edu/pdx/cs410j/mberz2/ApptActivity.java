@@ -61,6 +61,7 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
     @Override
     public void onClick(View v) {
         // Checks the current view and performs the appropriate action.
+
         if (v.getId() == R.id.txtStartDate) {
             createDialogFragment("StartDatePicker");
         } else if (v.getId() == R.id.txtEndDate) {
@@ -125,22 +126,33 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
         }
     }
 
+    public boolean checkDates(TextView d, TextView t) throws ParseException {
+        // Check if the date is before TODAY. Error.
+        SimpleDateFormat format =
+                new SimpleDateFormat("MM/dd/yy hh:mm a", Locale.ENGLISH);
+
+        Date date = format.parse(d.getText() + " " + t.getText());
+        Date today = new Date();
+
+        return (Objects.requireNonNull(date).before(today));
+    }
+
     public void confirmInput(View view) throws ParseException {
         Log.e(TAG, "Confirming appointment.");
 
         //Check if the confirmation widget is checked.
         boolean isChecked = ((CheckBox) findViewById(R.id.chboxConfirm)).isChecked();
 
-        // Check if the date is before TODAY. Error.
-        SimpleDateFormat format =
-                new SimpleDateFormat("MM/dd/yy hh:mm a", Locale.ENGLISH);
-
-        Date start = format.parse(txtStartDate+" "+txtStartTime);
-        Date end = format.parse(txtEndDate+" "+txtEndTime);
-        Date today = new Date();
-
-        if (Objects.requireNonNull(start).before(today) || Objects.requireNonNull(end).before(today)) {
+        //Check dates to ensure they are not BEFORE today.
+        if (checkDates(txtStartDate, txtStartTime)) {
             printError("You cannot book an appointment that happens BEFORE now.");
+            txtStartDate.setText(R.string.startDate);
+            txtStartTime.setText(R.string.startTime);
+            return;
+        } else if (checkDates(txtStartDate, txtStartTime)) {
+            printError("You cannot book an appointment that ends BEFORE now.");
+            txtEndDate.setText(R.string.endDate);
+            txtEndTime.setText(R.string.endTime);
             return;
         }
 
@@ -161,22 +173,19 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
             }
 
             try {
-                Appointment app = new Appointment(
-                        desc,
+                Appointment app = new Appointment(desc,
                         txtStartDate.getText().toString() + " " + txtStartTime.getText().toString(),
                         txtEndDate.getText().toString() + " " + txtEndTime.getText().toString());
 
                 AppointmentBook tempBook = loadFromInternalStorage(app, name);
 
-                if (tempBook == null) {
+                if (tempBook == null)
                     tempBook = new AppointmentBook(name, app);
-                }
 
-                if (isChecked) {
+                if (isChecked)
                     displayAppointment(app, tempBook);
-                } else {
+                else
                     writeToInternalStorage(tempBook);
-                }
 
             } catch (ParseException | ParserException e) {
                 printError("Unable to parse date/time.\n" + e.getMessage());
