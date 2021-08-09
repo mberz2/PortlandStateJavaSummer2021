@@ -62,15 +62,18 @@ public class DisplayActivity extends AppCompatActivity {
         } else {
             Log.e(TAG, "Loading all appointments between dates.");
 
-            header = "Displaying all bookings between dates:";
-            txtOwner.setText(header);
-
             start = savedInstanceState.getString("start");
             end = savedInstanceState.getString("end");
             owner = savedInstanceState.getString("owner");
 
+            header = "Displaying all bookings between dates,\n" + start +
+                    " and " + end + "\n" +
+                    "for "+owner+":";
+            txtOwner.setText(header);
+
+            Log.e(TAG, "apptBook_"+owner);
             File dir = new File(String.valueOf(DisplayActivity.this.getFilesDir()));
-            File[] foundFiles = dir.listFiles((dir1, name) -> name.startsWith("apptBook_"+owner));
+            File[] foundFiles = dir.listFiles((dir1, name) -> name.equals("apptBook_"+owner+".csv"));
 
             assert foundFiles != null;
 

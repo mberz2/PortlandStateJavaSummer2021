@@ -138,6 +138,20 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
         return (Objects.requireNonNull(date).before(today));
     }
 
+    public boolean checkDatesEnd(TextView bd, TextView bt, TextView ed, TextView et) throws ParseException {
+        // Check if the date is before TODAY. Error.
+        Log.e(TAG, "Checking end date vs start time");
+
+        SimpleDateFormat format =
+                new SimpleDateFormat("MM/dd/yy hh:mm a", Locale.ENGLISH);
+
+        Date beginDate = format.parse(bd.getText() + " " + bt.getText());
+        Date endDate = format.parse(ed.getText() + " " + et.getText());
+
+        return (Objects.requireNonNull(endDate).before(beginDate))
+                || (Objects.requireNonNull(endDate).equals(beginDate));
+    }
+
     public void confirmInput(View view) throws ParseException {
         Log.e(TAG, "Confirming appointment.");
 
@@ -152,6 +166,11 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
             return;
         } else if (checkDates(txtEndDate, txtEndTime)) {
             printError("You cannot book an appointment that ends BEFORE now.");
+            txtEndDate.setText(R.string.endDate);
+            txtEndTime.setText(R.string.endTime);
+            return;
+        } else if (checkDatesEnd(txtStartDate, txtStartTime, txtEndDate, txtEndTime)){
+            printError("End time must be after beginning time.");
             txtEndDate.setText(R.string.endDate);
             txtEndTime.setText(R.string.endTime);
             return;

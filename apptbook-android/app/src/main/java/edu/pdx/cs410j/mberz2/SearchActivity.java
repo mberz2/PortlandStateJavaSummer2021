@@ -222,6 +222,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             intent.putExtra("type", 1);
             startActivity(intent);
             finish();
+            return;
         }
 
         if (txtStartDate.getText().equals("Start Date")
@@ -230,7 +231,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 || txtEndTime.getText().equals("End Time")) {
             printError("Missing dates or times.");
             return;
-        } else if (checkDates(txtEndDate, txtEndTime)) {
+        } else if (checkDatesEnd(txtStartDate, txtStartTime, txtEndDate, txtEndTime)) {
             Log.e(TAG, "Checking dates");
             printError("End date/time must be after start time.");
             txtEndDate.setText(R.string.endDate);
@@ -241,6 +242,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
+        Log.e(TAG, selected);
         Intent intent = new Intent(SearchActivity.this, DisplayActivity.class);
         intent.putExtra("owner", selected);
         intent.putExtra("start", txtStartDate.getText() + " " + txtStartTime.getText());
@@ -258,6 +260,18 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         Date today = new Date();
 
         return (Objects.requireNonNull(date).before(today));
+    }
+
+    public boolean checkDatesEnd(TextView bd, TextView bt, TextView ed, TextView et) throws ParseException {
+        // Check if the date is before TODAY. Error.
+        SimpleDateFormat format =
+                new SimpleDateFormat("MM/dd/yy hh:mm a", Locale.ENGLISH);
+
+        Date beginDate = format.parse(bd.getText() + " " + bt.getText());
+        Date endDate = format.parse(ed.getText() + " " + et.getText());
+
+        return (Objects.requireNonNull(endDate).before(beginDate))
+                || (Objects.requireNonNull(endDate).equals(beginDate));
     }
 
     public void fill(TextView v, String id) {
