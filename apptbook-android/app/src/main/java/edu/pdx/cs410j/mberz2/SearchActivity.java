@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -25,9 +26,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Objects;
 
 import edu.pdx.cs410J.ParserException;
 
@@ -46,6 +52,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     protected TextView txtGettingStarted;
     protected Button btnExit;
     protected Button btnSearch;
+    protected String selected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +117,11 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         } else if (v.getId() == R.id.txtEndTime) {
             createDialogFragment("EndTimePicker");
         } else if (v.getId() == R.id.btnSearch) {
-            search();
+            try {
+                search();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         } else if (v.getId() == R.id.btnExit) {
             onBackPressed();
         }
@@ -121,16 +132,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                                int pos, long id) {
 
         TextView textView = (TextView) dropdown.getSelectedView();
-        String result = textView.getText().toString();
-
-        if (pos > 0) {
-            Intent intent = new Intent(SearchActivity.this, DisplayActivity.class);
-            intent.putExtra("fileName", "/apptBook_" + result + ".csv");
-            intent.putExtra("type", 1);
-            startActivity(intent);
-            finish();
-        }
-
+        selected = textView.getText().toString();
     }
 
     @Override
@@ -171,8 +173,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     public File[] getFiles(String DirectoryPath) {
         File f = new File(DirectoryPath);
-        if (!f.mkdirs())
-            printError("Error in directory creation.");
         return f.listFiles();
     }
 
@@ -206,21 +206,58 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    public void search() {
-        String msg = (String) txtStartDate.getText();
-        if (msg.equals("Start Date")
-                || msg.equals("End Date")
-                || msg.equals("Start Time")
-                || msg.equals("End Time")) {
+    public void search() throws ParseException {
+
+        //Check if the confirmation widget is checked.
+        boolean isChecked = ((CheckBox) findViewById(R.id.chboxPrintAll)).isChecked();
+
+        if (isChecked) {
+            if (selected.equals("Select an option:")) {
+                printError("Missing an owner.");
+                return;
+            }
+
+            Intent intent = new Intent(SearchActivity.this, DisplayActivity.class);
+            intent.putExtra("fileName", "/apptBook_" + selected + ".csv");
+            intent.putExtra("type", 1);
+            startActivity(intent);
+            finish();
+        }
+
+        if (txtStartDate.getText().equals("Start Date")
+                || txtEndDate.getText().equals("End Date")
+                || txtStartTime.getText().equals("Start Time")
+                || txtEndTime.getText().equals("End Time")) {
             printError("Missing dates or times.");
+            return;
+        } else if (checkDates(txtEndDate, txtEndTime)) {
+            Log.e(TAG, "Checking dates");
+            printError("End date/time must be after start time.");
+            txtEndDate.setText(R.string.endDate);
+            txtEndTime.setText(R.string.endTime);
+            return;
+        } else if (selected.equals("Select an option:")) {
+            printError("Missing an owner.");
             return;
         }
 
         Intent intent = new Intent(SearchActivity.this, DisplayActivity.class);
+        intent.putExtra("owner", selected);
         intent.putExtra("start", txtStartDate.getText() + " " + txtStartTime.getText());
         intent.putExtra("end", txtEndDate.getText() + " " + txtEndTime.getText());
         startActivity(intent);
         finish();
+    }
+
+    public boolean checkDates(TextView d, TextView t) throws ParseException {
+        // Check if the date is before TODAY. Error.
+        SimpleDateFormat format =
+                new SimpleDateFormat("MM/dd/yy hh:mm a", Locale.ENGLISH);
+
+        Date date = format.parse(d.getText() + " " + t.getText());
+        Date today = new Date();
+
+        return (Objects.requireNonNull(date).before(today));
     }
 
     public void fill(TextView v, String id) {
@@ -238,8 +275,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 String name = f.getName();
                 if (name.endsWith(".csv"))
                     count++;
-                Log.e(TAG, String.valueOf(count));
-                System.out.println("COUNT: " + count);
             }
         }
 

@@ -30,6 +30,7 @@ public class DisplayActivity extends AppCompatActivity {
     protected String header;
     protected String start;
     protected String end;
+    protected String owner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +67,10 @@ public class DisplayActivity extends AppCompatActivity {
 
             start = savedInstanceState.getString("start");
             end = savedInstanceState.getString("end");
+            owner = savedInstanceState.getString("owner");
 
             File dir = new File(String.valueOf(DisplayActivity.this.getFilesDir()));
-            File[] foundFiles = dir.listFiles((dir1, name) -> name.startsWith("apptBook_"));
+            File[] foundFiles = dir.listFiles((dir1, name) -> name.startsWith("apptBook_"+owner));
 
             assert foundFiles != null;
 

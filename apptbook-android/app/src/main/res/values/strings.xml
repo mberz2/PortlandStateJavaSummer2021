@@ -54,4 +54,5 @@
     <string name="startTime">Start Time</string>
     <string name="endDate">End Date</string>
     <string name="endTime">End Time</string>
+    <string name="print_all">Print All For This Owner?</string>
 </resources>

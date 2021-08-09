@@ -150,7 +150,7 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
             txtStartDate.setText(R.string.startDate);
             txtStartTime.setText(R.string.startTime);
             return;
-        } else if (checkDates(txtStartDate, txtStartTime)) {
+        } else if (checkDates(txtEndDate, txtEndTime)) {
             printError("You cannot book an appointment that ends BEFORE now.");
             txtEndDate.setText(R.string.endDate);
             txtEndTime.setText(R.string.endTime);
