@@ -243,12 +243,8 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
         TextDumper textDumper = new TextDumper(new OutputStreamWriter(fileout));
         textDumper.dump(appBook);
 
-        //display file saved message
-        new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_info)
-                .setMessage("Appointment saved successfully!")
-                .setPositiveButton("Ok", (dialog, which) -> finish())
-                .show();
+        Toast.makeText(getApplicationContext(),
+                "Appointment saved successfully!", Toast.LENGTH_SHORT).show();
     }
 
     public void printAppointment(Appointment app, AppointmentBook tempBook) {
