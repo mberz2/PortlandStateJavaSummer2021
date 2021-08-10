@@ -106,15 +106,14 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
         Calendar c = Calendar.getInstance();
         c.set(Calendar.HOUR_OF_DAY, hourOfDay);
         c.set(Calendar.MINUTE, minute);
-
-        String currentTimeString = DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime());
+        String currentTimeString =
+                DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime());
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if (fragmentManager.findFragmentByTag("StartTimePicker") != null) {
+        if (fragmentManager.findFragmentByTag("StartTimePicker") != null)
             txtStartTime.setText(currentTimeString);
-        } else {
+        else
             txtEndTime.setText(currentTimeString);
-        }
     }
 
     private void createDialogFragment(String tag) {
