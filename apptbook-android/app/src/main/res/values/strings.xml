@@ -47,7 +47,8 @@ between specific dates. In <i>HELP</i> you can reset the app and delete all stor
         <![CDATA[<p>Here you can search for all bookings by a given owner
         Or you can search for bookings between certain dates. </p>]]></string>
     <string name="searchByOwner">Select an owner to view all appointments.</string>
-    <string name="searchByDates">-OR- Enter beginning and ending dates to search. </string>
+    <string name="searchByDates">-OR- Enter beginning and ending dates to find all appointments
+    taking place in between.</string>
     <string name="view">View</string>
     <string name="start_date">Start Date</string>
     <string name="start_time">Start Time</string>

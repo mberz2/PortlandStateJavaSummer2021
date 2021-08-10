@@ -22,6 +22,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -53,6 +55,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     protected Button btnExit;
     protected Button btnSearch;
     protected String selected;
+    protected TextView chboxPrintAll;
+    private String msg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         txtEndDate = findViewById(R.id.txtEndDate);
         txtStartTime = findViewById(R.id.txtStartTime);
         txtEndTime = findViewById(R.id.txtEndTime);
+        chboxPrintAll = findViewById(R.id.chboxPrintAll);
         dropdown = findViewById(R.id.searchBooks);
         btnExit = findViewById(R.id.btnExit);
         btnSearch = findViewById(R.id.btnSearch);
@@ -76,6 +81,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         txtEndDate.setOnClickListener(this);
         txtStartTime.setOnClickListener(this);
         txtEndTime.setOnClickListener(this);
+        chboxPrintAll.setOnClickListener(this);
         btnSearch.setOnClickListener(this);
         btnExit.setOnClickListener(this);
         dropdown.setOnItemSelectedListener(this);
@@ -104,6 +110,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             adapter.addAll(book.getOwnerName());
         }
         dropdown.setAdapter(adapter);
+
     }
 
     @Override
@@ -124,6 +131,45 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             }
         } else if (v.getId() == R.id.btnExit) {
             onBackPressed();
+        } else if (v.getId() == R.id.chboxPrintAll){
+            if (((CheckBox) findViewById(R.id.chboxPrintAll)).isChecked()){
+                findViewById(R.id.searchByDates).setVisibility(View.INVISIBLE);
+                txtStartDate.setClickable(false);
+                txtStartDate.setVisibility(View.INVISIBLE);
+                msg = "Start Date";
+                txtStartDate.setText(msg);
+                txtStartTime.setClickable(false);
+                txtStartTime.setVisibility(View.INVISIBLE);
+                msg = "Start Time";
+                txtStartTime.setText(msg);
+                txtEndDate.setClickable(false);
+                txtEndDate.setVisibility(View.INVISIBLE);
+                msg = "End Date";
+                txtEndDate.setText(msg);
+                txtEndTime.setClickable(false);
+                txtEndTime.setVisibility(View.INVISIBLE);
+                msg = "End Time";
+                txtEndTime.setText(msg);
+            }
+            else {
+                findViewById(R.id.searchByDates).setVisibility(View.VISIBLE);
+                txtStartDate.setClickable(true);
+                msg = "Start Date";
+                txtStartDate.setText(msg);
+                txtStartDate.setVisibility(View.VISIBLE);
+                txtStartTime.setClickable(true);
+                msg = "Start Time";
+                txtStartTime.setText(msg);
+                txtStartTime.setVisibility(View.VISIBLE);
+                txtEndDate.setClickable(true);
+                msg = "End Date";
+                txtEndDate.setText(msg);
+                txtEndDate.setVisibility(View.VISIBLE);
+                txtEndTime.setClickable(true);
+                msg = "End Time";
+                txtEndTime.setText(msg);
+                txtEndTime.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -249,17 +295,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         intent.putExtra("end", txtEndDate.getText() + " " + txtEndTime.getText());
         startActivity(intent);
         finish();
-    }
-
-    public boolean checkDates(TextView d, TextView t) throws ParseException {
-        // Check if the date is before TODAY. Error.
-        SimpleDateFormat format =
-                new SimpleDateFormat("MM/dd/yy hh:mm a", Locale.ENGLISH);
-
-        Date date = format.parse(d.getText() + " " + t.getText());
-        Date today = new Date();
-
-        return (Objects.requireNonNull(date).before(today));
     }
 
     public boolean checkDatesEnd(TextView bd, TextView bt, TextView ed, TextView et) throws ParseException {

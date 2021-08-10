@@ -3,55 +3,51 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="30dp"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/titleSearch"
-        android:layout_width="307dp"
+        android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="28dp"
         android:layout_marginTop="40dp"
         android:text="@string/welcomeSearch" />
 
     <TextView
         android:id="@+id/gettingStartedSearch"
-        android:layout_width="307dp"
+        android:layout_width="wrap_content"
         android:layout_height="80dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="28dp"
         android:layout_marginTop="75dp"
         android:text="@string/gettingStartedSearch" />
 
     <TextView
         android:id="@+id/mainCount"
-        android:layout_width="307dp"
+        android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="140dp" />
+        android:layout_marginTop="120dp" />
 
     <TextView
         android:id="@+id/searchByOwner"
-        android:layout_width="307dp"
+        android:layout_width="wrap_content"
         android:layout_height="80dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="150dp"
         android:text="@string/searchByOwner" />
 
     <Spinner
         android:id="@+id/searchBooks"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="190dp" />
+        android:layout_marginTop="170dp" />
 
     <CheckBox
         android:id="@+id/chboxPrintAll"
@@ -59,26 +55,23 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="230dp"
         android:text="@string/print_all" />
 
     <TextView
         android:id="@+id/searchByDates"
-        android:layout_width="307dp"
+        android:layout_width="wrap_content"
         android:layout_height="80dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="28dp"
         android:layout_marginTop="290dp"
-        android:text="@string/searchByDates" />
+        android:text="@string/searchByDates"/>
 
     <TextView
         android:id="@+id/txtStartDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/start_date"
-        android:layout_marginStart="28dp"
         android:layout_marginTop="320dp"
         android:textSize="18sp"
         android:padding="10dp" />
@@ -88,7 +81,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/start_time"
-        android:layout_marginStart="28dp"
         android:layout_marginTop="360dp"
         android:textSize="18sp"
         android:padding="10dp" />
@@ -116,21 +108,19 @@
 
     <Button
         android:id="@+id/btnSearch"
-        android:layout_width="137dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="28dp"
         android:layout_marginTop="420dp"
         android:text="@string/search" />
 
     <Button
         android:id="@+id/btnExit"
-        android:layout_width="137dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="28dp"
         android:layout_marginTop="480dp"
         android:text="@string/exit" />
 
