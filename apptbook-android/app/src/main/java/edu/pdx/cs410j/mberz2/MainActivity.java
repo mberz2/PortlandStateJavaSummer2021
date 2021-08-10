@@ -2,6 +2,7 @@ package edu.pdx.cs410j.mberz2;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.File;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -101,7 +103,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         File file = new File(String.valueOf(MainActivity.this.getFilesDir()));
         File[] list = file.listFiles();
         count = 0;
-        if (list != null) {
+
+        Log.e(TAG, "No appointments, disable buttons.");
+        btnView.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.gray));
+        btnSearch.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.gray));
+
+        if (list != null && list.length > 0) {
+            Log.e(TAG, "Appointments, enable buttons.");
+            btnView.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.purple_500));
+            btnSearch.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.purple_500));
+
             for (File f : list) {
                 String name = f.getName();
                 if (name.endsWith(".csv"))
