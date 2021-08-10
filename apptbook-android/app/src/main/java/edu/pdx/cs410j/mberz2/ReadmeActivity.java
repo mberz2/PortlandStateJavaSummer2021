@@ -24,18 +24,20 @@ public class ReadmeActivity extends AppCompatActivity {
                 "\t\t<title>Help</title>\t</head>\t<body>\t\t<main>" +
                 "<div class=\"container\">" +
                 "<div id=\"about\"><h1>BookMe Appointment Book App</h1>" +
-                "<p>BookMe is a self-contained demo application for " +
-                "creating, storing, viewing, and deleting applications based on a series of simple " +
-                "inputs.<br>appointmentBook-android is not available for public release.</p>" +
-                "<br><h2>About</h2><p>From the create menu, provide a name, " +
-                "description, beginning and ending times, and the application will store the " +
-                "appointment for later viewing.</p>" +
-                "<br><p>The application will also allow the searching for appointments in " +
-                "a variety of formats, including by a username, or by appointments that take place " +
-                "between two dates. </p>" +
-                "<br><h2>Features</h2><ul><li>Create and store appointments</li>" +
-                "<li>Search for appointments by user or dates</li>" +
-                "<li>Delete stored appointments</li></ul>" +
+                "<p>BookMe is a self-contained appointment application for creating, storing, " +
+                        "viewing, searching, and deleting user created appointments based on a " +
+                        "series of simple inputs (name, description, start date, end date)." +
+                        "<br><br>Application is NOT available for public release.</p>" +
+                "<br><h2>About</h2><p>This application was created as part of Portland State " +
+                        "University's Advanced Java Programming class. The application is meant to " +
+                        "demonstrate the implementation of several core Java programming concepts" +
+                        "but ported into an Android operating system.</p>" +
+                "<br><p>This application is set to run on a Pixel 2 API 29 operating environment " +
+                        "and may not be compatible on other devices/environments.</p>" +
+                "<br><h2>Features</h2><ul><li>Create and Store. Creates and saves an appointment</li>" +
+                "<li>Search. Display all for a user or between dates</li>" +
+                "<li>View. Show all stored appointments</li>" +
+                "<li>Delete. Clear all appointments in storage</li></ul>" +
                 "<br><h2>Permissions</h2><p>This app requires no device permissions.</p>" +
                 "<br><h2>License</h2><p>This app requires no device permissions.</p>" +
                 "<br><p>Copyright 2021 Matthew Berzinskas</p><p>" +
