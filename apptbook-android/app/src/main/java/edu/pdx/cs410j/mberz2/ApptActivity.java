@@ -245,6 +245,7 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
 
         Toast.makeText(getApplicationContext(),
                 "Appointment saved successfully!", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     public void printAppointment(Appointment app, AppointmentBook tempBook) {
