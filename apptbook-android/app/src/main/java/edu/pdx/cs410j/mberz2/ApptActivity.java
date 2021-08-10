@@ -162,17 +162,17 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
 
         //Check dates to ensure they are not BEFORE today.
         if (checkDates(txtStartDate, txtStartTime)) {
-            printError("You cannot book an appointment that happens BEFORE now.");
+            printError("Start date/time cannot be the same/earlier than current time.");
             txtStartDate.setText(R.string.startDate);
             txtStartTime.setText(R.string.startTime);
             return;
         } else if (checkDates(txtEndDate, txtEndTime)) {
-            printError("You cannot book an appointment that ends BEFORE now.");
+            printError("End date/time cannot be earlier than the current time.");
             txtEndDate.setText(R.string.endDate);
             txtEndTime.setText(R.string.endTime);
             return;
         } else if (checkDatesEnd(txtStartDate, txtStartTime, txtEndDate, txtEndTime)){
-            printError("End time must be after beginning time.");
+            printError("End date/time cannot be earlier than the start date/time.");
             txtEndDate.setText(R.string.endDate);
             txtEndTime.setText(R.string.endTime);
             return;
