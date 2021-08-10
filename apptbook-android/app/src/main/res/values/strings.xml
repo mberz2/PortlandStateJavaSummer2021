@@ -62,4 +62,5 @@ between specific dates. In <i>HELP</i> you can reset the app and delete all stor
     <string name="endTime">End Time</string>
     <string name="print_all">Print All For This Owner?</string>
     <string name="btnReset">Reset</string>
+    <string name="booking_a_new_appointment">Booking a new appointment.</string>
 </resources>

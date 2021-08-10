@@ -34,6 +34,7 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
     private TextView txtEndTime;
     protected Button btnReset;
     protected Button btnConfirm;
+    protected Button btnExit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
         txtEndTime = findViewById(R.id.txtEndTime);
         btnReset = findViewById(R.id.btnReset);
         btnConfirm = findViewById(R.id.btnConfirm);
+        btnExit = findViewById(R.id.btnExit);
 
         // Check current context on click.
         txtStartDate.setOnClickListener(this);
@@ -57,6 +59,7 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
         txtEndTime.setOnClickListener(this);
         btnReset.setOnClickListener(this);
         btnConfirm.setOnClickListener(this);
+        btnExit.setOnClickListener(this);
     }
 
     @Override
@@ -81,6 +84,8 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
         } else if (v.getId() == R.id.btnReset) {
             startActivity(new Intent(this, ApptActivity.class));
             finish();
+        } else if (v.getId() == R.id.btnExit) {
+            onBackPressed();
         }
     }
 
@@ -126,7 +131,7 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
         }
     }
 
-    public boolean checkDates(TextView d, TextView t) throws ParseException {
+    private boolean checkDates(TextView d, TextView t) throws ParseException {
         // Check if the date is before TODAY. Error.
         SimpleDateFormat format =
                 new SimpleDateFormat("MM/dd/yy hh:mm a", Locale.ENGLISH);
@@ -137,10 +142,8 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
         return (Objects.requireNonNull(date).before(today));
     }
 
-    public boolean checkDatesEnd(TextView bd, TextView bt, TextView ed, TextView et) throws ParseException {
+    private boolean checkDatesEnd(TextView bd, TextView bt, TextView ed, TextView et) throws ParseException {
         // Check if the date is before TODAY. Error.
-        Log.e(TAG, "Checking end date vs start time");
-
         SimpleDateFormat format =
                 new SimpleDateFormat("MM/dd/yy hh:mm a", Locale.ENGLISH);
 
@@ -151,7 +154,7 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
                 || (Objects.requireNonNull(endDate).equals(beginDate));
     }
 
-    public void confirmInput(View view) throws ParseException {
+    private void confirmInput(View view) throws ParseException {
         Log.e(TAG, "Confirming appointment.");
 
         //Check if the confirmation widget is checked.
@@ -215,7 +218,7 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
         }
     }
 
-    public AppointmentBook loadFromInternalStorage(Appointment app, String owner)
+    private AppointmentBook loadFromInternalStorage(Appointment app, String owner)
             throws ParserException {
         try {
             File file = new File(ApptActivity.this.getFilesDir()
@@ -236,8 +239,8 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
         }
     }
 
-    public void writeToInternalStorage(AppointmentBook appBook) throws IOException {
-        Log.e(TAG, "Writing book");
+    private void writeToInternalStorage(AppointmentBook appBook) throws IOException {
+        Log.e(TAG, "Writing appointment to file");
         FileOutputStream fileout = openFileOutput("apptBook_" + appBook.getOwnerName() + ".csv", MODE_PRIVATE);
         TextDumper textDumper = new TextDumper(new OutputStreamWriter(fileout));
         textDumper.dump(appBook);
@@ -247,8 +250,8 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
         finish();
     }
 
-    public void printAppointment(Appointment app, AppointmentBook tempBook) {
-        Log.e(TAG, "in Display");
+    private void printAppointment(Appointment app, AppointmentBook tempBook) {
+        Log.e(TAG, "Printing appointment.");
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .setTitle("Appointment Confirmation")
