@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/titleHelp"
-        android:layout_width="307dp"
+        android:layout_width="350dp"
         android:layout_height="80dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
@@ -19,7 +19,7 @@
 
     <TextView
         android:id="@+id/titleVersion"
-        android:layout_width="307dp"
+        android:layout_width="350dp"
         android:layout_height="40dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
@@ -29,7 +29,7 @@
 
     <TextView
         android:id="@+id/titleAuthor"
-        android:layout_width="307dp"
+        android:layout_width="350dp"
         android:layout_height="40dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
@@ -39,13 +39,23 @@
 
     <TextView
         android:id="@+id/titleFor"
-        android:layout_width="307dp"
+        android:layout_width="350dp"
         android:layout_height="40dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="28dp"
         android:layout_marginTop="180dp"
         android:text="@string/created_for" />
+
+    <TextView
+        android:id="@+id/titleUsage"
+        android:layout_width="350dp"
+        android:layout_height="120dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="210dp"
+        android:text="@string/usage" />
 
     <Button
         android:id="@+id/btnReset"
@@ -55,7 +65,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="310dp"
+        android:layout_marginTop="370dp"
         android:text="@string/btnReset" />
 
     <Button
@@ -65,7 +75,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="370dp"
+        android:layout_marginTop="430dp"
         android:text="@string/btnReadme" />
 
     <Button
@@ -75,7 +85,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="430dp"
+        android:layout_marginTop="490dp"
         android:text="@string/btnExit" />
 
 

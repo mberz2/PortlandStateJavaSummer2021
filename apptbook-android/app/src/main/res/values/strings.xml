@@ -25,13 +25,19 @@
     <string name="created_by"><![CDATA[<B>Created By:</B> Matthew Berzinskas]]></string>
     <string name="version"><![CDATA[<B>Version:</B> 1.0]]></string>
     <string name="created_for"><![CDATA[<B>For:</B> CS410 Advanced Java Programming]]></string>
+    <string name="usage"><![CDATA[
+    <B>Usage:</B> To book an appointment, simply click <i>CREATE</i> from the main menu. Once an
+appointment has been booked, you can view all existing appointments by clicking <i>VIEW</i>. In
+<i>SEARCH</i> you can view all appointments belonging to a given owner, or search for appointments
+between specific dates. In <i>HELP</i> you can reset the app and delete all stored appointments.]]>
+
+    </string>
     <string name="btnReadme">Readme</string>
     <string name="btnExit">Exit</string>
     <string name="welcome">
         <![CDATA[<h1>Welcome to the BookMe Appointment Book App!</h1>]]></string>
     <string name="gettingStarted"><![CDATA[To get started, click <b>CREATE</b> below.</h1>]]></string>
     <string name="title_activity_search">SearchActivity</string>
-    <!-- Strings used for fragments for navigation -->
 
     <string name="next">Next</string>
     <string name="previous">Previous</string>

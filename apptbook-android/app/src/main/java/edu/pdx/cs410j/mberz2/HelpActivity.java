@@ -64,6 +64,11 @@ public class HelpActivity extends AppCompatActivity implements View.OnClickListe
         htmlAsSpanned = Html.fromHtml(htmlAsString, Html.FROM_HTML_MODE_COMPACT);
         textView = findViewById(R.id.titleAuthor);
         textView.setText(htmlAsSpanned);
+
+        htmlAsString = getString(R.string.usage);
+        htmlAsSpanned = Html.fromHtml(htmlAsString, Html.FROM_HTML_MODE_COMPACT);
+        textView = findViewById(R.id.titleUsage);
+        textView.setText(htmlAsSpanned);
     }
 
     @Override
