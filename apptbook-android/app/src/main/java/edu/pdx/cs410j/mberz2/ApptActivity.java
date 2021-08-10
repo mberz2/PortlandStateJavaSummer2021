@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 
 import java.io.*;
@@ -64,8 +65,12 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
 
     @Override
     public void onClick(View v) {
-        // Checks the current view and performs the appropriate action.
+        // Hides the virtual keyboard on clicking out of a given TextView
+        InputMethodManager inputMethodManager =
+                (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(),0);
 
+        // Checks the current view and performs the appropriate action.
         if (v.getId() == R.id.txtStartDate) {
             createDialogFragment("StartDatePicker");
         } else if (v.getId() == R.id.txtEndDate) {
