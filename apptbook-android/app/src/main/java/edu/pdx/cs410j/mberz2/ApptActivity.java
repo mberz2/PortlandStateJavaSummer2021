@@ -165,18 +165,7 @@ public class ApptActivity extends AppCompatActivity implements DatePickerDialog.
         //Check if the confirmation widget is checked.
         boolean isChecked = ((CheckBox) findViewById(R.id.chboxConfirm)).isChecked();
 
-        //Check dates to ensure they are not BEFORE today.
-        if (checkDates(txtStartDate, txtStartTime)) {
-            printError("Start date/time cannot be the same/earlier than current time.");
-            txtStartDate.setText(R.string.startDate);
-            txtStartTime.setText(R.string.startTime);
-            return;
-        } else if (checkDates(txtEndDate, txtEndTime)) {
-            printError("End date/time cannot be earlier than the current time.");
-            txtEndDate.setText(R.string.endDate);
-            txtEndTime.setText(R.string.endTime);
-            return;
-        } else if (checkDatesEnd(txtStartDate, txtStartTime, txtEndDate, txtEndTime)){
+        if (checkDatesEnd(txtStartDate, txtStartTime, txtEndDate, txtEndTime)){
             printError("End date/time cannot be earlier than the start date/time.");
             txtEndDate.setText(R.string.endDate);
             txtEndTime.setText(R.string.endTime);
